@@ -9,8 +9,9 @@ using namespace std;
 
 int main()
 {
-    Headquarter *role = nullptr; 
+    Role *role = nullptr; 
     login(role);
-
+    
     role->performTask();
+    role->showNameandRole();
 }

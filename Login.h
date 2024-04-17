@@ -1,9 +1,9 @@
 #include "UserSystem.h"
 #include "UserHierarchy.h"
 
-void login(Headquarter *&);
+void login(Role*&);
 
-void login(Headquarter *&Role)
+void login(Role *&Role)
 {
     cout << "Login System" << endl;
 
@@ -48,15 +48,15 @@ void login(Headquarter *&Role)
 
     if(role == "Headquarter")
     {
-        Role = new Headquarter();
+        Role = new Headquarter(username,role);
     }
     else if (role == "Manager")
     {
-        Role = new Manager();
+        Role = new Manager(username,role);
     }
     else if (role == "Staff")
     {
-        Role = new Staff();
+        Role = new Staff(username,role);
     }
 
     ifstream file("userdatabase.csv"); // Read userdatabase file
@@ -74,6 +74,4 @@ void login(Headquarter *&Role)
             break;
         }
     }
-
-    cout << "Hello User : " << datausername <<endl << "Role : " << datarole << endl;
 }
