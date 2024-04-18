@@ -8,6 +8,7 @@ class Role
 public:
     virtual void performTask() = 0;
     virtual void showNameandRole() = 0;
+    virtual string get_role() = 0;
 };
 
 class Headquarter : public Role
@@ -27,6 +28,10 @@ public:
     void showNameandRole()
     {
         cout << "NAME : " << this->username << " ROLE : "<< this->role << endl;
+    }
+    string get_role()
+    {
+        return this->role;
     }
 };
 class Manager : public Headquarter

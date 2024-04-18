@@ -9,9 +9,30 @@ using namespace std;
 
 int main()
 {
-    Role *role = nullptr; 
-    login(role);
-    
-    role->performTask();
-    role->showNameandRole();
+    int MainPage_Choice;
+    while(true)
+    {
+        cout << "===== Stock Management System =====" << endl;
+        cout << "Choose (1. Login , 2. Exit) : ";
+        cin >> MainPage_Choice;
+
+        Role *role = nullptr; 
+
+        switch(MainPage_Choice)
+        {
+            case 1 : 
+                     login(role); // Login Using Pointer to pass parameter
+                     role->performTask();
+                     role->showNameandRole();
+                     MainPage(role->get_role());
+                     break;
+            case 2 : 
+                     system("clear");
+                     cout << "BYE BYE !!" << endl;
+                     return 0;
+                     break;
+            default : cout << "Choose Again !!" << endl;
+        }
+        
+    }
 }

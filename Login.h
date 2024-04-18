@@ -2,6 +2,8 @@
 #include "UserHierarchy.h"
 
 void login(Role*&);
+void MainPage(string);
+
 
 void login(Role *&Role)
 {
@@ -73,5 +75,13 @@ void login(Role *&Role)
             cout << "Login Successfully" << endl;
             break;
         }
+    }
+}
+
+void MainPage(string role)
+{
+    if(role == "Headquarter")
+    {
+        cout << "Hi I'm Headquarter!!" << endl;
     }
 }
