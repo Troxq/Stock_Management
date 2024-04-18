@@ -84,4 +84,9 @@ void MainPage(string role)
     {
         cout << "Hi I'm Headquarter!!" << endl;
     }
+    while(true)
+    {
+        system("clear");
+        cout << "This is a Main Page Yeah !!" << endl;
+    }
 }

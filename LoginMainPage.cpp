@@ -24,7 +24,21 @@ int main()
                      login(role); // Login Using Pointer to pass parameter
                      role->performTask();
                      role->showNameandRole();
-                     MainPage(role->get_role());
+                    if (role->get_role() == "Headquarter")
+                    {
+                        system("clear");
+                        cout << "I am HQ" << endl;
+                    }
+                    else if (role->get_role() == "Manager")
+                    {
+                        system("clear");
+                        cout << "I am Manager" << endl;
+                    }
+                    else if (role->get_role() == "Staff")
+                    {
+                        system("clear");
+                        cout << "I am Staff" << endl;
+                    }
                      break;
             case 2 : 
                      system("clear");
