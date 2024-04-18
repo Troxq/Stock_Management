@@ -19,6 +19,11 @@ class LinkedList{
         void add_NODE(string);
         void delete_NODE(string);
         void print_head_NODE();
+
+        void add_NODE(string, int); // GOT : for sendorder
+        void displayAll(); // GOT : for display all node in sendorder
+        void delete_NODE_Got(string); // GOT : for sendorder
+        void save_data(); // GOT : for save data sendorder
     /*
     .add(id);
     .searchid(id) //loop every NODE
@@ -46,6 +51,25 @@ void LinkedList::add_NODE(string NODE_name){
     size++;
     cout<<"NODE \""<<NODE_name<<"\" added"<<endl;
     cout<<"Current NODE Size : "<<size<<endl;
+    
+};
+
+void LinkedList::add_NODE(string NODE_name, int amount)
+{
+    NODE* new_NODE_ptr;
+    new_NODE_ptr = new NODE(NODE_name, amount);
+    if (NODE_head_ptr==NULL)
+    {
+        NODE_head_ptr = new_NODE_ptr;
+    }
+    else
+    {
+        new_NODE_ptr->set_next_NODE_ptr(NODE_head_ptr);
+        NODE_head_ptr=new_NODE_ptr;
+    }
+    size++;
+    // cout<<"NODE \""<<NODE_name<<"\" added"<<endl;
+    // cout<<"Current NODE Size : "<<size<<endl;
     
 };
 
@@ -99,6 +123,76 @@ void LinkedList::delete_NODE(string inName){
     }
     if(!found){
         cout<<"Sorry, can't find Node (" << inName<<")"<<endl;
+    }
+}
+
+void LinkedList::delete_NODE_Got(string nameProduct)
+{
+    NODE *currentPtr, *previousPtr;
+    currentPtr = NODE_head_ptr;
+    previousPtr = NULL;
+
+    if (size > 0)
+    {
+        if (currentPtr->return_name() == nameProduct)
+        {
+            NODE_head_ptr = NODE_head_ptr->return_next_NODE();
+            cout << currentPtr->return_name() << " has been deleted" << endl;
+            free(currentPtr);
+            size -= 1;
+        }
+        else
+        {
+            for (int len = size - 1; len > 0 && currentPtr->return_name() != nameProduct; len--)
+            {
+                previousPtr = currentPtr;
+                currentPtr = currentPtr->return_next_NODE();
+            }
+            
+            NODE *t = currentPtr;
+            currentPtr = currentPtr->return_next_NODE();
+            previousPtr->set_next_NODE_ptr(currentPtr);
+            cout << t->return_name() << " has been deleted" << endl;
+            free(t);
+            size -= 1;
+        }
+    }
+}
+
+void LinkedList::displayAll()
+{
+    NODE *t = NODE_head_ptr;
+    if (t != NULL)
+    {
+        system("clear");
+        cout << "-------------------------------------------------------------" << endl;
+        for (; t != NULL; t = t->return_next_NODE())
+        {
+            cout << "  name : " << t->return_name() << "  " << "amount : " << t->return_amount() << endl;
+        }
+        cout << "-------------------------------------------------------------" << endl;
+    }
+    cout << "size = " << size << endl;
+
+}
+
+void LinkedList::save_data()
+{
+    ofstream myfile;
+    NODE *t = NODE_head_ptr;
+    myfile.open("OrderManagerDatabase.csv", ios::app);
+    if (myfile.is_open()) {
+        myfile << LinkedList_name << "," << size;
+        for (int i = size; i > 0; i--)
+        {
+            myfile << "," << t->return_name() << "," << t->return_amount();
+            t = t->return_next_NODE();
+        }
+        myfile << endl;
+        cout << "Data has been appended and saved." << endl;
+        myfile.close(); 
+    } else {
+        cout << "Unable to open file!" << endl;
     }
 }
 

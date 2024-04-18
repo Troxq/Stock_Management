@@ -2,6 +2,7 @@
 #include <string>
 #include "container.h"
 #include <unistd.h>
+// #include "OrderFormat.h"
 
 using namespace std;
 
@@ -36,6 +37,15 @@ public:
     {
         return this->role;
     }
+    void sendOrder()
+    {
+        string name;
+        cout << "input name of owner product : ";
+        cin >> name;
+        
+        orderFormat order(name, 1);
+        order.mainMenu();
+    }
     void mainMenu()
     {
         int choice = 0;
@@ -55,7 +65,7 @@ public:
             }
             else if (choice == 2)
             {
-                // sendOrder();
+                sendOrder();
             }
             else if (choice == 3)
             {
@@ -77,6 +87,7 @@ public:
         }
     }
 };
+
 class Manager : public Headquarter
 {
 public:

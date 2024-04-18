@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <cstring>
+#include "OrderFormat.h"
 #include "Login.h"
 
 using namespace std;
