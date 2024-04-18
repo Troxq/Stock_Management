@@ -28,16 +28,19 @@ int main()
                     {
                         system("clear");
                         cout << "I am HQ" << endl;
+                        role->mainMenu();
                     }
                     else if (role->get_role() == "Manager")
                     {
                         system("clear");
                         cout << "I am Manager" << endl;
+                        role->mainMenu();
                     }
                     else if (role->get_role() == "Staff")
                     {
                         system("clear");
                         cout << "I am Staff" << endl;
+                        role->mainMenu();
                     }
                      break;
             case 2 : 

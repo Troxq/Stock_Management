@@ -23,7 +23,7 @@ int main(){
     x.customer_delete_item("cus1", "apple1");
     x.print_all_customer();
     x.customer_delete_item("cus1", "apple");
-    x.customer_add_item("cus2", "apple");
+    x.customer_add_item("cus1", "apple");
     x.customer_add_item("cus2", "apple1");
     x.customer_add_item("cus3", "apple2");
     x.print_all_customer();
