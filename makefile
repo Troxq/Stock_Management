@@ -1,5 +1,5 @@
-compile : container.cpp
-	g++ container.cpp -o "container"
+compile : main.cpp
+	g++ main.cpp -o "main"
 
-run : container
-	./container
+run : main
+	./main

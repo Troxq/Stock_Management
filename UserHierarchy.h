@@ -52,6 +52,7 @@ public:
             if (choice == 1)
             {
                 // createUser();
+
             }
             else if (choice == 2)
             {
@@ -59,7 +60,7 @@ public:
             }
             else if (choice == 3)
             {
-                // oderStatus();
+                // orderStatus();
             }
             else if (choice == 4)
             {
@@ -150,6 +151,8 @@ public:
     {
         cout << "NAME : " << this->username << " ROLE : "<< this->role << endl;
     }
+
+
     void mainMenu()
     {
         int choice = 0;
@@ -165,7 +168,8 @@ public:
             cin >> choice;
             if (choice == 1)
             {
-                // input();
+                // input(); get container id to add to it
+
             }
             else if (choice == 2)
             {
