@@ -12,6 +12,8 @@ void split(string &, char, string &, string &, string &, string &); // Function 
 
 bool usernameCheck(string &, string &); // Check if username exists
 
+bool usernamePasswordCheck(string &, string &, string);
+
 bool roleCheck(string &, string &, string);
 
 int returnID(string &, string &, string &, string);
@@ -46,6 +48,27 @@ bool usernameCheck(string &username, string filename)
         string datausername, datapassword, datarole, dataid;
         split(line, ',', datausername, datapassword, datarole, dataid);
         if(datausername == username)
+        {
+            file.close();
+            return true;
+        }
+    }
+
+    file.close();
+    return false;
+}
+
+bool usernamePasswordCheck(string& username, string& password, string filename)
+{
+    ifstream file(filename); // open userdatabase file
+    
+    string line;
+
+    while (getline(file, line))
+    {
+        string datausername, datapassword, datarole, dataid;
+        split(line, ',', datausername, datapassword, datarole, dataid);
+        if (datausername == username && datapassword == password)
         {
             file.close();
             return true;

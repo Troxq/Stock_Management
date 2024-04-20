@@ -12,11 +12,23 @@ void login(Role *&Role)
 
     int role_choice;
 
-    cout << "Enter Your Username : "; 
-    cin >> username;
+    while(true)
+    {
+        cout << "Enter Your Username : "; 
+        cin >> username;
 
-    cout << "Enter Your Password : "; 
-    cin >> password;
+        cout << "Enter Your Password : "; 
+        cin >> password;
+
+        if(usernamePasswordCheck(username,password,"userdatabase.csv"))
+        {
+            break;
+        }
+        else
+        {
+            cout << "No Match Username and Password" << endl;
+        }
+    }    
 
     while(true)
     {
