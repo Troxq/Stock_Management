@@ -31,7 +31,7 @@ class HQ{
         //for Manager & Staff
         int HQ_add_customer(string="no_name",string="no_name"); //need container and actual customer name 
         int HQ_delete_customer(string="no_name", string="no_name"); //need container and actual customer name 
-        int HQ_add_item(string="no_name", string="no_name", string="no_name"); //need container, customer name, item id 
+        int HQ_add_item(string="no_name", string="no_name", string="no_id"); //need container, customer name, item id 
 };
 
 void HQ::delete_all_container(){
@@ -180,7 +180,7 @@ void HQ::delete_container(string inName){
 //function for HQ
 int HQ::add_container(string container_name, int size){
     //check valid id
-    if((container_name.compare("no_id")==0)){
+    if((container_name.compare("no_name")==0)){
         cout<<"no item id input"<<endl;
         return 0;
     }
