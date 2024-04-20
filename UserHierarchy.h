@@ -48,6 +48,12 @@ public:
         sendOrderFormatHQ order(name, 1);
         order.mainMenu();
     }
+    void orderStatus()
+    {
+        orderStatusFormatHQ status(1);
+        status.load_data("OrderStatusHQDatabase.csv");
+        status.displayOrderStatusHQ();
+    }
     void mainMenu()
     {
         int choice = 0;
@@ -71,7 +77,7 @@ public:
             }
             else if (choice == 3)
             {
-                // oderStatus();
+                orderStatus();
             }
             else if (choice == 4)
             {
@@ -110,12 +116,17 @@ public:
     }
     void sendOrder()
     {
-        int a;
-        sendOrderFormatManager b(1);
+        orderFormatManager b(1);
         b.load_data("OrderManagerDatabase.csv");
         b.displaySendOrderManager();
         
         // cin >> a;
+    }
+    void orderStatus()
+    {
+        orderFormatManager b(1);
+        b.load_data("OrderStatusManagerDatabase.csv");
+        b.displayOrderStatusManager();
     }
     void mainMenu()
     {
@@ -136,7 +147,7 @@ public:
             }
             else if (choice == 2)
             {
-                // orderStatus();
+                orderStatus();
             }
             else if (choice == 3)
             {
@@ -173,6 +184,12 @@ public:
     {
         cout << "NAME : " << this->username << " ROLE : "<< this->role << endl;
     }
+    void orderStatus()
+    {
+        orderFormatStaff order(1);
+        order.load_data("OrderStaffDatabase.csv");
+        order.displayOrderStatusStaff();
+    }
     void mainMenu()
     {
         int choice = 0;
@@ -200,7 +217,7 @@ public:
             }
             else if (choice == 4)
             {
-                // orderStatus();
+                orderStatus();
             }
             else if (choice == 0)
             {

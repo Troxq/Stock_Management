@@ -138,31 +138,56 @@ void sendOrderFormatHQ::checkProduct()
 
 void sendOrderFormatHQ::confirm()
 {
-    save_data("OrderManagerDatabase.csv");
+    save_data_HQ("OrderManagerDatabase.csv", 0);
+    save_data_HQ("OrderStatusHQDatabase.csv", 0);
 }
 
+
+class orderStatusFormatHQ : public headLinkList
+{
+private:
+    int numberContainer;
+
+public:
+    orderStatusFormatHQ(int);
+};
+
+orderStatusFormatHQ::orderStatusFormatHQ(int numC) : headLinkList()
+{
+    numberContainer = numC;
+}
 
 
 // SendOrderManager
 
 
 
-class sendOrderFormatManager : public headLinkList
+class orderFormatManager : public headLinkList
 {
 private:
     int numberContainer;
 
 public:
-    sendOrderFormatManager(int);
+    orderFormatManager(int);
     // display();
 };
 
-sendOrderFormatManager::sendOrderFormatManager(int numC) : headLinkList()
+orderFormatManager::orderFormatManager(int numC) : headLinkList()
 {
     numberContainer = numC;   
 }
 
-// sendOrderFormatManager::display()
-// {
-//     display();
-// }
+
+class orderFormatStaff : public headLinkList
+{
+private:
+    int numberContainer;
+
+public:
+    orderFormatStaff(int);
+};
+
+orderFormatStaff::orderFormatStaff(int numC) : headLinkList()
+{
+    numberContainer = numC;
+}

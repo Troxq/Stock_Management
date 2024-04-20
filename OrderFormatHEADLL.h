@@ -16,11 +16,16 @@ public:
     headLinkList();
     void displaySendOrderManager();
     void delete_LinkedList(string);
-    void delete_LinkedList(string, string);
+    void delete_LinkedList(string, string, int = 0);
+    void delete_LinkedList(string, string, int, string, int);
+    void delete_LinkedList(string, string, int, string, int, string, int);
     void add_LinkedList(LinkedList *&);
     void load_data(string);
     void return_name();
-    void save_data_LinkList(string);
+    void save_data_LinkList(string, int = 0);
+    void displayOrderStatusHQ();
+    void displayOrderStatusManager();
+    void displayOrderStatusStaff();
 
 };
 
@@ -79,7 +84,7 @@ void headLinkList::delete_LinkedList(string nameOwner)
     }
 }
 
-void headLinkList::delete_LinkedList(string nameOwner, string nameFile)
+void headLinkList::delete_LinkedList(string nameOwner, string nameFile, int status)
 {
 
     LinkedList *currentPtr, *previousPtr;
@@ -100,7 +105,7 @@ void headLinkList::delete_LinkedList(string nameOwner, string nameFile)
             {
                 holLinkedList = NULL;
             }
-            currentPtr->save_data(nameFile);
+            currentPtr->save_data(nameFile, status);
             free(currentPtr);
             sizeNodeinLinkList -= 1;
         }
@@ -128,7 +133,108 @@ void headLinkList::delete_LinkedList(string nameOwner, string nameFile)
     }
 }
 
-void headLinkList::save_data_LinkList(string nameFile)
+void headLinkList::delete_LinkedList(string nameOwner, string nameFile1, int status1, string nameFile2, int status2)
+{
+
+    LinkedList *currentPtr, *previousPtr;
+    currentPtr = holLinkedList;
+    previousPtr = NULL;
+
+    if (sizeNodeinLinkList > 0)
+    {
+        if (currentPtr->return_name() == nameOwner)
+        {
+            if (holLinkedList->move_next() != NULL)
+            {
+                holLinkedList = holLinkedList->move_next();
+                holLinkedList->set_back_LinkList_ptr(NULL);
+                cout << currentPtr->return_name() << " has been deleted" << endl;
+            }
+            else
+            {
+                holLinkedList = NULL;
+            }
+            currentPtr->save_data(nameFile1, status1);
+            currentPtr->save_data(nameFile2, status2);
+            free(currentPtr);
+            sizeNodeinLinkList -= 1;
+        }
+        else
+        {
+            for (int len = sizeNodeinLinkList - 1; len > 0 && currentPtr->return_name() != nameOwner; len--)
+            {
+                // cout << "currentPtr : " << currentPtr->return_name() << "     |    nameOwner : " << nameOwner << endl;
+                // cout << "eiei" << endl;
+                previousPtr = currentPtr;
+                currentPtr = currentPtr->move_next();
+            }
+            
+            LinkedList *t = currentPtr;
+            currentPtr = currentPtr->move_next();
+            previousPtr->set_next_LinkList_ptr(currentPtr);
+            if (currentPtr != NULL)
+            {
+                currentPtr->set_back_LinkList_ptr(previousPtr);
+            }
+            cout << t->return_name() << " has been deleted" << endl;
+            delete t;
+            sizeNodeinLinkList -= 1;
+        }
+    }
+}
+
+void headLinkList::delete_LinkedList(string nameOwner, string nameFile1, int status1, string nameFile2, int status2, string nameFile3, int status3)
+{
+
+    LinkedList *currentPtr, *previousPtr;
+    currentPtr = holLinkedList;
+    previousPtr = NULL;
+
+    if (sizeNodeinLinkList > 0)
+    {
+        if (currentPtr->return_name() == nameOwner)
+        {
+            if (holLinkedList->move_next() != NULL)
+            {
+                holLinkedList = holLinkedList->move_next();
+                holLinkedList->set_back_LinkList_ptr(NULL);
+                cout << currentPtr->return_name() << " has been deleted" << endl;
+            }
+            else
+            {
+                holLinkedList = NULL;
+            }
+            currentPtr->save_data(nameFile1, status1);
+            currentPtr->save_data(nameFile2, status2);
+            currentPtr->save_data(nameFile3, status3);
+            free(currentPtr);
+            sizeNodeinLinkList -= 1;
+        }
+        else
+        {
+            for (int len = sizeNodeinLinkList - 1; len > 0 && currentPtr->return_name() != nameOwner; len--)
+            {
+                // cout << "currentPtr : " << currentPtr->return_name() << "     |    nameOwner : " << nameOwner << endl;
+                // cout << "eiei" << endl;
+                previousPtr = currentPtr;
+                currentPtr = currentPtr->move_next();
+            }
+            
+            LinkedList *t = currentPtr;
+            currentPtr = currentPtr->move_next();
+            previousPtr->set_next_LinkList_ptr(currentPtr);
+            if (currentPtr != NULL)
+            {
+                currentPtr->set_back_LinkList_ptr(previousPtr);
+            }
+            cout << t->return_name() << " has been deleted" << endl;
+            delete t;
+            sizeNodeinLinkList -= 1;
+        }
+    }
+}
+
+void headLinkList::save_data_LinkList(string nameFile, int status)
 {
     ofstream myfile(nameFile);
     LinkedList *t = holLinkedList;
@@ -146,7 +252,7 @@ void headLinkList::save_data_LinkList(string nameFile)
         // Traverse backward through the linked lists
         while (t != NULL)
         {
-            myfile << t->return_name() << "," << t->return_size();
+            myfile << 0 << "," << t->return_name() << "," << t->return_size();
             NODE *y = t->return_node(); // Start from the first node
             
             // Traverse forward through the nodes
@@ -205,18 +311,26 @@ void headLinkList::load_data(string namefile)
             row.push_back(word);
         }
 
-        string nameLinklist = row[0];
-        int size = stoi(row[1]);
+        int status = stoi(row[0]);
+        string nameStatus;
+        switch (status)
+        {
+            case 0 : nameStatus = "Pending"; break;
+            case 1 : nameStatus = "Confirm"; break;
+            case 2 : nameStatus = "Finish"; break;
+        }
+        string nameLinklist = row[1];
+        int size = stoi(row[2]);
         // int sizeLinkList = stoi(row[1]) / 2;
 
         // cout << "size = " << size << endl;
         // cout << "size \\ 2 = " << size / 2 << endl;
         // cin >> size;
-        LinkedList *owner = new LinkedList(nameLinklist, 0);
+        LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus);
 
         if (size > 0)
         {
-            for (int i = row.size() - 1; i >= 2; i -= 2)
+            for (int i = row.size() - 1; i >= 3; i -= 2)
             {
                 owner->add_NODE(row[i - 1], stoi(row[i]));
             }
@@ -229,6 +343,98 @@ void headLinkList::load_data(string namefile)
     fin.close();
 }
 
+void headLinkList::displayOrderStatusHQ()
+{
+    int len = 0;
+    int choice;
+    LinkedList *t;
+
+    t = holLinkedList;
+    while (1)
+    {
+        string confirm;
+        if (t == NULL)
+        {
+            system("clear");
+            cout << "|-----------------------------------------------------------|" << endl;
+            cout << "|                   Don't have any order                    |" << endl;
+            cout << "|-----------------------------------------------------------|" << endl;
+            cout << "input any key to exit : ";
+            cin >> confirm;
+            return ;
+        }
+        t->displayOrderStatus();
+        try
+        {
+            cout << "1 for next order" << endl;
+            cout << "2 for back order" << endl;
+            cout << "3 finish" << endl;
+            cout << "0 for exit" << endl;
+            // cout << "sizeNode : " << sizeNodeinLinkList << endl;
+            // cout << "len : " << len << endl;
+            // cout << "sizeHead : " << sizeHeadLinkList << endl;
+            cin >> choice;
+            if (cin.fail()) 
+            {
+                throw 1;
+            }
+            // cout << "input 2 for back"
+            if (choice == 1)
+            {
+                len += 1;
+                if (len < sizeNodeinLinkList)
+                {
+                    t = t->move_next();
+                }
+                else
+                    len = (sizeNodeinLinkList - 1);
+            }
+            // printf()
+            else if (choice == 2)
+            {
+                len -= 1;
+                if (len >= 0)
+                    t = t->move_back();
+                else
+                    len = 0;
+            }
+            else if (choice == 3)
+            {
+                string name;
+
+                name = t->return_name();
+                if (t->move_next() != NULL)
+                {
+                    t = t->move_next();
+                    // len += 1;
+                }
+                else if (t->move_back() != NULL)
+                {
+                    t = t->move_back();
+                    // len -= 1;
+                }
+                else
+                    t = NULL;
+
+                // cout << "test" << endl;
+                delete_LinkedList(name);
+                save_data_LinkList("OrderStatusHQDatabase.csv");
+                // len -= 1;
+            }
+            else if (choice == 0)
+            {
+                break;
+            }
+        }
+        catch(...)
+        {
+            cout << "Error: Invalid input. Please enter a valid option." << endl;
+            cin.clear(); // Clear the error flag
+            cin.ignore(50, '\n'); // Discard invalid input
+            sleep(1);
+        }
+    }
+}
 
 void headLinkList::displaySendOrderManager()
 {
@@ -242,6 +448,7 @@ void headLinkList::displaySendOrderManager()
         string confirm;
         if (t == NULL)
         {
+            system("clear");
             cout << "|-----------------------------------------------------------|" << endl;
             cout << "|                   Don't have any order                    |" << endl;
             cout << "|-----------------------------------------------------------|" << endl;
@@ -303,9 +510,192 @@ void headLinkList::displaySendOrderManager()
                     t = NULL;
 
                 // cout << "test" << endl;
-                delete_LinkedList(name, "OrderStaffDatabase.csv");
+                delete_LinkedList(name, "OrderStaffDatabase.csv", 0, "OrderStatusHQDatabase.csv", 1, "OrderStatusManagerDatabase.csv", 0);
                 save_data_LinkList("OrderManagerDatabase.csv");
                 // len -= 1;
+            }
+            else if (choice == 0)
+            {
+                break;
+            }
+        }
+        catch(...)
+        {
+            cout << "Error: Invalid input. Please enter a valid option." << endl;
+            cin.clear(); // Clear the error flag
+            cin.ignore(50, '\n'); // Discard invalid input
+            sleep(1);
+        }
+    }
+}
+
+void headLinkList::displayOrderStatusManager()
+{
+    int len = 0;
+    int choice;
+    LinkedList *t;
+
+    t = holLinkedList;
+    while (1)
+    {
+        string confirm;
+        if (t == NULL)
+        {
+            system("clear");
+            cout << "|-----------------------------------------------------------|" << endl;
+            cout << "|                   Don't have any order                    |" << endl;
+            cout << "|-----------------------------------------------------------|" << endl;
+            cout << "input any key to exit : ";
+            cin >> confirm;
+            return ;
+        }
+        t->displayOrderStatus();
+        try
+        {
+            cout << "1 for next order" << endl;
+            cout << "2 for back order" << endl;
+            cout << "3 finish" << endl;
+            cout << "0 for exit" << endl;
+            // cout << "sizeNode : " << sizeNodeinLinkList << endl;
+            // cout << "len : " << len << endl;
+            // cout << "sizeHead : " << sizeHeadLinkList << endl;
+            cin >> choice;
+            if (cin.fail()) 
+            {
+                throw 1;
+            }
+            // cout << "input 2 for back"
+            if (choice == 1)
+            {
+                len += 1;
+                if (len < sizeNodeinLinkList)
+                {
+                    t = t->move_next();
+                }
+                else
+                    len = (sizeNodeinLinkList - 1);
+            }
+            // printf()
+            else if (choice == 2)
+            {
+                len -= 1;
+                if (len >= 0)
+                    t = t->move_back();
+                else
+                    len = 0;
+            }
+            else if (choice == 3)
+            {
+                string name;
+
+                name = t->return_name();
+                if (t->move_next() != NULL)
+                {
+                    t = t->move_next();
+                    // len += 1;
+                }
+                else if (t->move_back() != NULL)
+                {
+                    t = t->move_back();
+                    // len -= 1;
+                }
+                else
+                    t = NULL;
+                delete_LinkedList(name, "OrderStatusHQDatabase.csv", 2);
+                save_data_LinkList("OrderStatusManagerDatabase.csv");
+                len -= 1;
+            }
+            else if (choice == 0)
+            {
+                break;
+            }
+        }
+        catch(...)
+        {
+            cout << "Error: Invalid input. Please enter a valid option." << endl;
+            cin.clear(); // Clear the error flag
+            cin.ignore(50, '\n'); // Discard invalid input
+            sleep(1);
+        }
+    }
+}
+
+
+void headLinkList::displayOrderStatusStaff()
+{
+    int len = 0;
+    int choice;
+    LinkedList *t;
+
+    t = holLinkedList;
+    while (1)
+    {
+        string confirm;
+        if (t == NULL)
+        {
+            system("clear");
+            cout << "|-----------------------------------------------------------|" << endl;
+            cout << "|                   Don't have any order                    |" << endl;
+            cout << "|-----------------------------------------------------------|" << endl;
+            cout << "input any key to exit : ";
+            cin >> confirm;
+            return ;
+        }
+        t->displayAll();
+        try
+        {
+            cout << "1 for next order" << endl;
+            cout << "2 for back order" << endl;
+            cout << "3 finish" << endl;
+            cout << "0 for exit" << endl;
+            // cout << "sizeNode : " << sizeNodeinLinkList << endl;
+            // cout << "len : " << len << endl;
+            // cout << "sizeHead : " << sizeHeadLinkList << endl;
+            cin >> choice;
+            if (cin.fail()) 
+            {
+                throw 1;
+            }
+            // cout << "input 2 for back"
+            if (choice == 1)
+            {
+                len += 1;
+                if (len < sizeNodeinLinkList)
+                {
+                    t = t->move_next();
+                }
+                else
+                    len = (sizeNodeinLinkList - 1);
+            }
+            // printf()
+            else if (choice == 2)
+            {
+                len -= 1;
+                if (len >= 0)
+                    t = t->move_back();
+                else
+                    len = 0;
+            }
+            else if (choice == 3)
+            {
+                string name;
+
+                name = t->return_name();
+                if (t->move_next() != NULL)
+                {
+                    t = t->move_next();
+                    // len += 1;
+                }
+                else if (t->move_back() != NULL)
+                {
+                    t = t->move_back();
+                    // len -= 1;
+                }
+                else
+                    t = NULL;
+                delete_LinkedList(name, "OrderStatusManagerDatabase.csv", 2);
+                save_data_LinkList("OrderStaffDatabase.csv");
+                len -= 1;
             }
             else if (choice == 0)
             {

@@ -13,12 +13,13 @@ class LinkedList
     NODE * NODE_head_ptr;
     LinkedList *next;
     LinkedList *back;
+    string status;
     int size;
 
     // add NODE name then store
     // add LinkedList later
     public:
-        LinkedList(string="default_LinkedList",int=0);
+        LinkedList(string="default_LinkedList",int=0, string="Pending");
         void LinkedList_show_name(); // how many items;
         void add_NODE(string);
         void delete_NODE(string);
@@ -27,10 +28,13 @@ class LinkedList
         void add_NODE(string, int); // GOT : for sendorder
         void displayAll(); // GOT : for display all node in sendorder
         void delete_NODE_Got(string); // GOT : for sendorder
-        void save_data(string); // GOT : for save data sendorder
-        void load_data(); // GOT : for load data order
+        void displayOrderStatus();
+        void save_data(string, int = 0); // GOT : for save data sendorder
+        void save_data_HQ(string, int = 0);
+        // string load_status(string); // GOT : for load data order
         void set_name(string); // GOT : for load data order
-        void set_size(int); // GOT : for load data order
+        // void set_size(int); // GOT : for load data order
+        void set_status();
         void insert(LinkedList *&);
         LinkedList* move_next();
         LinkedList* move_back();
@@ -45,12 +49,13 @@ class LinkedList
     */    
 };
 
-LinkedList::LinkedList(string inName,int inSize){
+LinkedList::LinkedList(string inName,int inSize, string s){
     LinkedList_name=inName; 
     size=inSize;
     NODE_head_ptr = NULL;
     next = NULL;
     back = NULL;
+    status = s;
 }
 
 string LinkedList::return_name()
@@ -218,20 +223,44 @@ void LinkedList::displayAll()
     }
     else
     {
-        cout << "_____________________________________________________________" << endl;
-        cout << "                    Don't have any order                    |" << endl;
-        cout << "_____________________________________________________________" << endl;
+        cout << "|----------------------------------------------------------------|" << endl;
+        cout << "|                      Don't have any Product                    |" << endl;
+        cout << "|----------------------------------------------------------------|" << endl;
     }
     cout << "size = " << size << endl;
 }
 
-void LinkedList::save_data(string nameFile)
+void LinkedList::displayOrderStatus()
+{
+    NODE *t = NODE_head_ptr;
+    // cout << "eiei" << endl;
+    if (t != NULL)
+    {
+        system("clear");
+        cout << "Owner name : " << LinkedList_name << endl;
+        cout << "Order status : " << status << endl;
+        cout << "-------------------------------------------------------------" << endl;
+        for (; t != NULL; t = t->return_next_NODE())
+        {
+            cout << "  name : " << t->return_name() << "  " << "amount : " << t->return_amount() << endl;
+        }
+        cout << "-------------------------------------------------------------" << endl;
+    }
+    else
+    {
+        cout << "|----------------------------------------------------------------|" << endl;
+        cout << "|                       Don't have any Order.                    |" << endl;
+        cout << "|----------------------------------------------------------------|" << endl;
+    }
+}
+
+void LinkedList::save_data_HQ(string nameFile, int status)
 {
     ofstream myfile;
     NODE *t = NODE_head_ptr;
     myfile.open(nameFile, ios::app);
     if (myfile.is_open()) {
-        myfile << LinkedList_name << "," << size;
+        myfile << status << "," << LinkedList_name << "," << size;
         // cout << "size = " << size << endl;
         for (int i = size; i > 0; i--)
         {
@@ -247,6 +276,62 @@ void LinkedList::save_data(string nameFile)
         cout << "Unable to open file!" << endl;
     }
 }
+
+void LinkedList::save_data(string nameFile, int status) {
+    ifstream infile(nameFile);
+    ofstream outfile("temp.csv"); // Create a temporary file to store modified data
+
+    bool found = false; // Flag to track if data is found in the file
+
+    // Read each line from the file
+    string line;
+    while (getline(infile, line)) {
+        // Split the line into fields
+        stringstream ss(line);
+        vector<string> fields;
+        string field;
+        while (getline(ss, field, ',')) {
+            fields.push_back(field);
+        }
+
+        // Check if the line matches the data you want to save
+        if (fields.size() >= 3 && fields[1] == LinkedList_name && stoi(fields[2]) == size) {
+            // If the line matches, replace the status with the new status
+            fields[0] = to_string(status);
+            found = true;
+        }
+
+        // Write the modified or original line to the temporary file
+        for (size_t i = 0; i < fields.size(); ++i) {
+            outfile << fields[i];
+            if (i < fields.size() - 1) outfile << ",";
+        }
+        outfile << endl;
+    }
+
+    infile.close();
+    outfile.close();
+
+    // If the data was not found in the file, append it to the end
+    if (!found) {
+        outfile.open(nameFile, ios_base::app);
+        outfile << status << "," << LinkedList_name << "," << size;
+        NODE *t = NODE_head_ptr;
+        while (t != nullptr) {
+            outfile << "," << t->return_name() << "," << t->return_amount();
+            t = t->return_next_NODE();
+        }
+        outfile << endl;
+        outfile.close();
+        cout << "New data has been appended and saved." << endl;
+    } else {
+        // Rename the temporary file to replace the original file
+        remove(nameFile.c_str());
+        rename("temp.csv", nameFile.c_str());
+        cout << "Data has been updated and saved." << endl;
+    }
+}
+
 
 void LinkedList::insert(LinkedList *&x)
 {
