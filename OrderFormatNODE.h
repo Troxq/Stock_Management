@@ -1,7 +1,8 @@
 #include <string> 
 #include <iostream>
 using namespace std;
-class NODE{
+class NODE
+{
     // store NODE name
     string NODE_name;
     // give NODE linklist

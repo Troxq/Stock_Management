@@ -1,14 +1,18 @@
-#ifndef LL_H
-#define LL_H
+// #ifndef OrderFormatLL_H
+// #define OrderFormatLL_H
 
 #include <string>
 #include <iostream>
-#include "NODE.h"
+#include "OrderFormatNODE.h"
+// #include "OrderFormatHEADLL.h"
 using namespace std;
 
-class LinkedList{
+class LinkedList
+{
     string LinkedList_name; 
-    NODE * NODE_head_ptr=NULL;
+    NODE * NODE_head_ptr;
+    LinkedList *next;
+    LinkedList *back;
     int size;
 
     // add NODE name then store
@@ -23,7 +27,18 @@ class LinkedList{
         void add_NODE(string, int); // GOT : for sendorder
         void displayAll(); // GOT : for display all node in sendorder
         void delete_NODE_Got(string); // GOT : for sendorder
-        void save_data(); // GOT : for save data sendorder
+        void save_data(string); // GOT : for save data sendorder
+        void load_data(); // GOT : for load data order
+        void set_name(string); // GOT : for load data order
+        void set_size(int); // GOT : for load data order
+        void insert(LinkedList *&);
+        LinkedList* move_next();
+        LinkedList* move_back();
+        void set_next_LinkList_ptr(LinkedList*);
+        void set_back_LinkList_ptr(LinkedList*);
+        string return_name();
+        int return_size();
+        NODE* return_node();
     /*
     .add(id);
     .searchid(id) //loop every NODE
@@ -33,6 +48,33 @@ class LinkedList{
 LinkedList::LinkedList(string inName,int inSize){
     LinkedList_name=inName; 
     size=inSize;
+    NODE_head_ptr = NULL;
+    next = NULL;
+    back = NULL;
+}
+
+string LinkedList::return_name()
+{
+    return LinkedList_name;
+}
+
+int LinkedList::return_size()
+{
+    return size;
+}
+
+NODE* LinkedList::return_node()
+{
+    return NODE_head_ptr;
+}
+
+void LinkedList::set_next_LinkList_ptr(LinkedList* next_LinkList_address){
+    next = next_LinkList_address;
+}
+
+void LinkedList::set_back_LinkList_ptr(LinkedList* back_LinkList_address)
+{
+    back = back_LinkList_address;
 }
 
 void LinkedList::LinkedList_show_name(){
@@ -162,9 +204,11 @@ void LinkedList::delete_NODE_Got(string nameProduct)
 void LinkedList::displayAll()
 {
     NODE *t = NODE_head_ptr;
+    cout << "eiei" << endl;
     if (t != NULL)
     {
         system("clear");
+        cout << "Owner name : " << LinkedList_name << endl;
         cout << "-------------------------------------------------------------" << endl;
         for (; t != NULL; t = t->return_next_NODE())
         {
@@ -172,19 +216,27 @@ void LinkedList::displayAll()
         }
         cout << "-------------------------------------------------------------" << endl;
     }
+    else
+    {
+        cout << "_____________________________________________________________" << endl;
+        cout << "                    Don't have any order                    |" << endl;
+        cout << "_____________________________________________________________" << endl;
+    }
     cout << "size = " << size << endl;
-
 }
 
-void LinkedList::save_data()
+void LinkedList::save_data(string nameFile)
 {
     ofstream myfile;
     NODE *t = NODE_head_ptr;
-    myfile.open("OrderManagerDatabase.csv", ios::app);
+    myfile.open(nameFile, ios::app);
     if (myfile.is_open()) {
         myfile << LinkedList_name << "," << size;
+        // cout << "size = " << size << endl;
         for (int i = size; i > 0; i--)
         {
+            // cout << "eiei" << endl;
+            // cout << "i : " << i << endl;
             myfile << "," << t->return_name() << "," << t->return_amount();
             t = t->return_next_NODE();
         }
@@ -196,6 +248,22 @@ void LinkedList::save_data()
     }
 }
 
+void LinkedList::insert(LinkedList *&x)
+{
+    x->next = this;
+    if (this != NULL)
+        this->back = x;
+}
 
-#endif
+LinkedList* LinkedList::move_next()
+{
+    return next;
+}
+
+LinkedList* LinkedList::move_back()
+{
+    return back;
+}
+
+// #endif
 

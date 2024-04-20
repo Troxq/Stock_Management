@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
 #include "container.h"
+// #include "OrderFormatHEADLL.h"
 #include <unistd.h>
-// #include "OrderFormat.h"
+#include "OrderFormat.h"
+// #include "OrderFormatManager.h"
 
 using namespace std;
 
@@ -43,7 +45,7 @@ public:
         cout << "input name of owner product : ";
         cin >> name;
         
-        orderFormat order(name, 1);
+        sendOrderFormatHQ order(name, 1);
         order.mainMenu();
     }
     void mainMenu()
@@ -106,11 +108,21 @@ public:
     {
         cout << "NAME : " << this->username << " ROLE : "<< this->role << endl;
     }
+    void sendOrder()
+    {
+        int a;
+        sendOrderFormatManager b(1);
+        b.load_data("OrderManagerDatabase.csv");
+        b.displaySendOrderManager();
+        
+        // cin >> a;
+    }
     void mainMenu()
     {
         int choice = 0;
         while (1)
         {
+            int a;
             system("clear");
             cout << "1 Send order to staff" << endl;
             cout << "2 Order status" << endl;
@@ -120,7 +132,7 @@ public:
             cin >> choice;
             if (choice == 1)
             {
-                // sendOrder();
+                sendOrder();
             }
             else if (choice == 2)
             {

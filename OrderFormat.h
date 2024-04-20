@@ -2,7 +2,8 @@
 // #include <iostream>
 // #include "NODE.h"
 #include <unistd.h>
-#include "LL.h"
+#include "OrderFormatHEADLL.h"
+// #include "OrderFormatLL.h"
 using namespace std;
 // class 
 
@@ -13,12 +14,16 @@ int checkError(string nameP)
     return 0;
 }
 
-class orderFormat : public LinkedList
+
+//snedOrderHQ
+
+class sendOrderFormatHQ : public LinkedList
 {
 private:
     // string name;
     int numberContainer;
     int itemAmount = 0;
+
     // LinkedList allItems("item", 0);
     // struct item
     // {
@@ -28,7 +33,7 @@ private:
     // }item[1000];
 
 public:
-    orderFormat(string, int);
+    sendOrderFormatHQ(string, int);
     void mainMenu();
     void addProduct();
     void removeProduct();
@@ -47,12 +52,12 @@ public:
     
 };
 
-orderFormat::orderFormat(string name, int numContainer) : LinkedList(name, 0)
+sendOrderFormatHQ::sendOrderFormatHQ(string name, int numContainer) : LinkedList(name, 0)
 {
     numberContainer = numContainer;
 }
 
-void orderFormat::mainMenu()
+void sendOrderFormatHQ::mainMenu()
 {
     int choice = 0;
     while (1)
@@ -94,7 +99,7 @@ void orderFormat::mainMenu()
     }
 }
 
-void orderFormat::addProduct()
+void sendOrderFormatHQ::addProduct()
 {
     string nameP;
     int amount;
@@ -117,7 +122,7 @@ void orderFormat::addProduct()
     itemAmount += 1;
 }
 
-void orderFormat::removeProduct()
+void sendOrderFormatHQ::removeProduct()
 {
     string nameP;
     cout << "Remove product name : ";
@@ -126,13 +131,38 @@ void orderFormat::removeProduct()
     itemAmount -= 1;
 }
 
-void orderFormat::checkProduct()
+void sendOrderFormatHQ::checkProduct()
 {
     displayAll();
 }
 
-void orderFormat::confirm()
+void sendOrderFormatHQ::confirm()
 {
-    save_data();
+    save_data("OrderManagerDatabase.csv");
 }
 
+
+
+// SendOrderManager
+
+
+
+class sendOrderFormatManager : public headLinkList
+{
+private:
+    int numberContainer;
+
+public:
+    sendOrderFormatManager(int);
+    // display();
+};
+
+sendOrderFormatManager::sendOrderFormatManager(int numC) : headLinkList()
+{
+    numberContainer = numC;   
+}
+
+// sendOrderFormatManager::display()
+// {
+//     display();
+// }
