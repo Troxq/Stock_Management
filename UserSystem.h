@@ -4,30 +4,36 @@
 #include <sstream>
 #include <string>
 #include <cstring>
+#include <cstdlib>
 
 using namespace std;
 
-void split(string &, char, string &, string &, string &); // Function to split username and password
+void split(string &, char, string &, string &, string &, string &); // Function to split username and password
 
 bool usernameCheck(string &, string &); // Check if username exists
 
 bool roleCheck(string &, string &, string);
 
+int returnID(string &, string &, string &, string);
+
 //HQ FUNCTION
 void createUser();
 
-void split(string &line, char separate, string &username, string &password, string &role)
+void split(string &line, char separate, string &username, string &password, string &role, string &id)
 {
     int pos1 = line.find(separate); 
     int pos2 = line.find(separate, pos1 + 1); 
+    int pos3 = line.find(separate, pos2 + 1); 
 
-    if (pos1 != string::npos && pos2 != string::npos)
+    if (pos1 != string::npos && pos2 != string::npos && pos3 != string::npos)
     {
         username = line.substr(0, pos1);
         password = line.substr(pos1 + 1, pos2 - pos1 - 1);
-        role = line.substr(pos2 + 1);
+        role = line.substr(pos2 + 1, pos3 - pos2 - 1);
+        id = line.substr(pos3 + 1);
     }
 }
+
 
 bool usernameCheck(string &username, string filename)
 {
@@ -37,8 +43,8 @@ bool usernameCheck(string &username, string filename)
 
     while(getline(file, line))
     {
-        string datausername, datapassword, datarole;
-        split(line, ',', datausername, datapassword, datarole);
+        string datausername, datapassword, datarole, dataid;
+        split(line, ',', datausername, datapassword, datarole, dataid);
         if(datausername == username)
         {
             file.close();
@@ -58,8 +64,8 @@ bool roleCheck(string &role, string &username, string filename)
 
     while(getline(file, line))
     {
-        string datausername, datapassword, datarole;
-        split(line, ',', datausername, datapassword, datarole);
+        string datausername, datapassword, datarole, dataid;
+        split(line, ',', datausername, datapassword, datarole, dataid);
         if(datausername == username && datarole == role)
         {
             file.close();
@@ -69,6 +75,27 @@ bool roleCheck(string &role, string &username, string filename)
 
     file.close();
     return false;
+}
+
+int returnID(string &username, string &password, string &role, string filename)
+{
+    ifstream file(filename); // open userdatabase file
+
+    string line;
+
+    while (getline(file, line))
+    {
+        string datausername, datapassword, datarole, dataid;
+        split(line, ',', datausername, datapassword, datarole, dataid);
+        if (datausername == username && datapassword == password && datarole == role)
+        {
+            file.close();
+            return atoi(dataid.c_str());
+        }
+    }
+
+    file.close();
+    return -1;
 }
 
 //HQ FUNCTION
