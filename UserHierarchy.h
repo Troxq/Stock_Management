@@ -159,7 +159,7 @@ public:
     }
     void showNameandRole()
     {
-        cout << "NAME : " << this->username << " ROLE : "<< this->role << endl;
+        cout << "Staff NAME : " << this->username << " ROLE : "<< this->role << " CONTAINER ID : " << this->id << endl;
     }
     void mainMenu()
     {
@@ -167,6 +167,7 @@ public:
         while (1)
         {
             system("clear");
+            showNameandRole();
             cout << "1 Input product" << endl;
             cout << "2 Export product" << endl;
             cout << "3 transfer product" << endl;
