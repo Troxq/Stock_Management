@@ -1,4 +1,3 @@
-#include "UserSystem.h"
 #include "UserHierarchy.h"
 
 void login(Role*&);
@@ -13,11 +12,23 @@ void login(Role *&Role)
 
     int role_choice;
 
-    cout << "Enter Your Username : "; 
-    cin >> username;
+    while(true)
+    {
+        cout << "Enter Your Username : "; 
+        cin >> username;
 
-    cout << "Enter Your Password : "; 
-    cin >> password;
+        cout << "Enter Your Password : "; 
+        cin >> password;
+
+        if(usernamePasswordCheck(username,password,"userdatabase.csv"))
+        {
+            break;
+        }
+        else
+        {
+            cout << "No Match Username and Password" << endl;
+        }
+    }    
 
     while(true)
     {
@@ -48,28 +59,35 @@ void login(Role *&Role)
         }
     }
 
+    int id;
+
+    if((returnID(username,password,role,"userdatabase.csv")) != -1)
+    {
+        id = returnID(username,password,role,"userdatabase.csv");
+    }
+
     if(role == "Headquarter")
     {
-        Role = new Headquarter(username,role);
+        Role = new Headquarter(username,role,id);
     }
     else if (role == "Manager")
     {
-        Role = new Manager(username,role);
+        Role = new Manager(username,role,id);
     }
     else if (role == "Staff")
     {
-        Role = new Staff(username,role);
+        Role = new Staff(username,role,id);
     }
 
     ifstream file("userdatabase.csv"); // Read userdatabase file
 
     string line;
 
-    string datausername, datapassword, datarole; // To store a username & password from file
+    string datausername, datapassword, datarole, dataid; // To store a username & password from file
 
     while(getline(file, line))
     {
-        split(line, ',', datausername, datapassword, datarole);
+        split(line, ',', datausername, datapassword, datarole, dataid);
         if(datausername == username && datapassword == password && datarole == role)
         {
             cout << "Login Successfully" << endl;

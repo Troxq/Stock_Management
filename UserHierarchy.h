@@ -2,7 +2,7 @@
 #include <string>
 #include "container.h"
 #include <unistd.h>
-
+#include "UserSystem.h"
 using namespace std;
 
 class Role
@@ -18,19 +18,21 @@ class Headquarter : public Role
 {
 public:
     string username, role;
+    int id;
     void performTask()
     {
         cout << "Performing a Headquarter task" << endl;
     }
-    Headquarter(string username, string role)
+    Headquarter(string username, string role, int id)
     {
         cout << "Constructor for Headquarter!!!" << endl;
         this->username = username;
         this->role = role;
+        this->id = id;
     }
     void showNameandRole()
     {
-        cout << "NAME : " << this->username << " ROLE : "<< this->role << endl;
+        cout << "HQ NAME : " << this->username << " ROLE : "<< this->role <<endl;
     }
     string get_role()
     {
@@ -42,6 +44,7 @@ public:
         while (1)
         {
             system("clear");
+            showNameandRole();
             cout << "1 Create user" << endl;
             cout << "2 Send order to manager" << endl;
             cout << "3 Order status" << endl;
@@ -51,7 +54,8 @@ public:
             cin >> choice;
             if (choice == 1)
             {
-                // createUser();
+                system("clear");
+                createUser();
 
             }
             else if (choice == 2)
@@ -68,6 +72,7 @@ public:
             }
             else if (choice == 0)
             {
+                system("clear");
                 break;
             }
             else
@@ -82,19 +87,21 @@ class Manager : public Headquarter
 {
 public:
     string username, role;
+    int id;
     void performTask() 
     {
         cout << "Performing a manager task" << endl;
     }
-    Manager(string username, string role):Headquarter(username,role)
+    Manager(string username, string role, int id):Headquarter(username,role,id)
     {
         cout << "Constructor for Manager!!!" << endl;
         this->username = username;
         this->role = role;
+        this->id = id;
     }
     void showNameandRole()
     {
-        cout << "NAME : " << this->username << " ROLE : "<< this->role << endl;
+        cout << "MANAGER NAME : " << this->username << " ROLE : "<< this->role << " CONTAINER ID : " << this->id << endl;
     }
     void mainMenu()
     {
@@ -102,6 +109,7 @@ public:
         while (1)
         {
             system("clear");
+            showNameandRole();
             cout << "1 Send order to staff" << endl;
             cout << "2 Order status" << endl;
             cout << "3 Report" << endl;
@@ -122,6 +130,7 @@ public:
             }
             else if (choice == 0)
             {
+                system("clear");
                 break;
             }
             else
@@ -137,19 +146,21 @@ class Staff : public Manager
 {
 public:
     string username, role;
+    int id;
     void performTask()
     {
         cout << "Performing a staff task" << endl;
     }
-    Staff(string username, string role):Manager(username,role)
+    Staff(string username, string role, int id):Manager(username,role,id)
     {
         cout << "Constructor for Staff!!!" << endl;
         this->username = username;
         this->role = role;
+        this->id = id;
     }
     void showNameandRole()
     {
-        cout << "NAME : " << this->username << " ROLE : "<< this->role << endl;
+        cout << "Staff NAME : " << this->username << " ROLE : "<< this->role << " CONTAINER ID : " << this->id << endl;
     }
 
 
@@ -159,6 +170,7 @@ public:
         while (1)
         {
             system("clear");
+            showNameandRole();
             cout << "1 Input product" << endl;
             cout << "2 Export product" << endl;
             cout << "3 transfer product" << endl;
@@ -185,6 +197,7 @@ public:
             }
             else if (choice == 0)
             {
+                system("clear");
                 break;
             }
             else
