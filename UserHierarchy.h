@@ -2,7 +2,7 @@
 #include <string>
 #include "container.h"
 #include <unistd.h>
-
+#include "UserSystem.h"
 using namespace std;
 
 class Role
@@ -51,7 +51,8 @@ public:
             cin >> choice;
             if (choice == 1)
             {
-                // createUser();
+                system("clear");
+                createUser();
             }
             else if (choice == 2)
             {
@@ -67,6 +68,7 @@ public:
             }
             else if (choice == 0)
             {
+                system("clear");
                 break;
             }
             else
@@ -121,6 +123,7 @@ public:
             }
             else if (choice == 0)
             {
+                system("clear");
                 break;
             }
             else
@@ -181,6 +184,7 @@ public:
             }
             else if (choice == 0)
             {
+                system("clear");
                 break;
             }
             else

@@ -13,6 +13,9 @@ bool usernameCheck(string &, string &); // Check if username exists
 
 bool roleCheck(string &, string &, string);
 
+//HQ FUNCTION
+void createUser();
+
 void split(string &line, char separate, string &username, string &password, string &role)
 {
     int pos1 = line.find(separate); 
@@ -66,4 +69,64 @@ bool roleCheck(string &role, string &username, string filename)
 
     file.close();
     return false;
+}
+
+//HQ FUNCTION
+
+void createUser()
+{
+    cout << ">>>>>> Create User System <<<<<<" << endl;
+
+    string username, password, role;
+    int id;
+
+    while (true)
+    {
+        cout << "Enter Username: ";
+        cin >> username;
+
+        if (usernameCheck(username, "userdatabase.csv")) // Check Username
+        {
+            cout << "Username already exists !!" << endl;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    cout << "Enter Password: ";
+    cin >> password;
+
+    int role_choice;
+
+    do
+    {
+        cout << "Select Role (1. Staff, 2. Manager): ";
+        cin >> role_choice;
+
+        switch (role_choice)
+        {
+        case 1:
+            role = "Staff";
+            break;
+        case 2:
+            role = "Manager";
+            break;
+        default:
+            cout << "Invalid role choice. Please select again." << endl;
+            break;
+        }
+    } while (role_choice != 1 && role_choice != 2);
+
+    cout << "Enter Container ID : ";
+    cin >> id;
+
+    ofstream file("userdatabase.csv", ios::app);
+
+    file << username << "," << password << "," << role << "," << id << endl;
+
+    file.close();
+
+    cout << ">>>>>> Create User Successfully <<<<<<<" << endl;
 }

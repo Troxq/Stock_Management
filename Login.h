@@ -1,4 +1,3 @@
-#include "UserSystem.h"
 #include "UserHierarchy.h"
 
 void login(Role*&);
