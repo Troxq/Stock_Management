@@ -16,14 +16,15 @@ class container{
     container * next_container_ptr = NULL; //node property
 
     public:
+        ~container();
         //linkedlist method
         container(string="default_container",int=0);
         void container_status(); // how many items;
         int add_customer(string="no_name");
         void delete_customer(string);
+        void delete_all_customer();
         void print_head_customer();
         void print_all_customer();
-
         //node method
         void set_next_container_ptr(container*);
         string return_name();//for check, delete later
@@ -33,17 +34,33 @@ class container{
         int customer_add_item(string="no_name" ,string="no_id");
         int customer_delete_item(string="no_name",string="no_id");
 };
+
+container::~container(){
+    cout<<"delete container "<< container_name<<endl;
+    delete_all_customer();
+}
+
+void container::delete_all_customer(){
+    customer * t;
+    for(int i = 0; i < customer_amount;i++){
+        t = customer_head_ptr;
+        customer_head_ptr = customer_head_ptr->return_next_customer();
+        delete t;
+    }
+    cout<<"deleted all "<<container_name<<"\'s customer"<<endl;  
+    
+}
+
+
+
 void container::print_all_customer(){
     customer * t;
     t = customer_head_ptr;
-    cout<<"--------------------------------------------------"<<endl;
     for(int i =0; i < customer_amount; i ++){
         cout<<t->return_name()<<"'s ";
         t->print_all_item();
         t = t->return_next_customer();
     }
-    cout<<"--------------------------------------------------"<<endl;
-    
 }
 
 
@@ -147,6 +164,8 @@ void container::delete_customer(string inName){
     prev = NULL;
     t = customer_head_ptr;
     bool found=false;
+    if(t!=NULL)
+    {
     for (int i=0;i< customer_amount;i++){
         if((t->return_name()).compare(inName)!=0)
         {
@@ -165,7 +184,6 @@ void container::delete_customer(string inName){
             {
                 if ((prev == NULL) && (customer_amount >= 2)) //deleting head but more than one
                 {
-                    cout<<"deleting head";
                     customer_head_ptr = customer_head_ptr->return_next_customer();
                 }
                 else if((prev==NULL)&&(customer_amount == 1))
@@ -178,8 +196,8 @@ void container::delete_customer(string inName){
                     prev->set_next_customer_ptr(t->return_next_customer());
                 }
             }
+            
             delete(t);
-            cout<<"\""<<inName<<"\" deleted"<<endl;
             customer_amount--;
             cout<<"Container "<< container_name<<"\'s current customer amount: "<<customer_amount<<endl;
             break; // i don't know where i construct string from NULL to get that error
@@ -190,6 +208,8 @@ void container::delete_customer(string inName){
         cout<<"Sorry, can't find the name (" << inName<<")"<<endl;
         cout<<"Container "<< container_name<<"\'s current customer amount: "<<customer_amount<<endl;
     }
+    }
+    
 }
 
 

@@ -7,16 +7,20 @@ using namespace std;
 class item{
     // store item id
     string item_id;
-
     item* next_item_ptr=NULL;
 
     public:
+        ~item();
         item(string="default_item_name");
         void set_next_item_ptr(item*);
         string return_id(); 
         void show_id();
         item * return_next_item();
 };
+
+item::~item(){
+    cout<<"item "<<item_id<<" deleted"<<endl;
+}
 
 void item::show_id(){
     cout<<item_id;

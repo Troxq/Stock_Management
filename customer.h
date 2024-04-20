@@ -17,6 +17,7 @@ class customer{
     customer * next_customer_ptr = NULL; 
 
     public:
+        ~customer();
         //container method
         customer(string="default_customer",int=0);
         void customer_status(); ;
@@ -24,6 +25,7 @@ class customer{
         void delete_item(string);
         void print_head_item();
         void print_all_item();
+        void delete_all_item();
 
         //node method
         void set_next_customer_ptr(customer*);
@@ -34,6 +36,23 @@ class customer{
     .searchid(id) //loop every customer
     */    
 };
+
+customer::~customer(){
+    cout<<"delete customer "<< customer_name<<endl;
+    delete_all_item();
+}
+
+void customer::delete_all_item(){
+    item * t;
+    for(int i = 0; i < item_amount;i++){
+        t = item_head_ptr;
+        item_head_ptr = item_head_ptr->return_next_item();
+        delete t;
+    }
+    cout<<"deleted all "<<customer_name<<"'s items "<<endl;
+    
+    
+}
 
 void customer::print_all_item(){
     item * t;
