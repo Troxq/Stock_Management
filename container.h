@@ -25,15 +25,58 @@ class container{
         void delete_all_customer();
         void print_head_customer();
         void print_all_customer();
+
         //node method
         void set_next_container_ptr(container*);
         string return_name();//for check, delete later
         container * return_next_container();
+        bool is_customer_there(string="no_name");
 
         //access customer
+        customer * return_customer_pointer(string="no_name");
+        int transfer_in_container(string="no_name",string="no_name", string="no_name"); //owner, item, receiver
         int customer_add_item(string="no_name" ,string="no_id");
         int customer_delete_item(string="no_name",string="no_id");
 };
+
+bool container::is_customer_there(string customer_name){
+    customer * t;
+    t = customer_head_ptr;
+    for(int i = 0; i < customer_amount; i++){
+        if((t->return_name()).compare(customer_name)==0){
+            return true;
+        }
+    }
+    return false;
+}
+
+customer * container::return_customer_pointer(string inName){
+    if((inName.compare("no_id")==0)){
+        cout<<"no container name input"<<endl;
+        return NULL;
+    }
+    customer * t;
+    t = customer_head_ptr;
+    for(int i = 0; i < customer_amount; i++){
+        if((t->return_name()).compare(inName)==0){
+            return t;
+        }
+        t=t->return_next_customer();
+    }
+    cout << "can't find customer named "<<inName<<endl;
+    return NULL;
+}
+
+int container::transfer_in_container(string owner_name, string item_id, string receiver_name){
+    customer * owner_ptr = return_customer_pointer(owner_name);
+    customer * receiver_ptr = return_customer_pointer(receiver_name);
+    if(owner_ptr == NULL || receiver_ptr == NULL){
+        return 0;
+    }
+    owner_ptr -> delete_item(item_id);
+    receiver_ptr -> add_item(item_id);
+    return 1;
+}
 
 container::~container(){
     cout<<"delete container "<< container_name<<endl;

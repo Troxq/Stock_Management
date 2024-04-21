@@ -29,10 +29,27 @@ class HQ{
         void delete_all_container();
 
         //for Manager & Staff
+        int transfer_over_container(string="no_name", string="no_name", string="no_name", string="no_id");//customer, origin container, destination container, item
         int HQ_add_customer(string="no_name",string="no_name"); //need container and actual customer name 
         int HQ_delete_customer(string="no_name", string="no_name"); //need container and actual customer name 
         int HQ_add_item(string="no_name", string="no_name", string="no_id"); //need container, customer name, item id 
 };
+
+int HQ::transfer_over_container(string customer_name, string origin_container_name, string des_container_name, string item_id){
+    container * origin_ptr = return_container_pointer(origin_container_name);
+    container * des_ptr = return_container_pointer(des_container_name);
+    if(origin_ptr == NULL || des_ptr == NULL){
+        return 0;
+    }
+    if((origin_ptr->is_customer_there(customer_name))&&(des_ptr->is_customer_there(customer_name)) ){
+        if(origin_ptr->customer_delete_item(customer_name,item_id)){
+            des_ptr->customer_add_item(customer_name,item_id);
+            cout<<"transfer "<<item_id<<" complete"<<endl;
+            return 1;
+        }
+    }
+    return 0;
+}
 
 void HQ::delete_all_container(){
     container * t;
