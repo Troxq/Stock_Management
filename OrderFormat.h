@@ -52,7 +52,7 @@ public:
     
 };
 
-sendOrderFormatHQ::sendOrderFormatHQ(string name, int numContainer) : LinkedList(name, 0)
+sendOrderFormatHQ::sendOrderFormatHQ(string name, int numContainer) : LinkedList(name, 0, "Pending", numberContainer)
 {
     numberContainer = numContainer;
 }
@@ -102,6 +102,7 @@ void sendOrderFormatHQ::mainMenu()
 void sendOrderFormatHQ::addProduct()
 {
     string nameP;
+    int containerNum;
     int amount;
     while (1)
     {
@@ -172,7 +173,7 @@ public:
     // display();
 };
 
-orderFormatManager::orderFormatManager(int numC) : headLinkList()
+orderFormatManager::orderFormatManager(int numC) : headLinkList(numC)
 {
     numberContainer = numC;   
 }
@@ -187,7 +188,7 @@ public:
     orderFormatStaff(int);
 };
 
-orderFormatStaff::orderFormatStaff(int numC) : headLinkList()
+orderFormatStaff::orderFormatStaff(int numC) : headLinkList(numC)
 {
     numberContainer = numC;
 }

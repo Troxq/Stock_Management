@@ -45,15 +45,30 @@ public:
     void sendOrder()
     {
         string name;
+        int containerNum;
         cout << "input name of owner product : ";
         cin >> name;
-        
-        sendOrderFormatHQ order(name, 1);
+        while (1)
+        {
+            try{
+                cout << "Number of container : "; 
+                cin >> containerNum;
+                if (cin.fail())
+                    throw 1;
+                break;
+            }
+            catch (...){
+                cout << "Error try again" << endl;
+                cin.clear();
+                cin.ignore(50, '\n');
+            }
+        }
+        sendOrderFormatHQ order(name, containerNum);
         order.mainMenu();
     }
     void orderStatus()
     {
-        orderStatusFormatHQ status(1);
+        orderStatusFormatHQ status(id);
         status.load_data("OrderStatusHQDatabase.csv");
         status.displayOrderStatusHQ();
     }
@@ -125,7 +140,7 @@ public:
     }
     void sendOrder()
     {
-        orderFormatManager b(1);
+        orderFormatManager b(id);
         b.load_data("OrderManagerDatabase.csv");
         b.displaySendOrderManager();
         
@@ -133,7 +148,7 @@ public:
     }
     void orderStatus()
     {
-        orderFormatManager b(1);
+        orderFormatManager b(id);
         b.load_data("OrderStatusManagerDatabase.csv");
         b.displayOrderStatusManager();
     }
@@ -199,7 +214,7 @@ public:
     }
     void orderStatus()
     {
-        orderFormatStaff order(1);
+        orderFormatStaff order(id);
         order.load_data("OrderStaffDatabase.csv");
         order.displayOrderStatusStaff();
     }

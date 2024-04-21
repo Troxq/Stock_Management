@@ -10,10 +10,10 @@ class headLinkList
 private:
     LinkedList *holLinkedList;
     int sizeNodeinLinkList;
-    int sizeHeadLinkList;
+    int id;
 
 public:
-    headLinkList();
+    headLinkList(int = 0);
     void displaySendOrderManager();
     void delete_LinkedList(string);
     void delete_LinkedList(string, string, int = 0);
@@ -29,11 +29,11 @@ public:
 
 };
 
-headLinkList::headLinkList()
+headLinkList::headLinkList(int idContainer)
 {
     holLinkedList = NULL;
     sizeNodeinLinkList = 0;
-    sizeHeadLinkList = 0;
+    id = idContainer;
 }
 
 void headLinkList::delete_LinkedList(string nameOwner)
@@ -311,7 +311,14 @@ void headLinkList::load_data(string namefile)
             row.push_back(word);
         }
 
-        int status = stoi(row[0]);
+        int idContainer = stoi(row[0]);
+
+        if (idContainer != this->id)
+        {
+            continue;
+        }
+
+        int status = stoi(row[1]);
         string nameStatus;
         switch (status)
         {
@@ -319,18 +326,18 @@ void headLinkList::load_data(string namefile)
             case 1 : nameStatus = "Confirm"; break;
             case 2 : nameStatus = "Finish"; break;
         }
-        string nameLinklist = row[1];
-        int size = stoi(row[2]);
+        string nameLinklist = row[2];
+        int size = stoi(row[3]);
         // int sizeLinkList = stoi(row[1]) / 2;
 
         // cout << "size = " << size << endl;
         // cout << "size \\ 2 = " << size / 2 << endl;
         // cin >> size;
-        LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus);
+        LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus, idContainer);
 
         if (size > 0)
         {
-            for (int i = row.size() - 1; i >= 3; i -= 2)
+            for (int i = row.size() - 1; i >= 4; i -= 2)
             {
                 owner->add_NODE(row[i - 1], stoi(row[i]));
             }
