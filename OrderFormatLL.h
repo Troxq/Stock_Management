@@ -277,60 +277,126 @@ void LinkedList::save_data_HQ(string nameFile, int status)
     }
 }
 
+// void LinkedList::save_data(string nameFile, int status) {
+//     ifstream infile(nameFile);
+//     ofstream outfile("temp.csv"); // Create a temporary file to store modified data
+
+//     bool found = false; // Flag to track if data is found in the file
+
+//     // Read each line from the file
+//     string line;
+//     while (getline(infile, line)) {
+//         // Split the line into fields
+//         stringstream ss(line);
+//         vector<string> fields;
+//         string field;
+//         while (getline(ss, field, ',')) {
+//             fields.push_back(field);
+//         }
+
+//         // Check if the line matches the data you want to save
+//         if (fields.size() >= 3 && fields[1] == LinkedList_name && stoi(fields[2]) == size) {
+//             // If the line matches, replace the status with the new status
+//             fields[0] = to_string(status);
+//             found = true;
+//         }
+
+//         // Write the modified or original line to the temporary file
+//         for (size_t i = 0; i < fields.size(); ++i) {
+//             outfile << fields[i];
+//             if (i < fields.size() - 1) outfile << ",";
+//         }
+//         outfile << endl;
+//     }
+
+//     infile.close();
+//     outfile.close();
+
+//     // If the data was not found in the file, append it to the end
+//     if (!found) {
+//         outfile.open(nameFile, ios_base::app);
+//         outfile << status << "," << LinkedList_name << "," << size;
+//         NODE *t = NODE_head_ptr;
+//         while (t != nullptr) {
+//             outfile << "," << t->return_name() << "," << t->return_amount();
+//             t = t->return_next_NODE();
+//         }
+//         outfile << endl;
+//         outfile.close();
+//         cout << "New data has been appended and saved." << endl;
+//     } else {
+//         // Rename the temporary file to replace the original file
+//         remove(nameFile.c_str());
+//         rename("temp.csv", nameFile.c_str());
+//         cout << "Data has been updated and saved." << endl;
+//     }
+
+//     system("clear");
+//     cout << R"(
+//                     sending...
+//     )" << endl;
+//     sleep(5);
+// }
+
 void LinkedList::save_data(string nameFile, int status) {
     ifstream infile(nameFile);
     ofstream outfile("temp.csv"); // Create a temporary file to store modified data
 
     bool found = false; // Flag to track if data is found in the file
 
-    // Read each line from the file
-    string line;
-    while (getline(infile, line)) {
-        // Split the line into fields
-        stringstream ss(line);
-        vector<string> fields;
-        string field;
-        while (getline(ss, field, ',')) {
-            fields.push_back(field);
+    if (infile.is_open() && outfile.is_open()) { // Check if both files are opened successfully
+        // Read each line from the file
+        string line;
+        while (getline(infile, line)) {
+            // Split the line into fields
+            stringstream ss(line);
+            vector<string> fields;
+            string field;
+            while (getline(ss, field, ',')) {
+                fields.push_back(field);
+            }
+
+            // Check if the line matches the data you want to save
+            if (fields.size() >= 3 && fields[1] == LinkedList_name && stoi(fields[2]) == size) {
+                // If the line matches, replace the status with the new status
+                fields[0] = to_string(status);
+                found = true;
+            }
+
+            // Write the modified or original line to the temporary file
+            for (size_t i = 0; i < fields.size(); ++i) {
+                outfile << fields[i];
+                if (i < fields.size() - 1) outfile << ",";
+            }
+            outfile << endl;
         }
 
-        // Check if the line matches the data you want to save
-        if (fields.size() >= 3 && fields[1] == LinkedList_name && stoi(fields[2]) == size) {
-            // If the line matches, replace the status with the new status
-            fields[0] = to_string(status);
-            found = true;
-        }
+        infile.close();
+        outfile.close(); // Close both files
 
-        // Write the modified or original line to the temporary file
-        for (size_t i = 0; i < fields.size(); ++i) {
-            outfile << fields[i];
-            if (i < fields.size() - 1) outfile << ",";
+        // If the data was not found in the file, append it to the end
+        if (!found) {
+            outfile.open(nameFile, ios_base::app);
+            outfile << status << "," << LinkedList_name << "," << size;
+            NODE *t = NODE_head_ptr;
+            while (t != nullptr) {
+                outfile << "," << t->return_name() << "," << t->return_amount();
+                t = t->return_next_NODE();
+            }
+            outfile << endl;
+            outfile.close();
+            cout << "New data has been appended and saved." << endl;
+        } else {
+            // Rename the temporary file to replace the original file
+            remove(nameFile.c_str());
+            rename("temp.csv", nameFile.c_str());
+            cout << "Data has been updated and saved." << endl;
         }
-        outfile << endl;
-    }
-
-    infile.close();
-    outfile.close();
-
-    // If the data was not found in the file, append it to the end
-    if (!found) {
-        outfile.open(nameFile, ios_base::app);
-        outfile << status << "," << LinkedList_name << "," << size;
-        NODE *t = NODE_head_ptr;
-        while (t != nullptr) {
-            outfile << "," << t->return_name() << "," << t->return_amount();
-            t = t->return_next_NODE();
-        }
-        outfile << endl;
-        outfile.close();
-        cout << "New data has been appended and saved." << endl;
     } else {
-        // Rename the temporary file to replace the original file
-        remove(nameFile.c_str());
-        rename("temp.csv", nameFile.c_str());
-        cout << "Data has been updated and saved." << endl;
+        cout << "Unable to open files!" << endl;
     }
 }
+
 
 
 void LinkedList::insert(LinkedList *&x)
