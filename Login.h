@@ -1,4 +1,5 @@
 #include "UserHierarchy.h"
+#include "Log.h"
 
 void login(Role*&);
 void MainPage(string);
@@ -90,6 +91,7 @@ void login(Role *&Role)
         split(line, ',', datausername, datapassword, datarole, dataid);
         if(datausername == username && datapassword == password && datarole == role)
         {
+            login(username, role);
             cout << "Login Successfully" << endl;
             break;
         }

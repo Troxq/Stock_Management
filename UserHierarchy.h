@@ -3,6 +3,7 @@
 #include "container.h"
 #include <unistd.h>
 #include "UserSystem.h"
+#include "Logmain.cpp"
 using namespace std;
 
 class Role
@@ -49,6 +50,7 @@ public:
             cout << "2 Send order to manager" << endl;
             cout << "3 Order status" << endl;
             cout << "4 Report" << endl;
+            cout << "5 Log" << endl;
             cout << "0 exit" << endl;
             cout << "input : ";
             cin >> choice;
@@ -70,6 +72,10 @@ public:
             {
                 // report();
             }
+            else if (choice == 5)
+            {
+                Logmenu();
+            }
             else if (choice == 0)
             {
                 system("clear");
@@ -77,7 +83,7 @@ public:
             }
             else
             {
-                cout << "Please input 1 - 4" << endl;
+                cout << "Please input 1 - 5" << endl;
                 sleep(1);
             }
         }
