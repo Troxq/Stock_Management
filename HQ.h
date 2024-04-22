@@ -29,13 +29,26 @@ class HQ{
         void delete_all_container();
 
         //for Manager & Staff
-        int transfer_over_container(string="no_name", string="no_name", string="no_name", string="no_id");//customer, origin container, destination container, item
+        int HQ_transfer_in_container(string="no_name",string="no_name", string="no_name", string="no_id"); //owner, item, receiver
+        int HQ_transfer_over_container(string="no_name", string="no_name", string="no_name", string="no_id");//customer, origin container, destination container, item
         int HQ_add_customer(string="no_name",string="no_name"); //need container and actual customer name 
         int HQ_delete_customer(string="no_name", string="no_name"); //need container and actual customer name 
         int HQ_add_item(string="no_name", string="no_name", string="no_id"); //need container, customer name, item id 
 };
 
-int HQ::transfer_over_container(string customer_name, string origin_container_name, string des_container_name, string item_id){
+int HQ::HQ_transfer_in_container(string container_name,string owner_name, string receiver_name, string item_id){
+    container * container_ptr = return_container_pointer(container_name);
+
+    if(container_ptr){
+        if(container_ptr->container_transfer_in_container(owner_name, receiver_name, item_id)){
+            return 1;
+        }
+    }
+    cout<<"can't transfer"<<endl;
+    return 0;
+}
+
+int HQ::HQ_transfer_over_container(string customer_name, string origin_container_name, string des_container_name, string item_id){
     container * origin_ptr = return_container_pointer(origin_container_name);
     container * des_ptr = return_container_pointer(des_container_name);
     if(origin_ptr == NULL || des_ptr == NULL){
@@ -80,6 +93,7 @@ int HQ::HQ_delete_customer(string container_name, string customer_name){
 
 int HQ::HQ_add_item(string container_name, string customer_name, string item_id){
     container * t = return_container_pointer(container_name);
+
     if(t == NULL){
         cout<<"no container name";
         return 0;
@@ -109,7 +123,7 @@ int HQ::HQ_add_customer(string container_name, string customer_name){
 }
 
 container * HQ::return_container_pointer(string inName){
-    if((inName.compare("no_id")==0)){
+    if((inName.compare("no_name")==0)){
         cout<<"no container name input"<<endl;
         return NULL;
     }

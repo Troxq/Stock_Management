@@ -34,7 +34,7 @@ class container{
 
         //access customer
         customer * return_customer_pointer(string="no_name");
-        int transfer_in_container(string="no_name",string="no_name", string="no_name"); //owner, item, receiver
+        int container_transfer_in_container(string="no_name",string="no_name", string="no_id"); //owner, receiver, item
         int customer_add_item(string="no_name" ,string="no_id");
         int customer_delete_item(string="no_name",string="no_id");
 };
@@ -67,7 +67,7 @@ customer * container::return_customer_pointer(string inName){
     return NULL;
 }
 
-int container::transfer_in_container(string owner_name, string item_id, string receiver_name){
+int container::container_transfer_in_container(string owner_name, string receiver_name, string item_id){
     customer * owner_ptr = return_customer_pointer(owner_name);
     customer * receiver_ptr = return_customer_pointer(receiver_name);
     if(owner_ptr == NULL || receiver_ptr == NULL){
