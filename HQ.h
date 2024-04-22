@@ -1,6 +1,7 @@
 #include <iostream>
 #include "container.h"
 #include <string>
+#include <vector>
 
 #ifndef HQ_H
 #define HQ_H
@@ -20,6 +21,7 @@ class HQ{
         ~HQ();
 
         //for HQ
+        vector<vector<string>> read_and_return_container_vector(container*);
         int add_container(string="no_name", int=0);
         void delete_container(string);
         void print_head_container();
@@ -35,6 +37,9 @@ class HQ{
         int HQ_delete_customer(string="no_name", string="no_name"); //need container and actual customer name 
         int HQ_add_item(string="no_name", string="no_name", string="no_id"); //need container, customer name, item id 
 };
+
+vector<vector<string>> read_and_return_container_vector(container*)
+
 
 int HQ::HQ_transfer_in_container(string container_name,string owner_name, string receiver_name, string item_id){
     container * container_ptr = return_container_pointer(container_name);
