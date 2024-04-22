@@ -21,6 +21,7 @@ public:
     void delete_LinkedList(string, string, int, string, int, string, int);
     void add_LinkedList(LinkedList *&);
     void load_data(string);
+    void load_data_HQ(string);
     void return_name();
     void save_data_LinkList(string, int = 0);
     void displayOrderStatusHQ();
@@ -264,7 +265,7 @@ void headLinkList::save_data_LinkList(string nameFile, int status)
             myfile << endl;
             t = t->move_back();
         }
-        cout << "Data has been appended and saved in reverse order." << endl;
+        // cout << "Data has been appended and saved in reverse order." << endl;
         myfile.close(); // Close the file inside the loop
     }
     else 
@@ -311,14 +312,17 @@ void headLinkList::load_data(string namefile)
             row.push_back(word);
         }
 
-        int idContainer = stoi(row[0]);
+        int idContainer = stoi(row[1]);
 
+        
         if (idContainer != this->id)
         {
             continue;
         }
 
-        int status = stoi(row[1]);
+        int duty = stoi(row[0]);
+
+        int status = stoi(row[2]);
         string nameStatus;
         switch (status)
         {
@@ -326,18 +330,83 @@ void headLinkList::load_data(string namefile)
             case 1 : nameStatus = "Confirm"; break;
             case 2 : nameStatus = "Finish"; break;
         }
-        string nameLinklist = row[2];
-        int size = stoi(row[3]);
+
+        string nameLinklist = row[3];
+        int size = stoi(row[4]);
         // int sizeLinkList = stoi(row[1]) / 2;
 
         // cout << "size = " << size << endl;
         // cout << "size \\ 2 = " << size / 2 << endl;
         // cin >> size;
-        LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus, idContainer);
+        LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus, idContainer, duty);
 
         if (size > 0)
         {
-            for (int i = row.size() - 1; i >= 4; i -= 2)
+            for (int i = row.size() - 1; i >= 5; i -= 2)
+            {
+                owner->add_NODE(row[i - 1], stoi(row[i]));
+            }
+        }
+        // owner->displayAll();
+        this->add_LinkedList(owner);
+        // delete owner;
+        // sizeNodeinLinkList += 1;
+    }
+
+    fin.close();
+}
+
+void headLinkList::load_data_HQ(string namefile)
+{
+    // File pointer
+    ifstream fin;
+
+    // Open an existing file
+    fin.open(namefile);
+
+    // Read the Data from the file
+    // as String Vector
+    vector<string> row;
+    string line, word;
+
+    while (getline(fin, line))
+    {
+        row.clear();
+
+        // used for breaking words
+        stringstream s(line);
+
+        // read every column data of a row and
+        // store it in a string variable, 'word'
+        while (getline(s, word, ','))
+        {
+            row.push_back(word);
+        }
+
+        int idContainer = stoi(row[1]);
+
+        int duty = stoi(row[0]);
+    
+        int status = stoi(row[2]);
+        string nameStatus;
+        switch (status)
+        {
+            case 0 : nameStatus = "Pending"; break;
+            case 1 : nameStatus = "Confirm"; break;
+            case 2 : nameStatus = "Finish"; break;
+        }
+        string nameLinklist = row[3];
+        int size = stoi(row[4]);
+        // int sizeLinkList = stoi(row[1]) / 2;
+
+        // cout << "size = " << size << endl;
+        // cout << "size \\ 2 = " << size / 2 << endl;
+        // cin >> size;
+        LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus, idContainer, duty);
+
+        if (size > 0)
+        {
+            for (int i = row.size() - 1; i >= 5; i -= 2)
             {
                 owner->add_NODE(row[i - 1], stoi(row[i]));
             }
@@ -366,20 +435,21 @@ void headLinkList::displayOrderStatusHQ()
             cout << "|-----------------------------------------------------------|" << endl;
             cout << "|                   Don't have any order                    |" << endl;
             cout << "|-----------------------------------------------------------|" << endl;
-            cout << "input any key to exit : ";
+            cout << "Input any key to exit : ";
             cin >> confirm;
             return ;
         }
         t->displayOrderStatus();
         try
         {
-            cout << "1 for next order" << endl;
-            cout << "2 for back order" << endl;
-            cout << "3 finish" << endl;
-            cout << "0 for exit" << endl;
+            cout << "1 Next order" << endl;
+            cout << "2 Back order" << endl;
+            cout << "3 Finish" << endl;
+            cout << "0 Exit" << endl;
             // cout << "sizeNode : " << sizeNodeinLinkList << endl;
             // cout << "len : " << len << endl;
             // cout << "sizeHead : " << sizeHeadLinkList << endl;
+            cout << "Input : " << endl;
             cin >> choice;
             if (cin.fail()) 
             {
@@ -459,20 +529,21 @@ void headLinkList::displaySendOrderManager()
             cout << "|-----------------------------------------------------------|" << endl;
             cout << "|                   Don't have any order                    |" << endl;
             cout << "|-----------------------------------------------------------|" << endl;
-            cout << "input any key to exit : ";
+            cout << "Input any key to exit : ";
             cin >> confirm;
             return ;
         }
         t->displayAll();
         try
         {
-            cout << "1 for next order" << endl;
-            cout << "2 for back order" << endl;
-            cout << "3 for send to staff" << endl;
-            cout << "0 for exit" << endl;
+            cout << "1 Next order" << endl;
+            cout << "2 Back order" << endl;
+            cout << "3 Send to staff" << endl;
+            cout << "0 Exit" << endl;
             // cout << "sizeNode : " << sizeNodeinLinkList << endl;
             // cout << "len : " << len << endl;
             // cout << "sizeHead : " << sizeHeadLinkList << endl;
+            cout << "Input : ";
             cin >> choice;
             if (cin.fail()) 
             {
@@ -559,13 +630,14 @@ void headLinkList::displayOrderStatusManager()
         t->displayOrderStatus();
         try
         {
-            cout << "1 for next order" << endl;
-            cout << "2 for back order" << endl;
-            cout << "3 finish" << endl;
-            cout << "0 for exit" << endl;
+            cout << "1 Next order" << endl;
+            cout << "2 Back order" << endl;
+            cout << "3 Finish" << endl;
+            cout << "0 Exit" << endl;
             // cout << "sizeNode : " << sizeNodeinLinkList << endl;
             // cout << "len : " << len << endl;
             // cout << "sizeHead : " << sizeHeadLinkList << endl;
+            cout << "Input : ";
             cin >> choice;
             if (cin.fail()) 
             {
@@ -644,20 +716,21 @@ void headLinkList::displayOrderStatusStaff()
             cout << "|-----------------------------------------------------------|" << endl;
             cout << "|                   Don't have any order                    |" << endl;
             cout << "|-----------------------------------------------------------|" << endl;
-            cout << "input any key to exit : ";
+            cout << "Input any key to exit : ";
             cin >> confirm;
             return ;
         }
         t->displayAll();
         try
         {
-            cout << "1 for next order" << endl;
-            cout << "2 for back order" << endl;
-            cout << "3 finish" << endl;
-            cout << "0 for exit" << endl;
+            cout << "1 Next order" << endl;
+            cout << "2 Back order" << endl;
+            cout << "3 Finish" << endl;
+            cout << "0 Exit" << endl;
             // cout << "sizeNode : " << sizeNodeinLinkList << endl;
             // cout << "len : " << len << endl;
             // cout << "sizeHead : " << sizeHeadLinkList << endl;
+            cout << "Input : ";
             cin >> choice;
             if (cin.fail()) 
             {
@@ -719,3 +792,5 @@ void headLinkList::displayOrderStatusStaff()
     }
 }
 
+// id : 1000
+// container : 1 ---> container : 2

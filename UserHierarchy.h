@@ -44,32 +44,101 @@ public:
     }
     void sendOrder()
     {
-        string name;
-        int containerNum;
-        cout << "input name of owner product : ";
-        cin >> name;
         while (1)
         {
-            try{
-                cout << "Number of container : "; 
-                cin >> containerNum;
+            int choice;
+            try
+            {
+                system("clear");
+                cout << "1 Import products" << endl;
+                cout << "2 Export products" << endl;
+                cout << "3 Transfer products" << endl;
+                cout << "0 exit" << endl;
+                cout << "input : ";
+                cin >> choice;
                 if (cin.fail())
+                {
                     throw 1;
-                break;
+                }
+
+                if (choice == 1)
+                {
+                    string name;
+                    int containerNum;
+                    cout << "input name of owner product : ";
+                    cin >> name;
+                    while (1)
+                    {
+                        try{
+                            cout << "Number of container : "; 
+                            cin >> containerNum;
+                            if (cin.fail())
+                                throw 1;
+                            break;
+                        }
+                        catch (...){
+                            cout << "Error try again" << endl;
+                            cin.clear();
+                            cin.ignore(50, '\n');
+                        }
+                    }
+                    sendOrderFormatHQ order(name, containerNum, 1);
+                    order.mainMenu();
+                }
+                else if (choice == 2)
+                {
+                    string name;
+                    int containerNum;
+                    cout << "input name of owner product : ";
+                    cin >> name;
+                    while (1)
+                    {
+                        try{
+                            cout << "Number of container : "; 
+                            cin >> containerNum;
+                            if (cin.fail())
+                                throw 1;
+                            break;
+                        }
+                        catch (...){
+                            cout << "Error try again" << endl;
+                            cin.clear();
+                            cin.ignore(50, '\n');
+                        }
+                    }
+                    sendOrderFormatHQ order(name, containerNum, 2);
+                    order.mainMenu();
+                }
+                else if (choice == 3)
+                {
+                    
+                }
+                else if (choice == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    cout << "input 1 - 4" << endl;
+                    sleep(1);
+                }
             }
-            catch (...){
+            catch (...)
+            {
                 cout << "Error try again" << endl;
+                sleep(1);
                 cin.clear();
                 cin.ignore(50, '\n');
             }
         }
-        sendOrderFormatHQ order(name, containerNum);
-        order.mainMenu();
     }
     void orderStatus()
     {
+        string a; // test
         orderStatusFormatHQ status(id);
-        status.load_data("OrderStatusHQDatabase.csv");
+        // cout << "id : " << id << endl;
+        // cin >> a;
+        status.load_data_HQ("OrderStatusHQDatabase.csv");
         status.displayOrderStatusHQ();
     }
     void mainMenu()
@@ -143,8 +212,6 @@ public:
         orderFormatManager b(id);
         b.load_data("OrderManagerDatabase.csv");
         b.displaySendOrderManager();
-        
-        // cin >> a;
     }
     void orderStatus()
     {

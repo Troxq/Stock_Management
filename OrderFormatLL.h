@@ -7,20 +7,33 @@
 // #include "OrderFormatHEADLL.h"
 using namespace std;
 
+string display_action(int duty)
+{
+    switch (duty)
+    {
+        case 1 : return "Import";
+        case 2 : return "Export";
+        case 3 : return "Transfer";
+    }
+    return "No Action";
+}
+
+
 class LinkedList
 {
-    string LinkedList_name; 
+    string LinkedList_name;
     NODE * NODE_head_ptr;
     LinkedList *next;
     LinkedList *back;
     string status;
     int idContainer;
     int size;
+    int duty;
 
     // add NODE name then store
     // add LinkedList later
     public:
-        LinkedList(string="default_LinkedList",int=0, string="Pending", int=1);
+        LinkedList(string="default_LinkedList",int=0, string="Pending", int = 1, int = 0);
         void LinkedList_show_name(); // how many items;
         void add_NODE(string);
         void delete_NODE(string);
@@ -51,7 +64,7 @@ class LinkedList
     */    
 };
 
-LinkedList::LinkedList(string inName,int inSize, string s, int id){
+LinkedList::LinkedList(string inName,int inSize, string s, int id, int d){
     LinkedList_name=inName; 
     size=inSize;
     NODE_head_ptr = NULL;
@@ -59,6 +72,10 @@ LinkedList::LinkedList(string inName,int inSize, string s, int id){
     back = NULL;
     status = s;
     idContainer = id;
+    duty = d;
+    // cout << "id Container : " << idContainer << endl;
+    // string a;
+    // cin >> a; 
 }
 
 int LinkedList::return_idContainer()
@@ -217,12 +234,13 @@ void LinkedList::delete_NODE_Got(string nameProduct)
 void LinkedList::displayAll()
 {
     NODE *t = NODE_head_ptr;
-    cout << "eiei" << endl;
+    // cout << "eiei" << endl;
     if (t != NULL)
     {
         system("clear");
         cout << "Owner name : " << LinkedList_name << endl;
         cout << "Container ID : " << idContainer << endl;
+        cout << "Action : " << display_action(duty) << endl;
         cout << "-------------------------------------------------------------" << endl;
         for (; t != NULL; t = t->return_next_NODE())
         {
@@ -249,6 +267,7 @@ void LinkedList::displayOrderStatus()
         cout << "Owner name : " << LinkedList_name << endl;
         cout << "Order status : " << status << endl;
         cout << "Container ID : " << idContainer << endl;
+        cout << "Action : " << display_action(duty) << endl;
         cout << "-------------------------------------------------------------" << endl;
         for (; t != NULL; t = t->return_next_NODE())
         {
@@ -270,7 +289,7 @@ void LinkedList::save_data_HQ(string nameFile, int status)
     NODE *t = NODE_head_ptr;
     myfile.open(nameFile, ios::app);
     if (myfile.is_open()) {
-        myfile << idContainer << "," << status << "," << LinkedList_name << "," << size;
+        myfile << duty << "," << idContainer << "," << status << "," << LinkedList_name << "," << size;
         // cout << "size = " << size << endl;
         for (int i = size; i > 0; i--)
         {
@@ -280,10 +299,10 @@ void LinkedList::save_data_HQ(string nameFile, int status)
             t = t->return_next_NODE();
         }
         myfile << endl;
-        cout << "Data has been appended and saved." << endl;
+        // cout << "Data has been appended and saved." << endl;
         myfile.close(); 
     } else {
-        cout << "Unable to open file!" << endl;
+        // cout << "Unable to open file!" << endl;
     }
 }
 
@@ -367,9 +386,13 @@ void LinkedList::save_data(string nameFile, int status) {
             }
 
             // Check if the line matches the data you want to save
-            if (fields.size() >= 4 && fields[2] == LinkedList_name && stoi(fields[3]) == size) {
+            cout << "field.size : " << field.size() << endl;
+            string a;
+            cin >> a;
+
+            if (fields.size() >= 4 && fields[3] == LinkedList_name && stoi(fields[4]) == size) {
                 // If the line matches, replace the status with the new status
-                fields[1] = to_string(status);
+                fields[2] = to_string(status);
                 found = true;
             }
 
@@ -387,7 +410,7 @@ void LinkedList::save_data(string nameFile, int status) {
         // If the data was not found in the file, append it to the end
         if (!found) {
             outfile.open(nameFile, ios_base::app);
-            outfile << idContainer << "," << status << "," << LinkedList_name << "," << size;
+            outfile << duty << "," << idContainer << "," << status << "," << LinkedList_name << "," << size;
             NODE *t = NODE_head_ptr;
             while (t != nullptr) {
                 outfile << "," << t->return_name() << "," << t->return_amount();
@@ -395,13 +418,16 @@ void LinkedList::save_data(string nameFile, int status) {
             }
             outfile << endl;
             outfile.close();
-            cout << "New data has been appended and saved." << endl;
+            // cout << "New data has been appended and saved." << endl;
         } else {
             // Rename the temporary file to replace the original file
             remove(nameFile.c_str());
+            cout << R"(
+                        sending ...
+            )";
             sleep(3);
             rename("temp.csv", nameFile.c_str());
-            cout << "Data has been updated and saved." << endl;
+            // cout << "Data has been updated and saved." << endl;
         }
     } else {
         cout << "Unable to open files!" << endl;
