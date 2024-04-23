@@ -20,9 +20,9 @@ class customer{
         ~customer();
         //container method
         customer(string="default_customer",int=0);
-        void customer_status(); ;
-        void add_item(string);
-        void delete_item(string);
+        void show_item_amount();
+        int add_item(string,string);
+        int delete_item(string);
         void print_head_item();
         void print_all_item();
         void delete_all_item();
@@ -57,7 +57,7 @@ void customer::print_all_item(){
     t = item_head_ptr;
     cout<<"Item: ";
     for(int i =0; i < item_amount; i++){
-        t->show_id();
+        t->show_id();cout<<"_";t->show_name(); // 00032_banana
         if(i!=(item_amount-1)){
             cout<<" -> ";
             t = t->return_next_item();
@@ -71,13 +71,13 @@ customer::customer(string inName,int inAmount){
     item_amount=inAmount;
 }
 
-void customer::customer_status(){
-    cout<<"Name: "<< customer_name<<" item(s): "<< item_amount;
+void customer::show_item_amount(){
+    cout<<"("<<item_amount<<")";
 }
 
-void customer::add_item(string item_id){
+int customer::add_item(string item_id, string item_name){
     item* new_item_ptr;
-    new_item_ptr = new item(item_id);
+    new_item_ptr = new item(item_id, item_name);
     if (item_head_ptr==NULL){
         item_head_ptr = new_item_ptr;
     }
@@ -87,16 +87,16 @@ void customer::add_item(string item_id){
         item_head_ptr=new_item_ptr;
     }
     item_amount++;
-    cout<<"Customer "<<"\""<<customer_name<<"\""<<" added item \""<<item_id<<"\""<<endl;
+    cout<<"Customer "<<"\""<<customer_name<<"\""<<" added item \""<<item_id<<"_"<<item_name<<"\""<<endl;
     cout<<"Customer "<< customer_name<<"\'s current items amount: "<<item_amount<<endl;
-    
+    return 1;
 };
 
 void customer::print_head_item(){
     cout<<"This is head of item list : "<<item_head_ptr->return_id()<<endl;
 }
 
-void customer::delete_item(string item_id){
+int customer::delete_item(string item_id){
     item * t, * prev;
     prev = NULL;
     t = item_head_ptr;
@@ -131,12 +131,14 @@ void customer::delete_item(string item_id){
             delete(t);
             cout<<"\""<<item_id<<"\" deleted"<<endl;
             item_amount--;
+            return 1;
         }
     }
     if(!found){
         cout<<"Sorry, can't find item id : " << item_id<<endl;
         cout<<"\""<<customer_name<<"\" "<< "item amount: "<<item_amount<<endl;
     }
+    return 0;
 }
 
 

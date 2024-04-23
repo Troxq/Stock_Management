@@ -6,28 +6,34 @@
 using namespace std;
 class item{
     // store item id
+    string item_name;
     string item_id;
     item* next_item_ptr=NULL;
 
     public:
         ~item();
-        item(string="default_item_name");
+        item(string="no_item_id", string="no_item_name");
         void set_next_item_ptr(item*);
         string return_id(); 
         void show_id();
+        void show_name();
         item * return_next_item();
 };
 
 item::~item(){
-    cout<<"item "<<item_id<<" deleted"<<endl;
+    show_id();cout<<" ";show_name();cout<<"deleted"<<endl;
 }
 
 void item::show_id(){
     cout<<item_id;
 }
+void item::show_name(){
+    cout<<item_name;
+}
 
-item::item(string inId){
+item::item(string inId, string inName){
     item_id = inId;
+    item_name = inName;
 }
 
 void item::set_next_item_ptr(item* next_item_address){
