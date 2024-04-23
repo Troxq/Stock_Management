@@ -85,6 +85,7 @@ public:
                     }
                     sendOrderFormatHQ order(name, containerNum, 1);
                     order.mainMenu();
+                    send_order(this->username, this->role, containerNum, 1);
                 }
                 else if (choice == 2)
                 {
@@ -109,6 +110,7 @@ public:
                     }
                     sendOrderFormatHQ order(name, containerNum, 2);
                     order.mainMenu();
+                    send_order(this->username, this->role, containerNum, 2);
                 }
                 else if (choice == 3)
                 {
@@ -215,13 +217,16 @@ public:
     }
     void sendOrder()
     {
-        orderFormatManager b(id);
+        LinkedList* x;
+        orderFormatManager b(id, this->username, this->role);
         b.load_data("OrderManagerDatabase.csv");
         b.displaySendOrderManager();
+        //send_order(this->username, this->role, id, );
+
     }
     void orderStatus()
     {
-        orderFormatManager b(id);
+        orderFormatManager b(id, this->username, this->role);
         b.load_data("OrderStatusManagerDatabase.csv");
         b.displayOrderStatusManager();
     }
