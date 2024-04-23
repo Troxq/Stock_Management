@@ -100,8 +100,9 @@ int main()
     HQptr->HQ_add_customer("first_container", "Woody");
 
 
-    HQptr->HQ_add_item("first_container", "Kenji", "apple");
-    HQptr->HQ_add_item("first_container", "Woody", "book");
+    HQptr->HQ_add_item("first_container", "Kenji", "00001");
+    HQptr->HQ_add_item("first_container", "Woody", "00002");
+    HQptr->HQ_add_item("first_container", "Kenji", "00003");
 
     HQptr->print_all_container();
 

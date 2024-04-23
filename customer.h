@@ -55,14 +55,19 @@ void customer::delete_all_item(){
 void customer::print_all_item(){
     item * t;
     t = item_head_ptr;
-    cout<<"Item: ";
+    cout<<"Item:"<<endl;
+    cout<<"----------------"<<endl;
+    cout<<"ID    |  Name"<<endl;
+    //cout<<endl;
     for(int i =0; i < item_amount; i++){
-        t->show_id();cout<<"_";t->show_name(); // 00032_banana
+        t->show_id();cout<<"   ";t->show_name(); // 00032_banana
         if(i!=(item_amount-1)){
-            cout<<" -> ";
+            cout<<endl;
+            //cout<<" -> ";
             t = t->return_next_item();
         }
     }
+    cout<<endl<<"----------------"<<endl;
     cout<<endl;
 }
 
