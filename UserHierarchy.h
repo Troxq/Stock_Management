@@ -7,6 +7,7 @@
 // #include "OrderFormatManager.h"
 
 #include "UserSystem.h"
+#include "Logmain.cpp"
 using namespace std;
 
 class Role
@@ -84,6 +85,7 @@ public:
                     }
                     sendOrderFormatHQ order(name, containerNum, 1);
                     order.mainMenu();
+                    send_order(this->username, this->role, containerNum, 1);
                 }
                 else if (choice == 2)
                 {
@@ -108,6 +110,7 @@ public:
                     }
                     sendOrderFormatHQ order(name, containerNum, 2);
                     order.mainMenu();
+                    send_order(this->username, this->role, containerNum, 2);
                 }
                 else if (choice == 3)
                 {
@@ -152,6 +155,7 @@ public:
             cout << "2 Send order to manager" << endl;
             cout << "3 Order status" << endl;
             cout << "4 Report" << endl;
+            cout << "5 Log" << endl;
             cout << "0 exit" << endl;
             cout << "input : ";
             cin >> choice;
@@ -173,6 +177,10 @@ public:
             {
                 // report();
             }
+            else if (choice == 5)
+            {
+                Logmenu();
+            }
             else if (choice == 0)
             {
                 system("clear");
@@ -180,7 +188,7 @@ public:
             }
             else
             {
-                cout << "Please input 1 - 4" << endl;
+                cout << "Please input 1 - 5" << endl;
                 sleep(1);
             }
         }
@@ -209,13 +217,16 @@ public:
     }
     void sendOrder()
     {
-        orderFormatManager b(id);
+        LinkedList* x;
+        orderFormatManager b(id, this->username, this->role);
         b.load_data("OrderManagerDatabase.csv");
         b.displaySendOrderManager();
+        //send_order(this->username, this->role, id, );
+
     }
     void orderStatus()
     {
-        orderFormatManager b(id);
+        orderFormatManager b(id, this->username, this->role);
         b.load_data("OrderStatusManagerDatabase.csv");
         b.displayOrderStatusManager();
     }

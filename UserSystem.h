@@ -5,6 +5,7 @@
 #include <string>
 #include <cstring>
 #include <cstdlib>
+#include "Log.h"
 
 using namespace std;
 
@@ -175,6 +176,8 @@ void createUser()
     ofstream file("userdatabase.csv", ios::app);
 
     file << username << "," << password << "," << role << "," << id << endl;
+
+    regis(username, role);
 
     file.close();
 

@@ -50,8 +50,6 @@ void customer::delete_all_item(){
         delete t;
     }
     cout<<"deleted all "<<customer_name<<"'s items "<<endl;
-    
-    
 }
 
 void customer::print_all_item(){

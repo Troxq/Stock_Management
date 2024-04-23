@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "OrderFormatLL.h"
+#include "Log.h"
 
 using namespace std;
 
@@ -11,9 +12,11 @@ private:
     LinkedList *holLinkedList;
     int sizeNodeinLinkList;
     int id;
+    string name;
+    string role;
 
 public:
-    headLinkList(int = 0);
+    headLinkList(int = 0, string="", string="");
     void displaySendOrderManager();
     void delete_LinkedList(string);
     void delete_LinkedList(string, string, int = 0);
@@ -30,11 +33,18 @@ public:
 
 };
 
-headLinkList::headLinkList(int idContainer)
+
+headLinkList::headLinkList(int idContainer, string name, string r)
 {
     holLinkedList = NULL;
     sizeNodeinLinkList = 0;
     id = idContainer;
+    name = name;
+    role = r;
+
+    cout << "--------------" << endl;
+    cout << name << " " << role << endl;
+    cout << "--------------" << endl;
 }
 
 void headLinkList::delete_LinkedList(string nameOwner)
@@ -577,6 +587,7 @@ void headLinkList::displaySendOrderManager()
                 string name;
 
                 name = t->return_name();
+                int type = t->return_duty();
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
@@ -593,6 +604,7 @@ void headLinkList::displaySendOrderManager()
                 // cout << "test" << endl;
                 delete_LinkedList(name, "OrderStaffDatabase.csv", 0, "OrderStatusHQDatabase.csv", 1, "OrderStatusManagerDatabase.csv", 0);
                 save_data_LinkList("OrderManagerDatabase.csv");
+                send_order(name, role, id, type);
                 // len -= 1;
             }
             else if (choice == 0)

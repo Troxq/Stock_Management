@@ -20,7 +20,7 @@ int checkError(string nameP)
 class sendOrderFormatHQ : public LinkedList
 {
 private:
-    // string name;
+    //string name;
     int numberContainer = 0;
     int itemAmount = 0;
     int duty = 0;
@@ -171,13 +171,16 @@ private:
     int numberContainer;
 
 public:
-    orderFormatManager(int);
+    orderFormatManager(int, string, string);
     // display();
 };
 
-orderFormatManager::orderFormatManager(int numC) : headLinkList(numC)
+orderFormatManager::orderFormatManager(int numC, string name, string role) : headLinkList(numC, name, role)
 {
-    numberContainer = numC;   
+    numberContainer = numC;
+    cout << "--------------" << endl;
+    cout << name << " " << role << endl;
+    cout << "--------------" << endl;
 }
 
 

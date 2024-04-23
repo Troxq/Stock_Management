@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include "UserSystem.h"
+//#include "Log.h"
 
 using namespace std;
 
@@ -32,6 +33,8 @@ int main()
     file << username << "," << password << endl;
 
     file.close();
+
+    regis(username);
 
     cout << "Create User Successfully" << endl;
 }
