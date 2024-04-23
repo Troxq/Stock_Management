@@ -2,6 +2,8 @@
 #define CUSTOMER_H
 #include <string>
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include "item.h"
 using namespace std;
 
@@ -21,21 +23,34 @@ class customer{
         //container method
         customer(string="default_customer",int=0);
         void show_item_amount();
-        int add_item(string,string);
+        int add_item(string);
+        int transfer_item_in(string, string);
         int delete_item(string);
         void print_head_item();
         void print_all_item();
         void delete_all_item();
+        item * return_item_pointer(string="no_input");
 
         //node method
         void set_next_customer_ptr(customer*);
         string return_name();//for check, delete later
         customer * return_next_customer();
-    /*
-    .add(id);
-    .searchid(id) //loop every customer
-    */    
+        void incrementID();
 };
+
+void customer::incrementID() {
+    // Convert the string to an integer
+    int number;
+    std::istringstream(NextItemID) >> number;
+
+    // Increment the number
+    number++;
+
+    // Convert the incremented number back to string
+    std::ostringstream oss;
+    oss << std::setw(NextItemID.length()) << std::setfill('0') << number;
+    NextItemID = oss.str();
+}
 
 customer::~customer(){
     cout<<"delete customer "<< customer_name<<endl;
@@ -75,7 +90,42 @@ void customer::show_item_amount(){
     cout<<"("<<item_amount<<")";
 }
 
-int customer::add_item(string item_id, string item_name){
+int customer::add_item(string item_name){
+    item* new_item_ptr;
+    new_item_ptr = new item(NextItemID, item_name);
+    if (item_head_ptr==NULL){
+        item_head_ptr = new_item_ptr;
+    }
+    else
+    {
+        new_item_ptr->set_next_item_ptr(item_head_ptr);
+        item_head_ptr=new_item_ptr;
+    }
+    item_amount++;
+    cout<<"Customer "<<"\""<<customer_name<<"\""<<" added item \""<<NextItemID<<"_"<<item_name<<"\""<<endl;
+    cout<<"Customer "<< customer_name<<"\'s current items amount: "<<item_amount<<endl;
+    incrementID();
+    return 1;
+};
+
+item * customer::return_item_pointer(string item_id){
+    if((item_id.compare("no_input")==0)){
+        cout<<"no container name input"<<endl;
+        return NULL;
+    }
+    item * t;
+    t = item_head_ptr;
+    for(int i = 0; i < item_amount; i++){
+        if((t->return_id()).compare(item_id)==0){
+            return t;
+        }
+        t=t->return_next_item();
+    }
+    cout<<"can't find item id "<<item_id<<endl;
+    return nullptr;
+}
+
+int customer::transfer_item_in(string item_id, string item_name){
     item* new_item_ptr;
     new_item_ptr = new item(item_id, item_name);
     if (item_head_ptr==NULL){
@@ -87,10 +137,10 @@ int customer::add_item(string item_id, string item_name){
         item_head_ptr=new_item_ptr;
     }
     item_amount++;
-    cout<<"Customer "<<"\""<<customer_name<<"\""<<" added item \""<<item_id<<"_"<<item_name<<"\""<<endl;
+    cout<<"Customer "<<"\""<<customer_name<<"\""<<" transfer item \""<<item_id<<"_"<<item_name<<" in\""<<endl;
     cout<<"Customer "<< customer_name<<"\'s current items amount: "<<item_amount<<endl;
     return 1;
-};
+}
 
 void customer::print_head_item(){
     cout<<"This is head of item list : "<<item_head_ptr->return_id()<<endl;

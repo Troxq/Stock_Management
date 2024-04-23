@@ -18,10 +18,13 @@ class item{
         void show_id();
         void show_name();
         item * return_next_item();
+        
 };
 
+
+
 item::~item(){
-    show_id();cout<<" ";show_name();cout<<"deleted"<<endl;
+    show_id();cout<<" ";show_name();cout<<" deleted"<<endl;
 }
 
 void item::show_id(){

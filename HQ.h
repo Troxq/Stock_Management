@@ -35,31 +35,11 @@ class HQ{
         int HQ_transfer_over_container(string="no_input", string="no_input", string="no_input", string="no_input");//customer, origin container, destination container, item
         int HQ_add_customer(string="no_input",string="no_input"); //need container and actual customer name 
         int HQ_delete_customer(string="no_input", string="no_input"); //need container and actual customer name 
-        int HQ_add_item(string="no_input", string="no_input", string="no_input", string="no_input"); //need container, customer name, item id, item name
+        int HQ_add_item(string="no_input", string="no_input", string="no_input"); //need container, customer name, item name
 };
-/*
-vector<vector<string>> read_and_return_container_vector(string container_id){
-    string prefix = "container_";
-    string suffix = ".csv";
-    s
-    ifstream file(filename);
-    vector<vector<string>> data;
-    string line;
-    while (getline(file, line)) {
-        stringstream ss(line);
-        vector<string> row;
-        string cell;
-        while (getline(ss, cell, ',')) {
-            row.push_back(cell);
-        }
-        data.push_back(row);
-    }
 
-    file.close();
-    
-    return data;
-}
-*/
+
+
 
 int HQ::HQ_transfer_in_container(string container_name,string owner_name, string receiver_name, string item_id){
     if(check_no_input(4,container_name, owner_name, receiver_name, item_id)){
@@ -135,10 +115,9 @@ int HQ::HQ_delete_customer(string container_name, string customer_name){
     return 0;
 }
 
-int HQ::HQ_add_item(string container_name, string customer_name, string item_id, string item_name){
-    if(check_no_input(4, container_name, customer_name, item_id, item_name)){
+int HQ::HQ_add_item(string container_name, string customer_name, string item_name){
+    if(check_no_input(3, container_name, customer_name, item_name)){
         //wrong input
-        cout<<"in check no input"<<endl;
         return 0;
     }
 
@@ -150,7 +129,7 @@ int HQ::HQ_add_item(string container_name, string customer_name, string item_id,
     }
 
 
-    if(t->customer_add_item(customer_name, item_id,item_name)){
+    if(t->customer_add_item(customer_name,item_name)){
         return 1;
     }else return 0;
 }
@@ -273,9 +252,7 @@ int HQ::delete_container(string inName){
 
 //function for HQ
 int HQ::add_container(string container_name, int size){
-    //check valid id
-    if((container_name.compare("no_input")==0)){
-        cout<<"no item id input"<<endl;
+    if(check_no_input(1,container_name)){
         return 0;
     }
     
@@ -290,8 +267,8 @@ int HQ::add_container(string container_name, int size){
         container_head_ptr=new_container_ptr;
     }
     container_amount++;
-    cout<<"container \""<<container_name<<"\" added to Container \""<<container_name<<"\""<<endl;
-    cout<<"Container "<< container_name<<"\'s current container amount: "<<container_amount<<endl;
+    cout<<"container \""<<container_name<<"\" added"<<endl;
+    cout<<"current container amount: "<<container_amount<<endl;
     return 1;
 }
 

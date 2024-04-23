@@ -34,8 +34,8 @@ class container{
 
         //access customer
         customer * return_customer_pointer(string="no_input");
-        int container_transfer_in_container(string="no_input",string="no_input", string="no_input", string ="no_input"); //owner, receiver, item
-        int customer_add_item(string="no_input" ,string="no_input", string ="no_input");
+        int container_transfer_in_container(string="no_input",string="no_input", string="no_input"); //owner, receiver, item_id
+        int customer_add_item(string="no_input", string ="no_input");
         int customer_delete_item(string="no_input",string="no_input");
 };
 
@@ -67,15 +67,17 @@ customer * container::return_customer_pointer(string inName){
     return NULL;
 }
 
-int container::container_transfer_in_container(string owner_name, string receiver_name, string item_id, string item_name){
+int container::container_transfer_in_container(string owner_name, string receiver_name, string item_id){
     customer * owner_ptr = return_customer_pointer(owner_name);
     customer * receiver_ptr = return_customer_pointer(receiver_name);
+    item
     if(owner_ptr == NULL || receiver_ptr == NULL){
         return 0;
     }
-    if((owner_ptr -> delete_item(item_id)) && (receiver_ptr -> add_item(item_id, item_name))){
+    if((owner_ptr -> delete_item(item_id)) && (receiver_ptr -> transfer_item_in(item_id, item_name))){
         return 1;
     }
+    
     return 0;
 }
 
@@ -137,7 +139,7 @@ int container::customer_delete_item(string inCustomername, string inItemid){
     return 0;
 }
 
-int container::customer_add_item(string inCustomername, string inItemid, string inItem_name){
+int container::customer_add_item(string inCustomername, string inItem_name){
     customer * t;
     t = customer_head_ptr;
     bool foundCustomer=false; //search for valid customer
@@ -149,7 +151,7 @@ int container::customer_add_item(string inCustomername, string inItemid, string 
             //if found
             foundCustomer = true;
             cout<<"Container \""<<container_name<<"\", ";
-            t->add_item(inItemid, inItem_name);
+            t->add_item(inItem_name);
             return 1;
         }
     }
@@ -231,7 +233,6 @@ int container::delete_customer(string inName){
                     prev->set_next_customer_ptr(t->return_next_customer());
                 }
             }
-            
             delete(t);
             customer_amount--;
             cout<<"Container "<< container_name<<"\'s current customer amount: "<<customer_amount<<endl;
