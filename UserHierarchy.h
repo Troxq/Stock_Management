@@ -138,7 +138,7 @@ public:
     void orderStatus()
     {
         string a; // test
-        orderStatusFormatHQ status(id);
+        orderStatusFormatHQ status(id, username, role);
         // cout << "id : " << id << endl;
         // cin >> a;
         status.load_data_HQ("OrderStatusHQDatabase.csv");
@@ -217,11 +217,9 @@ public:
     }
     void sendOrder()
     {
-        LinkedList* x;
         orderFormatManager b(id, this->username, this->role);
         b.load_data("OrderManagerDatabase.csv");
         b.displaySendOrderManager();
-        //send_order(this->username, this->role, id, );
 
     }
     void orderStatus()

@@ -55,4 +55,10 @@ void Logmenu()
         system("clear");
         send_order_show();
     }
+
+    else if(choice == 4)
+    {
+        system("clear");
+        confirm_order_show();
+    }
 }   

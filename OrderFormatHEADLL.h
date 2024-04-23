@@ -34,12 +34,12 @@ public:
 };
 
 
-headLinkList::headLinkList(int idContainer, string name, string r)
+headLinkList::headLinkList(int idContainer, string n, string r)
 {
     holLinkedList = NULL;
     sizeNodeinLinkList = 0;
     id = idContainer;
-    name = name;
+    name = n;
     role = r;
 
     cout << "--------------" << endl;
@@ -493,6 +493,7 @@ void headLinkList::displayOrderStatusHQ()
                 string name;
 
                 name = t->return_name();
+                int type = t->return_duty();
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
@@ -509,6 +510,7 @@ void headLinkList::displayOrderStatusHQ()
                 // cout << "test" << endl;
                 delete_LinkedList(name);
                 save_data_LinkList("OrderStatusHQDatabase.csv");
+                confirm_order(name, role, id, type);
                 // len -= 1;
             }
             else if (choice == 0)
