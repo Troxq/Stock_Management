@@ -29,11 +29,12 @@ class LinkedList
     int idContainer;
     int size;
     int duty;
+    int sendIdContainer;
 
     // add NODE name then store
     // add LinkedList later
     public:
-        LinkedList(string="default_LinkedList",int=0, string="Pending", int = 1, int = 0);
+        LinkedList(string="default_LinkedList",int=0, string="Pending", int = 1, int = 0, int = 0);
         void LinkedList_show_name(); // how many items;
         void add_NODE(string);
         void delete_NODE(string);
@@ -45,6 +46,7 @@ class LinkedList
         void displayOrderStatus();
         void save_data(string, int = 0); // GOT : for save data sendorder
         void save_data_HQ(string, int = 0);
+        void save_data_HQ_transfer(string nameFile, int status);
         // string load_status(string); // GOT : for load data order
         void set_name(string); // GOT : for load data order
         // void set_size(int); // GOT : for load data order
@@ -65,7 +67,7 @@ class LinkedList
     */    
 };
 
-LinkedList::LinkedList(string inName,int inSize, string s, int id, int d){
+LinkedList::LinkedList(string inName,int inSize, string s, int id, int d, int sendId){
     LinkedList_name=inName; 
     size=inSize;
     NODE_head_ptr = NULL;
@@ -74,6 +76,7 @@ LinkedList::LinkedList(string inName,int inSize, string s, int id, int d){
     status = s;
     idContainer = id;
     duty = d;
+    sendIdContainer = sendId;
     // cout << "id Container : " << idContainer << endl;
     // string a;
     // cin >> a; 
@@ -248,14 +251,26 @@ void LinkedList::delete_NODE_Got(string nameProduct)
                 currentPtr = currentPtr->return_next_NODE();
             }
             
-            NODE *t = currentPtr;
-            currentPtr = currentPtr->return_next_NODE();
-            previousPtr->set_next_NODE_ptr(currentPtr);
-            cout << t->return_name() << " has been deleted" << endl;
-            free(t);
-            size -= 1;
+            if (currentPtr->return_name() == nameProduct && currentPtr != NULL)
+            {
+                NODE *t = currentPtr;
+                currentPtr = currentPtr->return_next_NODE();
+                previousPtr->set_next_NODE_ptr(currentPtr);
+                cout << t->return_name() << " has been deleted" << endl;
+                free(t);
+                size -= 1;
+            }
+            else
+            {
+                cout << "Don't have that porduct" << endl;
+                sleep(1);
+            }
+            
         }
+        
     }
+    cout << "Don't have that porduct" << endl;
+    sleep(1);
 }
 
 void LinkedList::displayAll()
@@ -333,28 +348,27 @@ void LinkedList::save_data_HQ(string nameFile, int status)
     }
 }
 
-// void LinkedList::save_data_HQ_transfer(string nameFile, int status)
-// {
-//     ofstream myfile;
-//     NODE *t = NODE_head_ptr;
-//     myfile.open(nameFile, ios::app);
-//     if (myfile.is_open()) {
-//         myfile << duty << "," << idContainer << "," << status << "," << LinkedList_name << "," << size;
-//         // cout << "size = " << size << endl;
-//         for (int i = size; i > 0; i--)
-//         {
-//             // cout << "eiei" << endl;
-//             // cout << "i : " << i << endl;
-//             myfile << "," << t->return_name() << "," << t->return_amount();
-//             t = t->return_next_NODE();
-//         }
-//         myfile << endl;
-//         // cout << "Data has been appended and saved." << endl;
-//         myfile.close(); 
-//     } else {
-//         cout << "Unable to open file!" << endl;
-//     }
-// }
+void LinkedList::save_data_HQ_transfer(string nameFile, int status)
+{
+    ofstream myfile;
+    NODE *t = NODE_head_ptr;
+    myfile.open(nameFile, ios::app);
+    if (myfile.is_open()) {
+        myfile << sendIdContainer << "," << duty << "," << idContainer << "," << status << "," << LinkedList_name << "," << size;
+        // cout << "size = " << size << endl;
+        for (int i = size; i > 0; i--)
+        {
+            myfile << "," << t->return_name() << "," << t->return_amount();
+            t = t->return_next_NODE();
+        }
+        myfile << endl;
+        // cout << "Data has been appended and saved." << endl;
+        myfile.close(); 
+    } else {
+        cout << "Unable to open file!" << endl;
+    }
+}
+
 // void LinkedList::save_data(string nameFile, int status) {
 //     ifstream infile(nameFile);
 //     ofstream outfile("temp.csv"); // Create a temporary file to store modified data
