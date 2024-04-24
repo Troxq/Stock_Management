@@ -25,14 +25,14 @@ class item{
 
 
 item::~item(){
-    show_id();cout<<" ";show_name();cout<<" deleted"<<endl;
+    // show_id();cout<<" ";show_name();cout<<" deleted"<<endl;
 }
 
 void item::show_id(){
-    cout<<item_id;
+    // cout<<item_id;
 }
 void item::show_name(){
-    cout<<item_name;
+    // cout<<item_name;
 }
 
 item::item(string inId, string inName){

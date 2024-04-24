@@ -50,7 +50,13 @@ container * HQ::return_container_head(){
 }
 
 int HQ::HQ_delete_item(string item_id){
-    container * tempContainer;
+    // cus_name = (return_customer_pointer(item_id))->return_name();
+
+    // container * target = return_container_pointer((return_customer_pointer(item_id))->return_name());
+
+    // container * target = return_container_pointer(container_name)->return_container_pointer(item_id)->return_name();
+    // target->customer_delete_item(item_id);
+    cout<<"==== item delete ====" << endl;
     return 1;
 }
 
@@ -191,6 +197,7 @@ int HQ::HQ_add_customer(string container_name, string customer_name){
     if(check_no_input(2,container_name, customer_name)){
         return 0;
     }
+
     container * t = return_container_pointer(container_name);
     if(!t){
         return 0;
@@ -305,8 +312,8 @@ int HQ::add_container(string container_name, int size){
         container_head_ptr=new_container_ptr;
     }
     container_amount++;
-    cout<<"container \""<<container_name<<"\" added"<<endl;
-    cout<<"current container amount: "<<container_amount<<endl;
+    // cout<<"container \""<<container_name<<"\" added"<<endl;
+    // cout<<"current container amount: "<<container_amount<<endl;
     return 1;
 }
 

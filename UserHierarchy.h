@@ -8,6 +8,8 @@
 
 #include "UserSystem.h"
 #include "Logmain.cpp"
+
+#include "FunctionContainer.h"
 using namespace std;
 
 class Role
@@ -312,8 +314,7 @@ public:
             cin >> choice;
             if (choice == 1)
             {
-                // input(); get container id to add to it
-
+                inputproduct(this->id);
             }
             else if (choice == 2)
             {

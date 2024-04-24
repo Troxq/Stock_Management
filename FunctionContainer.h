@@ -16,48 +16,155 @@ vector<vector<string>> read_file_and_return_container_vector(const string&);
 int load_file_into_HQptr(HQ *&);
 
 //save function
-
 vector<vector<string>> read_container_and_return_vector(string);
 int save_file(HQ*);
 
-int main()
+void inputproduct(int);
+void exportproduct(int);
+void transferproduct(int);
+bool isNameExists(string , string) ;
+
+void inputproduct(int role_id)
 {
     HQ * HQptr = new HQ("W",0);
+    
     load_file_into_HQptr(HQptr);
 
-    string con_id, name, item;
-    int amount_item;
-    cout << "Container ID : ";
-    cin >> con_id;
-    cout << "Customer Name : ";
-    cin >> name;
-    cout << "Item name : ";
-    cin >> item;
-    cout << "Amount : ";
-    cin >> amount_item;
-    
-    for(int i = 0; i < amount_item; i++)
+    string input_container_id = to_string(role_id);
+    string input_customer, input_item;
+    int input_amount;
+    cout << "===================================" << endl;
+    cout << "=============Import================" << endl;
+    cout << "Container ID :" << role_id << endl;
+    cout << "Input Customer Name : ";
+    cin >> input_customer;
+    cout << "Input Item Name : ";
+    cin >> input_item;
+    cout << "Input Amount of Item : ";
+    cin >> input_amount;
+
+    if(isNameExists(input_container_id,input_customer))
     {
-        HQptr->HQ_add_item(con_id,name,NextItemID,item);
+        for (int i = 0; i < input_amount; i++)
+        {
+            HQptr->HQ_add_item(input_container_id,input_customer,NextItemID,input_item);
+        }
     }
-    //HQptr->HQ_delete_item
-    //load file()
-    HQptr->print_all_container();
-
-
-    //HQptr->print_all_container();
-
+    else
+    {
+        HQptr->HQ_add_customer(input_container_id,input_customer); // add customer if they didn't exist
+        for (int i = 0; i < input_amount; i++)
+        {
+            HQptr->HQ_add_item(input_container_id,input_customer,NextItemID,input_item);
+        }
+    }
     
     save_file(HQptr);
-    
-    delete(HQptr);
-    
 
+    delete(HQptr);
+}
+
+void exportproduct(int role_id)
+{
+    HQ * HQptr = new HQ("W",0);
+    
+    load_file_into_HQptr(HQptr);
+
+    string input_container_id = to_string(role_id);
+    string input_customer, input_item, input_item_id;
+
+    cout << "===================================" << endl;
+    cout << "=============Export================" << endl;
+    cout << "Container ID :" << role_id << endl;
+    cout << "Input Customer Name : ";
+    cin >> input_customer;
+    cout << "Input Item Name : ";
+    cin >> input_item;
+    cout << "Input Item ID : ";
+    cin >> input_item_id;
+
+    // container 
+
+
+    // tum ngai
+    save_file(HQptr);
+
+    delete(HQptr);
+}
+
+void transferproduct(int role_id)
+{
+    HQ * HQptr = new HQ("W",0);
+    
+    load_file_into_HQptr(HQptr);
+
+    string input_container_id = to_string(role_id);
+    string input_customer, input_receiver, input_item, input_item_id;
+
+    int input_choice;
+
+    cout << "===================================" << endl;
+    cout << "============Transfer===============" << endl;
+    cout << "Container ID :" << role_id << endl;
+    cout << "Transfer Items inside or outside Container" << endl;
+    cout << "Choose (1. inside 2. outside) : ";
+    cin >> input_choice;
+    if (input_choice == 1)
+    {   
+        cout << "+++++Transfer Inside Container+++++" << endl;
+        cout << "Input Customer Name : ";
+        cin >> input_customer;
+        cout << "Input Reciever Name : ";
+        cin >> input_item;
+        cout << "Input Item ID : ";
+        cin >> input_item_id;
+
+        HQptr->HQ_transfer_in_container(input_container_id,input_customer,input_receiver,input_item_id);
+
+    }
+    else
+    {
+        cout << "+++++Transfer Outside Container+++++" << endl;
+        cout << "Input Customer Name : ";
+        cin >> input_customer;
+        cout << "Input Item Name : ";
+        cin >> input_item;
+        cout << "Input Item ID : ";
+        cin >> input_item_id;
+    }
+    
+    save_file(HQptr);
+
+    delete(HQptr);
+}
+
+bool isNameExists(string id_container, string name) 
+{
+    string prefix = "Database/container_";
+    string midfix = id_container;
+    string suffix = ".csv";
+
+    string filename = prefix + midfix + suffix;
+
+    ifstream file(filename);
+
+    string line;
+    while (getline(file, line)) {
+        istringstream iss(line);
+        string currentName;
+        if (getline(iss, currentName, ',') && currentName == name) {
+            file.close();
+            return true;
+        }
+    }
+
+    file.close();
+    return false;
 }
 
 
 int save_file(HQ* HQptr) {
-    ofstream writingHQfile("HQ.csv");
+    ofstream writingHQfile("Database/HQ.csv");
     if(writingHQfile.is_open()){
         writingHQfile<<"id,"<<NextItemID<<","<<"\n";//store item id
 
@@ -66,8 +173,8 @@ int save_file(HQ* HQptr) {
         int HQsize = HQptr->return_container_amount();
         for(int i = 0 ; i<HQsize; i++){
             writingHQfile<<tempContainer->return_name()<<",";
-
-            string containerfilename = "container_"+tempContainer->return_name()+".csv";
+            string preprefix = "Database/";
+            string containerfilename = preprefix + "container_" + tempContainer->return_name()+".csv";
             ofstream writingContainerfile(containerfilename);
             if(writingContainerfile.is_open()){
 
@@ -125,7 +232,7 @@ vector<vector<string>> read_file_and_return_container_vector(const string& conta
 
 
 int load_file_into_HQptr(HQ *& inHQptr){
-    string HQfilename = "HQ.csv";
+    string HQfilename = "Database/HQ.csv";
     ifstream file(HQfilename);
     vector<vector<string>> HQ_data;
     string line;
@@ -143,7 +250,8 @@ int load_file_into_HQptr(HQ *& inHQptr){
 
     //get current id
     NextItemID = (HQ_data[0][1]);
-    string container_filename_prefix = "container_";
+    
+    string container_filename_prefix = "Database/container_";
     string container_filename_suffix = ".csv";
 
     for(int i = 0; i < HQ_data[1].size();i++){
