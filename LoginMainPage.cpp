@@ -53,6 +53,6 @@ int main()
                      break;
             default : cout << "Choose Again !!" << endl;
         }
-        
+        delete(role);
     }
 }
