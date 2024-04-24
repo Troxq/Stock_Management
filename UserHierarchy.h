@@ -8,6 +8,8 @@
 
 #include "UserSystem.h"
 #include "Logmain.cpp"
+
+#include "FunctionContainer.h"
 using namespace std;
 
 class Role
@@ -166,7 +168,7 @@ public:
     void orderStatus()
     {
         string a; // test
-        orderStatusFormatHQ status(id);
+        orderStatusFormatHQ status(id, username, role);
         // cout << "id : " << id << endl;
         // cin >> a;
         status.load_data_HQ("OrderStatusHQDatabase.csv");
@@ -244,11 +246,9 @@ public:
     }
     void sendOrder()
     {
-        LinkedList* x;
         orderFormatManager b(id, this->username, this->role);
         b.load_data("OrderManagerDatabase.csv");
         b.displaySendOrderManager();
-        //send_order(this->username, this->role, id, );
 
     }
     void orderStatus()
@@ -341,16 +341,15 @@ public:
             cin >> choice;
             if (choice == 1)
             {
-                // input(); get container id to add to it
-
+                inputproduct(this->id);
             }
             else if (choice == 2)
             {
-                // export();
+                exportproduct(this->id);
             }
             else if (choice == 3)
             {
-                // transfer();
+                transferproduct(this->id);
             }
             else if (choice == 4)
             {

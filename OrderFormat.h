@@ -199,10 +199,10 @@ private:
     int numberContainer;
 
 public:
-    orderStatusFormatHQ(int);
+    orderStatusFormatHQ(int, string, string);
 };
 
-orderStatusFormatHQ::orderStatusFormatHQ(int numC) : headLinkList()
+orderStatusFormatHQ::orderStatusFormatHQ(int numC, string name, string role) : headLinkList(numC, name, role)
 {
     numberContainer = numC;
 }
