@@ -5,6 +5,8 @@
 #include "customer.h"
 using namespace std;
 
+extern string NextItemID;
+
 class container{
     // with container branch name;
     string container_name;
@@ -18,10 +20,10 @@ class container{
     public:
         ~container();
         //linkedlist method
-        container(string="default_container",int=0);
-        void container_status(); // how many items;
-        int add_customer(string="no_name");
-        void delete_customer(string);
+        container(string,int=0);
+        int return_customer_amount(); // how many items;
+        int add_customer(string);
+        int delete_customer(string);
         void delete_all_customer();
         void print_head_customer();
         void print_all_customer();
@@ -30,14 +32,20 @@ class container{
         void set_next_container_ptr(container*);
         string return_name();//for check, delete later
         container * return_next_container();
-        bool is_customer_there(string="no_name");
+        bool is_customer_there(string);
+        customer * return_customer_head();
 
         //access customer
-        customer * return_customer_pointer(string="no_name");
-        int container_transfer_in_container(string="no_name",string="no_name", string="no_id"); //owner, receiver, item
-        int customer_add_item(string="no_name" ,string="no_id");
-        int customer_delete_item(string="no_name",string="no_id");
+        customer * return_customer_pointer(string);
+        int container_transfer_in_container(string,string, string); //owner, receiver, item_id
+        int customer_add_item(string, string ,string);
+        int customer_transfer_item_in(string, string, string);
+        int customer_delete_item(string,string);
 };
+
+customer * container::return_customer_head(){
+    return customer_head_ptr;
+}
 
 bool container::is_customer_there(string customer_name){
     customer * t;
@@ -51,7 +59,7 @@ bool container::is_customer_there(string customer_name){
 }
 
 customer * container::return_customer_pointer(string inName){
-    if((inName.compare("no_id")==0)){
+    if((inName.compare("no_input")==0)){
         cout<<"no container name input"<<endl;
         return NULL;
     }
@@ -70,12 +78,15 @@ customer * container::return_customer_pointer(string inName){
 int container::container_transfer_in_container(string owner_name, string receiver_name, string item_id){
     customer * owner_ptr = return_customer_pointer(owner_name);
     customer * receiver_ptr = return_customer_pointer(receiver_name);
+    item * t = owner_ptr->return_item_pointer(item_id);
     if(owner_ptr == NULL || receiver_ptr == NULL){
         return 0;
     }
-    owner_ptr -> delete_item(item_id);
-    receiver_ptr -> add_item(item_id);
-    return 1;
+    if((owner_ptr -> delete_item(item_id)) && (receiver_ptr -> transfer_item_in(item_id, t->return_name()))){
+        return 1;
+    }
+    
+    return 0;
 }
 
 container::~container(){
@@ -109,7 +120,7 @@ void container::print_all_customer(){
 
 int container::customer_delete_item(string inCustomername, string inItemid){
     //check valid id
-    if((inItemid.compare("no_id")==0)){
+    if((inItemid.compare("no_input")==0)){
         cout<<"no item id input"<<endl;
         return 0;
     }
@@ -136,13 +147,7 @@ int container::customer_delete_item(string inCustomername, string inItemid){
     return 0;
 }
 
-int container::customer_add_item(string inCustomername, string inItemid){
-    //check valid id
-    if((inItemid.compare("no_id")==0)){
-        cout<<"no item id input"<<endl;
-        return 0;
-    }
-
+int container::customer_add_item(string inCustomername,string NextItemID, string inItem_name){
     customer * t;
     t = customer_head_ptr;
     bool foundCustomer=false; //search for valid customer
@@ -154,9 +159,9 @@ int container::customer_add_item(string inCustomername, string inItemid){
             //if found
             foundCustomer = true;
             cout<<"Container \""<<container_name<<"\", ";
-            t->add_item(inItemid); 
+            t->add_item(NextItemID,inItem_name);
             return 1;
-            }
+        }
     }
     if(!foundCustomer){
         cout<<"Sorry, can't find customer (" << inCustomername<<")"<<endl;
@@ -165,22 +170,38 @@ int container::customer_add_item(string inCustomername, string inItemid){
     
 }
 
+int container::customer_transfer_item_in(string customername, string item_id, string item_name){
+    customer * t;
+    t = customer_head_ptr;
+    bool foundCustomer=false; //search for valid customer
+    for (int i=0;i< customer_amount;i++){
+        if((t->return_name()).compare(customername)!=0){
+            //if still not found move t ptr
+            t = t->return_next_customer();
+        }else if((t->return_name()).compare(customername)==0){
+            //if found
+            foundCustomer = true;
+            cout<<"Container \""<<container_name<<"\", ";
+            t->transfer_item_in(item_id,item_name);
+            return 1;
+        }
+    }
+    if(!foundCustomer){
+        cout<<"Sorry, can't find customer (" << customername<<")"<<endl;
+    }
+    return 0;
+}
+
 container::container(string inName,int inAmount){
     container_name=inName; 
     customer_amount=inAmount;
 }
 
-void container::container_status(){
-    cout<<"container name: "<< container_name<<endl;
+int container::return_customer_amount(){
+    return customer_amount;
 }
 
 int container::add_customer(string customer_name){
-    //check valid name
-    if((customer_name.compare("no_name")==0)){
-        cout<<"no item id input"<<endl;
-        return 0;
-    }
-
     customer* new_customer_ptr;
     new_customer_ptr = new customer(customer_name);
     if (customer_head_ptr==NULL){
@@ -202,13 +223,16 @@ void container::print_head_customer(){
     cout<<"This is head of customer list : "<<customer_head_ptr->return_name()<<endl;
 }
 
-void container::delete_customer(string inName){
+int container::delete_customer(string inName){
     customer * t, * prev;
     prev = NULL;
     t = customer_head_ptr;
+    if(!t){
+        //can't get customer ptr 
+        cout<<"there's no customer in "<<container_name<<endl;
+        return 0;
+    }
     bool found=false;
-    if(t!=NULL)
-    {
     for (int i=0;i< customer_amount;i++){
         if((t->return_name()).compare(inName)!=0)
         {
@@ -239,11 +263,10 @@ void container::delete_customer(string inName){
                     prev->set_next_customer_ptr(t->return_next_customer());
                 }
             }
-            
             delete(t);
             customer_amount--;
             cout<<"Container "<< container_name<<"\'s current customer amount: "<<customer_amount<<endl;
-            break; // i don't know where i construct string from NULL to get that error
+            return 1; // i don't know where i construct string from NULL to get that error
         }
     }
     
@@ -251,14 +274,15 @@ void container::delete_customer(string inName){
         cout<<"Sorry, can't find the name (" << inName<<")"<<endl;
         cout<<"Container "<< container_name<<"\'s current customer amount: "<<customer_amount<<endl;
     }
-    }
-    
+    return 0;    
 }
+
 
 
 void container::set_next_container_ptr(container* next_container_address){
     next_container_ptr=next_container_address;
 }
+
 string container::return_name(){
     return container_name;
 }
