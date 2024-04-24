@@ -7,11 +7,11 @@
 #include <algorithm>
 #include "HQ.h"
 
-string NextItemID; //about to move to HQ.h
+
 
 using namespace std;
 
-
+string NextItemID; 
 
 //load functions
 vector<vector<string>> read_file_and_return_container_vector(const string& container_filename) {
@@ -55,24 +55,24 @@ int load_file_into_HQptr(HQ *& inHQptr){
     NextItemID = (HQ_data[0][1]);
     string container_filename_prefix = "container_";
     string container_filename_suffix = ".csv";
-    cout<<HQ_data.size()<<endl;
 
     for(int i = 0; i < HQ_data[1].size();i++){
-        cout<<"in for loop"<<endl;
         string container_name = HQ_data[1][i];
-        cout<<"container_name is "<< container_name<<endl;
+        //cout<<"container_name is "<< container_name<<endl;
         inHQptr->add_container(container_name);
         string full_container_filename = container_filename_prefix + container_name + container_filename_suffix;
         vector<vector<string>> container_data = read_file_and_return_container_vector(full_container_filename);
         for(const auto& row : container_data){
             inHQptr->HQ_add_customer(container_name, row[0]);
             for(int i = 1; i < row.size(); i+=2){
-                inHQptr->HQ_add_item(container_name, row[0], row[i], row[i+1]);
+                inHQptr->HQ_transfer_item(container_name, row[0], row[i], row[i+1]); //container_name, customer_name, item_id, item_name
             }
         }
     }
     return 1;
 }
+
+
 
 
 //save function
@@ -99,8 +99,7 @@ vector<vector<string>> read_container_and_return_vector(string container_id){
     
     return data;
 }
-*/
-/*
+
 int save_file(const string& containerId, const HQ* inHQptr) {
     string prefix = "container_";
     string suffix = ".csv";
@@ -137,25 +136,31 @@ int save_file(const string& containerId, const HQ* inHQptr) {
 int main()
 {
     HQ * HQptr = new HQ("W",0);
-
     load_file_into_HQptr(HQptr);
+
     cout<<"Next item id : "<<NextItemID<<endl;
+    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Macbook");
+    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
+
+    HQptr->add_container("2");
+    HQptr->HQ_add_customer("2", "got");
+    HQptr->HQ_add_item("2", "got", NextItemID, "pencil");
+
+    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
+    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
+    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
+    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
+    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
+    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
+    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
+    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
+
+    HQptr->HQ_add_item("2", "got", NextItemID, "pencil");
+    
+    //HQptr->HQ_delete_item
     //load file()
-    
-    
-
-    
-    // HQptr->add_container();
-    // HQptr->HQ_add_customer("first_container", "Kenji");
-    // HQptr->HQ_add_customer("first_container", "Woody");
-
-
-    // HQptr->HQ_add_item("first_container", "Kenji", "apple","001");
-    // HQptr->HQ_add_item("first_container", "Woody", "book");
-
     HQptr->print_all_container();
 
-    //HQptr->show_customer_in_container("first_container");
     
 
 
