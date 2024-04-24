@@ -21,7 +21,7 @@ class container{
         ~container();
         //linkedlist method
         container(string,int=0);
-        void show_customer_amount(); // how many items;
+        int return_customer_amount(); // how many items;
         int add_customer(string);
         int delete_customer(string);
         void delete_all_customer();
@@ -33,6 +33,7 @@ class container{
         string return_name();//for check, delete later
         container * return_next_container();
         bool is_customer_there(string);
+        customer * return_customer_head();
 
         //access customer
         customer * return_customer_pointer(string);
@@ -44,11 +45,15 @@ class container{
         int return_customer_amount();
 };
 
+<<<<<<< HEAD
 int container::return_customer_amount(){
     return customer_amount;
 }
 
 customer * container::return_customer_head_ptr(){
+=======
+customer * container::return_customer_head(){
+>>>>>>> origin/Atom-Containers
     return customer_head_ptr;
 }
 
@@ -84,10 +89,12 @@ int container::container_transfer_in_container(string owner_name, string receive
     customer * owner_ptr = return_customer_pointer(owner_name);
     customer * receiver_ptr = return_customer_pointer(receiver_name);
     item * t = owner_ptr->return_item_pointer(item_id);
+    string tname = t->return_name();
+    cout<<"still okay"<<endl;
     if(owner_ptr == NULL || receiver_ptr == NULL){
         return 0;
     }
-    if((owner_ptr -> delete_item(item_id)) && (receiver_ptr -> transfer_item_in(item_id, t->return_name()))){
+    if((owner_ptr -> delete_item(item_id)) && (receiver_ptr -> transfer_item_in(item_id, tname))){
         return 1;
     }
     
@@ -95,7 +102,7 @@ int container::container_transfer_in_container(string owner_name, string receive
 }
 
 container::~container(){
-    cout<<"delete container "<< container_name<<endl;
+    // cout<<"delete container "<< container_name<<endl;
     delete_all_customer();
 }
 
@@ -106,7 +113,7 @@ void container::delete_all_customer(){
         customer_head_ptr = customer_head_ptr->return_next_customer();
         delete t;
     }
-    cout<<"deleted all "<<container_name<<"\'s customer"<<endl;  
+    // cout<<"deleted all "<<container_name<<"\'s customer"<<endl;  
     
 }
 
@@ -186,7 +193,7 @@ int container::customer_transfer_item_in(string customername, string item_id, st
         }else if((t->return_name()).compare(customername)==0){
             //if found
             foundCustomer = true;
-            cout<<"Container \""<<container_name<<"\", ";
+            // cout<<"Container \""<<container_name<<"\", ";
             t->transfer_item_in(item_id,item_name);
             return 1;
         }
@@ -202,8 +209,8 @@ container::container(string inName,int inAmount){
     customer_amount=inAmount;
 }
 
-void container::show_customer_amount(){
-    cout<<customer_amount<<endl;
+int container::return_customer_amount(){
+    return customer_amount;
 }
 
 int container::add_customer(string customer_name){
@@ -218,8 +225,8 @@ int container::add_customer(string customer_name){
         customer_head_ptr=new_customer_ptr;
     }
     customer_amount++;
-    cout<<"customer \""<<customer_name<<"\" added to Container \""<<container_name<<"\""<<endl;
-    cout<<"Container "<< container_name<<"\'s current customer amount: "<<customer_amount<<endl;
+    // cout<<"customer \""<<customer_name<<"\" added to Container \""<<container_name<<"\""<<endl;
+    // cout<<"Container "<< container_name<<"\'s current customer amount: "<<customer_amount<<endl;
     return 1;
 }
 
@@ -270,7 +277,7 @@ int container::delete_customer(string inName){
             }
             delete(t);
             customer_amount--;
-            cout<<"Container "<< container_name<<"\'s current customer amount: "<<customer_amount<<endl;
+            // cout<<"Container "<< container_name<<"\'s current customer amount: "<<customer_amount<<endl;
             return 1; // i don't know where i construct string from NULL to get that error
         }
     }

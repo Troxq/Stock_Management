@@ -41,6 +41,8 @@ class customer{
         string return_name();//for check, delete later
         customer * return_next_customer();
         void incrementID();
+        item * return_item_head();
+        int return_item_amount();
 };
 
 item * customer::return_item_head_str(){
@@ -65,7 +67,7 @@ void customer::incrementID() {
 }
 
 customer::~customer(){
-    cout<<"delete customer "<< customer_name<<endl;
+    // cout<<"delete customer "<< customer_name<<endl;
     delete_all_item();
 }
 
@@ -76,7 +78,7 @@ void customer::delete_all_item(){
         item_head_ptr = item_head_ptr->return_next_item();
         delete t;
     }
-    cout<<"deleted all "<<customer_name<<"'s items "<<endl;
+    // cout<<"deleted all "<<customer_name<<"'s items "<<endl;
 }
 
 void customer::print_all_item(){
@@ -114,8 +116,8 @@ int customer::add_item(string NextItemID,string item_name){
         item_head_ptr=new_item_ptr;
     }
     item_amount++;
-    cout<<"Customer "<<"\""<<customer_name<<"\""<<" added item \""<<NextItemID<<"_"<<item_name<<"\""<<endl;
-    cout<<"Customer "<< customer_name<<"\'s current items amount: "<<item_amount<<endl;
+    // cout<<"Customer "<<"\""<<customer_name<<"\""<<" added item \""<<NextItemID<<"_"<<item_name<<"\""<<endl;
+    // cout<<"Customer "<< customer_name<<"\'s current items amount: "<<item_amount<<endl;
     incrementID();
     return 1;
 };
@@ -149,13 +151,13 @@ int customer::transfer_item_in(string item_id, string item_name){
         item_head_ptr=new_item_ptr;
     }
     item_amount++;
-    cout<<"Customer "<<"\""<<customer_name<<"\""<<" transfer item \""<<item_id<<"_"<<item_name<<" in\""<<endl;
-    cout<<"Customer "<< customer_name<<"\'s current items amount: "<<item_amount<<endl;
+    // cout<<"Customer "<<"\""<<customer_name<<"\""<<" transfer item \""<<item_id<<"_"<<item_name<<" in\""<<endl;
+    // cout<<"Customer "<< customer_name<<"\'s current items amount: "<<item_amount<<endl;
     return 1;
 }
 
 void customer::print_head_item(){
-    cout<<"This is head of item list : "<<item_head_ptr->return_id()<<endl;
+    // cout<<"This is head of item list : "<<item_head_ptr->return_id()<<endl;
 }
 
 int customer::delete_item(string item_id){
@@ -211,8 +213,15 @@ string customer::return_name(){
     return customer_name;
 }
 
+item* customer::return_item_head(){
+    return item_head_ptr;
+}
+
 customer * customer::return_next_customer(){
     return next_customer_ptr;
+}
+int customer::return_item_amount(){
+    return item_amount;
 }
 
 #endif

@@ -32,6 +32,8 @@ class HQ{
         container * return_container_pointer(string="no_input");
         int show_customer_in_container(string="no_input");
         void delete_all_container();
+        int return_container_amount();
+        container * return_container_head();
 
         //for Manager & Staff
         int HQ_transfer_in_container(string="no_input",string="no_input", string="no_input", string="no_input"); //owner, item, receiver
@@ -41,9 +43,15 @@ class HQ{
         int HQ_transfer_item(string="no_input", string="no_input", string="no_input",string ="no_input");
         int HQ_add_item(string="no_input", string="no_input", string="no_input",string ="no_input"); //need container, customer name, item name
         int HQ_delete_item(string="no_input");
+        int delete_item_HQ(string, string, string);
 };
 
+container * HQ::return_container_head(){
+    return container_head_ptr;
+}
+
 int HQ::HQ_delete_item(string item_id){
+<<<<<<< HEAD
 
     container * t_con;
     t_con = container_head_ptr;
@@ -70,6 +78,37 @@ int HQ::HQ_delete_item(string item_id){
         t_con=t_con->return_next_container();
     }
     return 0;
+=======
+    // cus_name = (return_customer_pointer(item_id))->return_name();
+
+    // container * target = return_container_pointer((return_customer_pointer(item_id))->return_name());
+
+    // container * target = return_container_pointer(container_name)->return_container_pointer(item_id)->return_name();
+    // target->customer_delete_item(item_id);
+    cout<<"==== item delete ====" << endl;
+    return 1;
+>>>>>>> origin/Atom-Containers
+}
+
+int HQ::return_container_amount(){
+    return container_amount;
+}
+
+int HQ::delete_item_HQ(string container_name, string owner_name, string item_id) {
+    if (check_no_input(3, container_name, owner_name, item_id)) {
+        //if wrong input
+        return 0;
+    }
+
+    container *container_ptr = return_container_pointer(container_name);
+    cout << "Got ID to delete" << endl;
+    if (container_ptr) {
+        if (container_ptr->customer_delete_item(owner_name, item_id)) {
+            return 1;
+        }
+    }
+    cout << "can't delete" << endl;
+    return 0;
 }
 
 
@@ -80,7 +119,7 @@ int HQ::HQ_transfer_in_container(string container_name,string owner_name, string
     }
 
     container * container_ptr = return_container_pointer(container_name);
-
+    cout<<"get container ptr"<<endl;
     if(container_ptr){
         if(container_ptr->container_transfer_in_container(owner_name, receiver_name, item_id)){
             return 1;
@@ -105,13 +144,13 @@ int HQ::HQ_transfer_over_container(string customer_name, string origin_container
         return 0;
     }
 
-    if((origin_ptr->is_customer_there(customer_name))&&(des_ptr->is_customer_there(customer_name)) ){
-        item * moved_item = (origin_ptr->return_customer_pointer(customer_name))->return_item_pointer(item_id);
-        if(origin_ptr->customer_delete_item(customer_name,item_id)){
-            des_ptr->customer_transfer_item_in(customer_name,item_id,moved_item->return_name());
-            cout<<"transfer "<<item_id<<" complete"<<endl;
-            return 1;
-        }
+
+    item * moved_item = (origin_ptr->return_customer_pointer(customer_name))->return_item_pointer(item_id);
+    string itemname = moved_item->return_name();
+    if(origin_ptr->customer_delete_item(customer_name,item_id)){
+        des_ptr->customer_transfer_item_in(customer_name,item_id,itemname);
+        cout<<"transfer "<<item_id<<" complete"<<endl;
+        return 1;
     }
     return 0;
 }
@@ -206,6 +245,7 @@ int HQ::HQ_add_customer(string container_name, string customer_name){
     if(check_no_input(2,container_name, customer_name)){
         return 0;
     }
+
     container * t = return_container_pointer(container_name);
     if(!t){
         return 0;
@@ -320,8 +360,8 @@ int HQ::add_container(string container_name, int size){
         container_head_ptr=new_container_ptr;
     }
     container_amount++;
-    cout<<"container \""<<container_name<<"\" added"<<endl;
-    cout<<"current container amount: "<<container_amount<<endl;
+    // cout<<"container \""<<container_name<<"\" added"<<endl;
+    // cout<<"current container amount: "<<container_amount<<endl;
     return 1;
 }
 

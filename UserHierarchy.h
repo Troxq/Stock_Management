@@ -1,9 +1,15 @@
 #include <iostream>
 #include <string>
 #include "container.h"
+// #include "OrderFormatHEADLL.h"
 #include <unistd.h>
+#include "OrderFormat.h"
+// #include "OrderFormatManager.h"
+
 #include "UserSystem.h"
 #include "Logmain.cpp"
+
+#include "FunctionContainer.h"
 using namespace std;
 
 class Role
@@ -39,6 +45,107 @@ public:
     {
         return this->role;
     }
+    void sendOrder()
+    {
+        while (1)
+        {
+            int choice;
+            try
+            {
+                system("clear");
+                cout << "1 Import products" << endl;
+                cout << "2 Export products" << endl;
+                cout << "3 Transfer products" << endl;
+                cout << "0 exit" << endl;
+                cout << "input : ";
+                cin >> choice;
+                if (cin.fail())
+                {
+                    throw 1;
+                }
+
+                if (choice == 1)
+                {
+                    string name;
+                    int containerNum;
+                    cout << "input name of owner product : ";
+                    cin >> name;
+                    while (1)
+                    {
+                        try{
+                            cout << "Number of container : "; 
+                            cin >> containerNum;
+                            if (cin.fail())
+                                throw 1;
+                            break;
+                        }
+                        catch (...){
+                            cout << "Error try again" << endl;
+                            cin.clear();
+                            cin.ignore(50, '\n');
+                        }
+                    }
+                    sendOrderFormatHQ order(name, containerNum, 1);
+                    order.mainMenu();
+                    send_order(this->username, this->role, containerNum, 1);
+                }
+                else if (choice == 2)
+                {
+                    string name;
+                    int containerNum;
+                    cout << "input name of owner product : ";
+                    cin >> name;
+                    while (1)
+                    {
+                        try{
+                            cout << "Number of container : "; 
+                            cin >> containerNum;
+                            if (cin.fail())
+                                throw 1;
+                            break;
+                        }
+                        catch (...){
+                            cout << "Error try again" << endl;
+                            cin.clear();
+                            cin.ignore(50, '\n');
+                        }
+                    }
+                    sendOrderFormatHQ order(name, containerNum, 2);
+                    order.mainMenu();
+                    send_order(this->username, this->role, containerNum, 2);
+                }
+                else if (choice == 3)
+                {
+                    
+                }
+                else if (choice == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    cout << "input 1 - 4" << endl;
+                    sleep(1);
+                }
+            }
+            catch (...)
+            {
+                cout << "Error try again" << endl;
+                sleep(1);
+                cin.clear();
+                cin.ignore(50, '\n');
+            }
+        }
+    }
+    void orderStatus()
+    {
+        string a; // test
+        orderStatusFormatHQ status(id, username, role);
+        // cout << "id : " << id << endl;
+        // cin >> a;
+        status.load_data_HQ("OrderStatusHQDatabase.csv");
+        status.displayOrderStatusHQ();
+    }
     void mainMenu()
     {
         int choice = 0;
@@ -62,11 +169,11 @@ public:
             }
             else if (choice == 2)
             {
-                // sendOrder();
+                sendOrder();
             }
             else if (choice == 3)
             {
-                // orderStatus();
+                orderStatus();
             }
             else if (choice == 4)
             {
@@ -89,6 +196,7 @@ public:
         }
     }
 };
+
 class Manager : public Headquarter
 {
 public:
@@ -109,11 +217,25 @@ public:
     {
         cout << "MANAGER NAME : " << this->username << " ROLE : "<< this->role << " CONTAINER ID : " << this->id << endl;
     }
+    void sendOrder()
+    {
+        orderFormatManager b(id, this->username, this->role);
+        b.load_data("OrderManagerDatabase.csv");
+        b.displaySendOrderManager();
+
+    }
+    void orderStatus()
+    {
+        orderFormatManager b(id, this->username, this->role);
+        b.load_data("OrderStatusManagerDatabase.csv");
+        b.displayOrderStatusManager();
+    }
     void mainMenu()
     {
         int choice = 0;
         while (1)
         {
+            int a;
             system("clear");
             showNameandRole();
             cout << "1 Send order to staff" << endl;
@@ -124,11 +246,11 @@ public:
             cin >> choice;
             if (choice == 1)
             {
-                // sendOrder();
+                sendOrder();
             }
             else if (choice == 2)
             {
-                // orderStatus();
+                orderStatus();
             }
             else if (choice == 3)
             {
@@ -168,6 +290,12 @@ public:
     {
         cout << "Staff NAME : " << this->username << " ROLE : "<< this->role << " CONTAINER ID : " << this->id << endl;
     }
+    void orderStatus()
+    {
+        orderFormatStaff order(id);
+        order.load_data("OrderStaffDatabase.csv");
+        order.displayOrderStatusStaff();
+    }
 
 
     void mainMenu()
@@ -186,20 +314,19 @@ public:
             cin >> choice;
             if (choice == 1)
             {
-                // input(); get container id to add to it
-
+                inputproduct(this->id);
             }
             else if (choice == 2)
             {
-                // export();
+                exportproduct(this->id);
             }
             else if (choice == 3)
             {
-                // transfer();
+                transferproduct(this->id);
             }
             else if (choice == 4)
             {
-                // orderStatus();
+                orderStatus();
             }
             else if (choice == 0)
             {
