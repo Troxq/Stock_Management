@@ -156,6 +156,7 @@ int LinkedList::load_data_for_check(string nameFile, string nameCustomer)
         if (row[4] == nameCustomer)
         {
             cout << "Error: Please don't input same customer name" << endl;
+            sleep(1);
             fin.close();
             return 1;
         }
@@ -199,6 +200,7 @@ void LinkedList::add_NODE(string NODE_name, int amount)
         if (t->return_name() == NODE_name)
         {
             cout << "Error: Please don't input same name" << endl;
+            sleep(1);
             return ;
         }
     }
