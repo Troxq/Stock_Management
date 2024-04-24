@@ -24,6 +24,7 @@ private:
     int numberContainer = 0;
     int itemAmount = 0;
     int duty = 0;
+    int sendIdContainer = 0;
 
     // LinkedList allItems("item", 0);
     // struct item
@@ -34,7 +35,7 @@ private:
     // }item[1000];
 
 public:
-    sendOrderFormatHQ(string, int = 0, int = 0);
+    sendOrderFormatHQ(string, int = 0, int = 0, int = 0);
     void mainMenu();
     void addProduct();
     void removeProduct();
@@ -53,10 +54,11 @@ public:
     
 };
 
-sendOrderFormatHQ::sendOrderFormatHQ(string name, int numContainer, int d) : LinkedList(name, 0, "Pending", numContainer, d)
+sendOrderFormatHQ::sendOrderFormatHQ(string name, int numContainer, int d, int sendId) : LinkedList(name, 0, "Pending", numContainer, d, sendId)
 {
     numberContainer = numContainer;
     duty = d;
+    sendIdContainer = sendId;
 }
 
 void sendOrderFormatHQ::mainMenu()

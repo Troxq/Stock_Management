@@ -61,7 +61,8 @@ class LinkedList
         NODE* return_node();
         int return_idContainer();
         int return_duty();
-        int return_status();    /*
+        int return_status();
+        int return_sendIdContainer();    /*
     .add(id);
     .searchid(id) //loop every NODE
     */    
@@ -85,6 +86,11 @@ LinkedList::LinkedList(string inName,int inSize, string s, int id, int d, int se
 int LinkedList::return_idContainer()
 {
     return idContainer;
+}
+
+int LinkedList::return_sendIdContainer()
+{
+    return sendIdContainer;
 }
 
 int LinkedList::return_status()
@@ -269,8 +275,11 @@ void LinkedList::delete_NODE_Got(string nameProduct)
         }
         
     }
-    cout << "Don't have that porduct" << endl;
-    sleep(1);
+    else
+    {
+        cout << "Don't have that porduct" << endl;
+        sleep(1);
+    }
 }
 
 void LinkedList::displayAll()
@@ -282,6 +291,10 @@ void LinkedList::displayAll()
         system("clear");
         cout << "Owner name : " << LinkedList_name << endl;
         cout << "Container ID : " << idContainer << endl;
+        if (sendIdContainer > 0)
+        {
+            cout << "Transfer to container ID : " << sendIdContainer << endl;
+        }
         cout << "Action : " << display_action(duty) << endl;
         cout << "-------------------------------------------------------------" << endl;
         for (; t != NULL; t = t->return_next_NODE())
@@ -309,6 +322,10 @@ void LinkedList::displayOrderStatus()
         cout << "Owner name : " << LinkedList_name << endl;
         cout << "Order status : " << status << endl;
         cout << "Container ID : " << idContainer << endl;
+        if (sendIdContainer > 0)
+        {
+            cout << "Transfer to container ID : " << sendIdContainer << endl;
+        }
         cout << "Action : " << display_action(duty) << endl;
         cout << "-------------------------------------------------------------" << endl;
         for (; t != NULL; t = t->return_next_NODE())
@@ -331,7 +348,7 @@ void LinkedList::save_data_HQ(string nameFile, int status)
     NODE *t = NODE_head_ptr;
     myfile.open(nameFile, ios::app);
     if (myfile.is_open()) {
-        myfile << duty << "," << idContainer << "," << status << "," << LinkedList_name << "," << size;
+        myfile << sendIdContainer << "," << duty << "," << idContainer << "," << status << "," << LinkedList_name << "," << size;
         // cout << "size = " << size << endl;
         for (int i = size; i > 0; i--)
         {
@@ -348,26 +365,26 @@ void LinkedList::save_data_HQ(string nameFile, int status)
     }
 }
 
-void LinkedList::save_data_HQ_transfer(string nameFile, int status)
-{
-    ofstream myfile;
-    NODE *t = NODE_head_ptr;
-    myfile.open(nameFile, ios::app);
-    if (myfile.is_open()) {
-        myfile << sendIdContainer << "," << duty << "," << idContainer << "," << status << "," << LinkedList_name << "," << size;
-        // cout << "size = " << size << endl;
-        for (int i = size; i > 0; i--)
-        {
-            myfile << "," << t->return_name() << "," << t->return_amount();
-            t = t->return_next_NODE();
-        }
-        myfile << endl;
-        // cout << "Data has been appended and saved." << endl;
-        myfile.close(); 
-    } else {
-        cout << "Unable to open file!" << endl;
-    }
-}
+// void LinkedList::save_data_HQ_transfer(string nameFile, int status)
+// {
+//     ofstream myfile;
+//     NODE *t = NODE_head_ptr;
+//     myfile.open(nameFile, ios::app);
+//     if (myfile.is_open()) {
+//         myfile << sendIdContainer << "," << duty << "," << idContainer << "," << status << "," << LinkedList_name << "," << size;
+//         // cout << "size = " << size << endl;
+//         for (int i = size; i > 0; i--)
+//         {
+//             myfile << "," << t->return_name() << "," << t->return_amount();
+//             t = t->return_next_NODE();
+//         }
+//         myfile << endl;
+//         // cout << "Data has been appended and saved." << endl;
+//         myfile.close(); 
+//     } else {
+//         cout << "Unable to open file!" << endl;
+//     }
+// }
 
 // void LinkedList::save_data(string nameFile, int status) {
 //     ifstream infile(nameFile);
@@ -453,9 +470,9 @@ void LinkedList::save_data(string nameFile, int status) {
             // string a;
             // cin >> a;
 
-            if (fields.size() >= 4 && fields[3] == LinkedList_name && stoi(fields[4]) == size) {
+            if (fields.size() >= 4 && fields[4] == LinkedList_name && stoi(fields[5]) == size) {
                 // If the line matches, replace the status with the new status
-                fields[2] = to_string(status);
+                fields[3] = to_string(status);
                 found = true;
             }
 
@@ -473,7 +490,7 @@ void LinkedList::save_data(string nameFile, int status) {
         // If the data was not found in the file, append it to the end
         if (!found) {
             outfile.open(nameFile, ios_base::app);
-            outfile << duty << "," << idContainer << "," << status << "," << LinkedList_name << "," << size;
+            outfile << sendIdContainer << "," << duty << "," << idContainer << "," << status << "," << LinkedList_name << "," << size;
             NODE *t = NODE_head_ptr;
             while (t != nullptr) {
                 outfile << "," << t->return_name() << "," << t->return_amount();

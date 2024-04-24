@@ -114,7 +114,35 @@ public:
                 }
                 else if (choice == 3)
                 {
-                    
+                    string name;
+                    int containerNum;
+                    int sendId;
+                    cout << "input name of owner product : ";
+                    cin >> name;
+                    while (1)
+                    {
+                        try{
+                            cout << "Number of container : "; 
+                            cin >> containerNum;
+                            if (cin.fail())
+                                throw 1;
+                            
+                            cout << "Send to container id : ";
+                            cin >> sendId;
+                            if (cin.fail())
+                                throw 1;
+
+                            break;
+                        }
+                        catch (...){
+                            cout << "Error try again" << endl;
+                            cin.clear();
+                            cin.ignore(50, '\n');
+                        }
+                    }
+                    sendOrderFormatHQ order(name, containerNum, 3, sendId);
+                    order.mainMenu();
+                    send_order(this->username, this->role, containerNum, 2);
                 }
                 else if (choice == 0)
                 {
