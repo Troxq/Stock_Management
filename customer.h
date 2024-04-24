@@ -7,6 +7,8 @@
 #include "item.h"
 using namespace std;
 
+extern string NextItemID;
+
 class customer{
     // with customer branch name;
     string customer_name;
@@ -23,7 +25,7 @@ class customer{
         //container method
         customer(string="default_customer",int=0);
         void show_item_amount();
-        int add_item(string);
+        int add_item(string,string);
         int transfer_item_in(string, string);
         int delete_item(string);
         void print_head_item();
@@ -39,7 +41,6 @@ class customer{
 };
 
 void customer::incrementID() {
-    // Convert the string to an integer
     int number;
     std::istringstream(NextItemID) >> number;
 
@@ -90,7 +91,7 @@ void customer::show_item_amount(){
     cout<<"("<<item_amount<<")";
 }
 
-int customer::add_item(string item_name){
+int customer::add_item(string NextItemID,string item_name){
     item* new_item_ptr;
     new_item_ptr = new item(NextItemID, item_name);
     if (item_head_ptr==NULL){

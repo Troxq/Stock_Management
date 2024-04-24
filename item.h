@@ -12,9 +12,10 @@ class item{
 
     public:
         ~item();
-        item(string="no_item_id", string="no_item_name");
+        item(string, string);
         void set_next_item_ptr(item*);
         string return_id(); 
+        string return_name();
         void show_id();
         void show_name();
         item * return_next_item();
@@ -44,6 +45,9 @@ void item::set_next_item_ptr(item* next_item_address){
 }
 string item::return_id(){
     return item_id;
+}
+string item::return_name(){
+    return item_name;
 }
 
 item * item::return_next_item(){

@@ -7,7 +7,10 @@
 #ifndef HQ_H
 #define HQ_H
 
+
 using namespace std;
+
+extern string NextItemID;
 
 class HQ{
     string HQ_name;
@@ -35,10 +38,14 @@ class HQ{
         int HQ_transfer_over_container(string="no_input", string="no_input", string="no_input", string="no_input");//customer, origin container, destination container, item
         int HQ_add_customer(string="no_input",string="no_input"); //need container and actual customer name 
         int HQ_delete_customer(string="no_input", string="no_input"); //need container and actual customer name 
-        int HQ_add_item(string="no_input", string="no_input", string="no_input"); //need container, customer name, item name
+        int HQ_transfer_item(string="no_input", string="no_input", string="no_input",string ="no_input");
+        int HQ_add_item(string="no_input", string="no_input", string="no_input",string ="no_input"); //need container, customer name, item name
+        int HQ_delete_item(string="no_input");
 };
 
-
+int HQ::HQ_delete_item(string item_id){
+    container * tempContainer;
+}
 
 
 int HQ::HQ_transfer_in_container(string container_name,string owner_name, string receiver_name, string item_id){
@@ -74,8 +81,9 @@ int HQ::HQ_transfer_over_container(string customer_name, string origin_container
     }
 
     if((origin_ptr->is_customer_there(customer_name))&&(des_ptr->is_customer_there(customer_name)) ){
+        item * moved_item = (origin_ptr->return_customer_pointer(customer_name))->return_item_pointer(item_id);
         if(origin_ptr->customer_delete_item(customer_name,item_id)){
-            des_ptr->customer_add_item(customer_name,item_id);
+            des_ptr->customer_transfer_item_in(customer_name,item_id,moved_item->return_name());
             cout<<"transfer "<<item_id<<" complete"<<endl;
             return 1;
         }
@@ -115,7 +123,7 @@ int HQ::HQ_delete_customer(string container_name, string customer_name){
     return 0;
 }
 
-int HQ::HQ_add_item(string container_name, string customer_name, string item_name){
+int HQ::HQ_add_item(string container_name, string customer_name, string NextItemID,string item_name){
     if(check_no_input(3, container_name, customer_name, item_name)){
         //wrong input
         return 0;
@@ -129,9 +137,29 @@ int HQ::HQ_add_item(string container_name, string customer_name, string item_nam
     }
 
 
-    if(t->customer_add_item(customer_name,item_name)){
+    if(t->customer_add_item(customer_name,NextItemID,item_name)){
         return 1;
-    }else return 0;
+    }
+    return 0;
+
+}
+
+int HQ::HQ_transfer_item(string container_name, string customer_name,string item_id, string item_name){
+    if(check_no_input(4, container_name, customer_name, item_name, item_id)){
+        return 0;
+    }
+
+    container * t = return_container_pointer(container_name);
+    if(!t){
+        //can't find pointer
+        return 0;
+    }
+
+    if(t->customer_transfer_item_in(customer_name,item_id,item_name)){
+        return 1;
+    }
+    return 0;
+
 }
 
 int HQ::show_customer_in_container(string container_name){
