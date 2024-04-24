@@ -58,11 +58,19 @@ sendOrderFormatHQ::sendOrderFormatHQ(string name, int numContainer, int d, int s
 void sendOrderFormatHQ::mainMenu()
 {
     int choice = 0;
+    if (load_data_for_check("OrderStatusHQDatabase.csv", this->return_name()) == 1)
+    {
+        cout << "Error: Please don't input same customer name" << endl;
+        sleep(1);
+        return;
+    }
     while (1)
     {
         // displayAll();
         try
         {
+            if (choice != 3)
+                system("clear");
             cout << "1 Add product" << endl;
             cout << "2 Remove product" << endl;
             cout << "3 Check product" << endl;
@@ -74,20 +82,31 @@ void sendOrderFormatHQ::mainMenu()
                 throw 1;
             if (choice == 1)
             {
+                system("clear");
                 addProduct();
             }
             else if (choice == 2)
             {
+                system("clear");
                 removeProduct();
             }
             else if (choice == 3)
             {
+                system("clear");
                 checkProduct();
             }
             else if (choice == 4)
             {
-                confirm();
-                break;
+                if (itemAmount <= 0)
+                {
+                    cout << "Error: Please add at least one product" << endl;
+                    sleep(1);
+                }
+                else
+                {
+                    confirm();
+                    break;
+                }
             }
             else if (choice == 0)
             {
@@ -95,7 +114,7 @@ void sendOrderFormatHQ::mainMenu()
             }
             else
             {
-                cout << "Please input 1 - 4" << endl;
+                cout << "Error: Invalid input. Please input 0 - 4" << endl; 
                 sleep(1);
             }
         }
@@ -116,26 +135,25 @@ void sendOrderFormatHQ::addProduct()
     int amount;
     while (1)
     {
-        while (1)
+        try{
+            cout << "Add product name : ";
+            cin.clear();
+            cin.ignore(50, '\n');
+            cin >> nameP;
+            checkInputStr(nameP);
+            break;
+        }
+        catch (const char *str)
         {
-            try{
-                cout << "Add product name : ";
-                getline(cin, nameP);
-                checkInputStr(nameP);
-                break;
-            }
-            catch (string str)
-            {
-                cout << str << endl;
-                cin.clear();
-                cin.ignore(50, '\n');
-            }
+            cin.clear();
+            cin.ignore(50, '\n');
+            cout << str << endl;
         }
     }
-    cout << "Add amount : ";
     while (1)
     {
         try{
+            cout << "Add amount : ";
             cin >> amount;
             if (cin.fail())
                 throw 1;
