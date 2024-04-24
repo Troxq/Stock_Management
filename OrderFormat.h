@@ -3,16 +3,10 @@
 // #include "NODE.h"
 #include <unistd.h>
 #include "OrderFormatHEADLL.h"
+#include "checkerror.h"
 // #include "OrderFormatLL.h"
 using namespace std;
 // class 
-
-int checkError(string nameP)
-{
-    if (nameP.size() > 30)
-        return 1;
-    return 0;
-}
 
 
 //snedOrderHQ
@@ -67,37 +61,49 @@ void sendOrderFormatHQ::mainMenu()
     while (1)
     {
         // displayAll();
-        cout << "1 Add product" << endl;
-        cout << "2 Remove product" << endl;
-        cout << "3 Check product" << endl;
-        cout << "4 confirm" << endl;
-        cout << "0 Cancle" << endl;
-        cout << "input : ";
-        cin >> choice;
-        if (choice == 1)
+        try
         {
-            addProduct();
+            cout << "1 Add product" << endl;
+            cout << "2 Remove product" << endl;
+            cout << "3 Check product" << endl;
+            cout << "4 confirm" << endl;
+            cout << "0 Cancle" << endl;
+            cout << "input : ";
+            cin >> choice;
+            if (cin.fail())
+                throw 1;
+            if (choice == 1)
+            {
+                addProduct();
+            }
+            else if (choice == 2)
+            {
+                removeProduct();
+            }
+            else if (choice == 3)
+            {
+                checkProduct();
+            }
+            else if (choice == 4)
+            {
+                confirm();
+                break;
+            }
+            else if (choice == 0)
+            {
+                break;
+            }
+            else
+            {
+                cout << "Please input 1 - 4" << endl;
+                sleep(1);
+            }
         }
-        else if (choice == 2)
+        catch(...)
         {
-            removeProduct();
-        }
-        else if (choice == 3)
-        {
-            checkProduct();
-        }
-        else if (choice == 4)
-        {
-            confirm();
-            break;
-        }
-        else if (choice == 0)
-        {
-            break;
-        }
-        else
-        {
-            cout << "Please input 1 - 4" << endl;
+            cout << "Error: Invalid input. Please enter a valid option." << endl;
+            cin.clear(); // Clear the error flag
+            cin.ignore(50, '\n'); // Discard invalid input
             sleep(1);
         }
     }
@@ -110,19 +116,40 @@ void sendOrderFormatHQ::addProduct()
     int amount;
     while (1)
     {
-        cout << "Add product name : ";
-        cin >> nameP;
-        if (checkError(nameP) == 0)
+        while (1)
         {
-            break;
-        }
-        else
-        {
-            cout << "Error try again" << endl;
+            try{
+                cout << "Add product name : ";
+                getline(cin, nameP);
+                checkInputStr(nameP);
+                break;
+            }
+            catch (string str)
+            {
+                cout << str << endl;
+                cin.clear();
+                cin.ignore(50, '\n');
+            }
         }
     }
     cout << "Add amount : ";
-    cin >> amount;
+    while (1)
+    {
+        try{
+            cin >> amount;
+            if (cin.fail())
+                throw 1;
+            break;
+        }
+        catch(...)
+        {
+            cout << "Error: Invalid input. Please enter a valid option." << endl;
+            cin.clear(); // Clear the error flag
+            cin.ignore(50, '\n'); // Discard invalid input
+            sleep(1);
+        }
+
+    }
     add_NODE(nameP, amount);
     itemAmount += 1;
 }
