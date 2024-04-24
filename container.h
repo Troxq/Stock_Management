@@ -36,13 +36,21 @@ class container{
 
         //access customer
         customer * return_customer_pointer(string);
+        customer * return_customer_head_ptr();
         int container_transfer_in_container(string,string, string); //owner, receiver, item_id
         int customer_add_item(string, string ,string);
         int customer_transfer_item_in(string, string, string);
         int customer_delete_item(string,string);
+        int return_customer_amount();
 };
 
+int container::return_customer_amount(){
+    return customer_amount;
+}
 
+customer * container::return_customer_head_ptr(){
+    return customer_head_ptr;
+}
 
 bool container::is_customer_there(string customer_name){
     customer * t;

@@ -145,18 +145,8 @@ int main()
     HQptr->add_container("2");
     HQptr->HQ_add_customer("2", "got");
     HQptr->HQ_add_item("2", "got", NextItemID, "pencil");
+    HQptr->HQ_delete_item("00001");
 
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-
-    HQptr->HQ_add_item("2", "got", NextItemID, "pencil");
-    
     //HQptr->HQ_delete_item
     //load file()
     HQptr->print_all_container();
@@ -173,7 +163,7 @@ int main()
     //HQptr->print_all_container();
 
     
-    //save_file();
+    save_file(HQptr);
     
     delete(HQptr);
     

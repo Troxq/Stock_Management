@@ -44,7 +44,32 @@ class HQ{
 };
 
 int HQ::HQ_delete_item(string item_id){
-    container * tempContainer;
+
+    container * t_con;
+    t_con = container_head_ptr;
+    for(int i = 0; i < container_amount; i++){
+
+        customer * t_cus = t_con->return_customer_head_ptr();
+        for(int j =0; j < t_con->return_customer_amount(); j++){
+            
+            item * t_item = t_cus -> return_item_head_str();
+            for(int k =0; k < t_cus->return_item_amount();k++){
+                if((t_item->return_id()).compare(item_id)==0){
+                    t_cus->delete_item(item_id);
+                    return 1;
+                }
+                t_item = t_item -> return_next_item();
+            }
+            
+
+            t_cus = t_cus->return_next_customer();
+        }
+
+        
+
+        t_con=t_con->return_next_container();
+    }
+    return 0;
 }
 
 

@@ -25,6 +25,7 @@ class customer{
         //container method
         customer(string="default_customer",int=0);
         void show_item_amount();
+        int return_item_amount();
         int add_item(string,string);
         int transfer_item_in(string, string);
         int delete_item(string);
@@ -32,6 +33,8 @@ class customer{
         void print_all_item();
         void delete_all_item();
         item * return_item_pointer(string="no_input");
+        item * return_item_head_str();
+
 
         //node method
         void set_next_customer_ptr(customer*);
@@ -39,6 +42,14 @@ class customer{
         customer * return_next_customer();
         void incrementID();
 };
+
+item * customer::return_item_head_str(){
+    return item_head_ptr;
+}
+
+int customer::return_item_amount(){
+    return item_amount;
+}
 
 void customer::incrementID() {
     int number;
