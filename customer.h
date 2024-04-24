@@ -38,6 +38,8 @@ class customer{
         string return_name();//for check, delete later
         customer * return_next_customer();
         void incrementID();
+        item * return_item_head();
+        int return_item_amount();
 };
 
 void customer::incrementID() {
@@ -200,8 +202,15 @@ string customer::return_name(){
     return customer_name;
 }
 
+item* customer::return_item_head(){
+    return item_head_ptr;
+}
+
 customer * customer::return_next_customer(){
     return next_customer_ptr;
+}
+int customer::return_item_amount(){
+    return item_amount;
 }
 
 #endif

@@ -32,6 +32,8 @@ class HQ{
         container * return_container_pointer(string="no_input");
         int show_customer_in_container(string="no_input");
         void delete_all_container();
+        int return_container_amount();
+        container * return_container_head();
 
         //for Manager & Staff
         int HQ_transfer_in_container(string="no_input",string="no_input", string="no_input", string="no_input"); //owner, item, receiver
@@ -43,11 +45,18 @@ class HQ{
         int HQ_delete_item(string="no_input");
 };
 
+container * HQ::return_container_head(){
+    return container_head_ptr;
+}
+
 int HQ::HQ_delete_item(string item_id){
     container * tempContainer;
     return 1;
 }
 
+int HQ::return_container_amount(){
+    return container_amount;
+}
 
 int HQ::HQ_transfer_in_container(string container_name,string owner_name, string receiver_name, string item_id){
     if(check_no_input(4,container_name, owner_name, receiver_name, item_id)){

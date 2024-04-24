@@ -21,7 +21,7 @@ class container{
         ~container();
         //linkedlist method
         container(string,int=0);
-        void show_customer_amount(); // how many items;
+        int return_customer_amount(); // how many items;
         int add_customer(string);
         int delete_customer(string);
         void delete_all_customer();
@@ -33,6 +33,7 @@ class container{
         string return_name();//for check, delete later
         container * return_next_container();
         bool is_customer_there(string);
+        customer * return_customer_head();
 
         //access customer
         customer * return_customer_pointer(string);
@@ -42,7 +43,9 @@ class container{
         int customer_delete_item(string,string);
 };
 
-
+customer * container::return_customer_head(){
+    return customer_head_ptr;
+}
 
 bool container::is_customer_there(string customer_name){
     customer * t;
@@ -194,8 +197,8 @@ container::container(string inName,int inAmount){
     customer_amount=inAmount;
 }
 
-void container::show_customer_amount(){
-    cout<<customer_amount<<endl;
+int container::return_customer_amount(){
+    return customer_amount;
 }
 
 int container::add_customer(string customer_name){

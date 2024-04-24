@@ -14,6 +14,84 @@ using namespace std;
 string NextItemID; 
 
 //load functions
+vector<vector<string>> read_file_and_return_container_vector(const string&);
+int load_file_into_HQptr(HQ *&);
+
+//save function
+
+vector<vector<string>> read_container_and_return_vector(string);
+int save_file(HQ*);
+
+int main()
+{
+    HQ * HQptr = new HQ("W",0);
+    load_file_into_HQptr(HQptr);
+
+    
+    
+    //HQptr->HQ_delete_item
+    //load file()
+    HQptr->print_all_container();
+
+
+    //HQptr->print_all_container();
+
+    
+    save_file(HQptr);
+    
+    delete(HQptr);
+    
+
+}
+
+
+int save_file(HQ* HQptr) {
+    ofstream writingHQfile("HQ.csv");
+    if(writingHQfile.is_open()){
+        writingHQfile<<"id,"<<NextItemID<<","<<"\n";//store item id
+
+        container * tempContainer;
+        tempContainer= HQptr->return_container_head();
+        int HQsize = HQptr->return_container_amount();
+        for(int i = 0 ; i<HQsize; i++){
+            writingHQfile<<tempContainer->return_name()<<",";
+
+            string containerfilename = "container_"+tempContainer->return_name()+".csv";
+            ofstream writingContainerfile(containerfilename);
+            if(writingContainerfile.is_open()){
+
+                customer * tempCustomer = tempContainer->return_customer_head();
+                for(int j = 0; j < tempContainer->return_customer_amount();j++){
+                    writingContainerfile<<tempCustomer->return_name()<<",";
+
+                    item* tempItem = tempCustomer->return_item_head();
+                    for(int k = 0 ; k < tempCustomer->return_item_amount();k++){
+                        writingContainerfile<<tempItem->return_id()<<","<<tempItem->return_name()<<",";
+                        tempItem = tempItem->return_next_item();
+                    }
+                    writingContainerfile<<"\n";
+
+                    tempCustomer = tempCustomer->return_next_customer(); ////move tempcustomer
+                }
+            }
+            else {
+                std::cerr << "Unable to open file: " << containerfilename << std::endl;
+            }
+            cout<<"Container "<<tempContainer->return_name()<<"\'s data are stored in file \""<<containerfilename<<"\""<<endl;
+            writingContainerfile.close();
+
+            tempContainer = tempContainer->return_next_container(); //move tempcontainer
+        }
+        cout<<"write all changes into \"HQ.csv\" file"<<endl;
+        writingHQfile.close();
+        return 1;
+    }
+    std::cerr << "Unable to open file: HQ.csv" << std::endl;
+    return 0;
+    
+
+}
+
 vector<vector<string>> read_file_and_return_container_vector(const string& container_filename) {
     ifstream file(container_filename);
     vector<vector<string>> data;
@@ -33,6 +111,7 @@ vector<vector<string>> read_file_and_return_container_vector(const string& conta
     return data;
 
 }
+
 
 int load_file_into_HQptr(HQ *& inHQptr){
     string HQfilename = "HQ.csv";
@@ -70,112 +149,4 @@ int load_file_into_HQptr(HQ *& inHQptr){
         }
     }
     return 1;
-}
-
-
-
-
-//save function
-/*
-
-vector<vector<string>> read_container_and_return_vector(string container_id){
-    string prefix = "container_";
-    string suffix = ".csv";
-    s
-    ifstream file(filename);
-    vector<vector<string>> data;
-    string line;
-    while (getline(file, line)) {
-        stringstream ss(line);
-        vector<string> row;
-        string cell;
-        while (getline(ss, cell, ',')) {
-            row.push_back(cell);
-        }
-        data.push_back(row);
-    }
-
-    file.close();
-    
-    return data;
-}
-
-int save_file(const string& containerId, const HQ* inHQptr) {
-    string prefix = "container_";
-    string suffix = ".csv";
-
-    string filename = prefix + containerId + suffix;
-
-    ofstream outfile(filename);
-
-    if (!outfile) {
-        cerr << "Error: Unable to open file: " << filename << endl;
-        return 0; // Return 0 to indicate failure
-    }
-
-    // Assuming you have appropriate getter methods in the HQ class
-    vector<vector<string>> data = inHQptr->get_container_data(containerId);
-
-    // Writing data to the CSV file
-    for (const auto& row : data) {
-        for (size_t i = 0; i < row.size(); ++i) {
-            outfile << row[i];
-            if (i != row.size() - 1) {
-                outfile << ","; // Add comma between elements
-            }
-        }
-        outfile << endl; // Newline after each row
-    }
-
-    outfile.close();
-    return 1; // Return 1 to indicate success
-}
-*/
-
-
-int main()
-{
-    HQ * HQptr = new HQ("W",0);
-    load_file_into_HQptr(HQptr);
-
-    cout<<"Next item id : "<<NextItemID<<endl;
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Macbook");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-
-    HQptr->add_container("2");
-    HQptr->HQ_add_customer("2", "got");
-    HQptr->HQ_add_item("2", "got", NextItemID, "pencil");
-
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-    HQptr->HQ_add_item("1", "customer_1", NextItemID,"Computer");
-
-    HQptr->HQ_add_item("2", "got", NextItemID, "pencil");
-    
-    //HQptr->HQ_delete_item
-    //load file()
-    HQptr->print_all_container();
-
-    
-
-
-
-
-    //delete old save file and create new / overwrite
-    // -- here --
-    //
-
-    //HQptr->print_all_container();
-
-    
-    //save_file();
-    
-    delete(HQptr);
-    
-
 }
