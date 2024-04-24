@@ -18,6 +18,7 @@ private:
 public:
     headLinkList(int = 0, string="", string="");
     void delete_LinkedList(string);
+    void delete_LinkedList_id(int);
     void delete_LinkedList(string, string, int = 0);
     void delete_LinkedList(string, string, int, string, int);
     void delete_LinkedList(string, string, int, string, int, string, int);
@@ -91,6 +92,33 @@ void headLinkList::delete_LinkedList(string nameOwner)
             }
             cout << t->return_name() << " has been deleted" << endl;
             delete t;
+            sizeNodeinLinkList -= 1;
+        }
+    }
+}
+
+void headLinkList::delete_LinkedList_id(int id)
+{
+
+    LinkedList *currentPtr, *previousPtr;
+    currentPtr = holLinkedList;
+    previousPtr = NULL;
+
+    if (sizeNodeinLinkList > 0)
+    {
+        if (currentPtr->return_idContainer() != id)
+        {
+            if (holLinkedList->move_next() != NULL)
+            {
+                holLinkedList = holLinkedList->move_next();
+                holLinkedList->set_back_LinkList_ptr(NULL);
+                cout << currentPtr->return_name() << " has been deleted" << endl;
+            }
+            else
+            {
+                holLinkedList = NULL;
+            }
+            free(currentPtr);
             sizeNodeinLinkList -= 1;
         }
     }
@@ -670,10 +698,12 @@ void headLinkList::displaySendOrderManager()
             }
             else if (choice == 3)
             {
-                string name;
+                string nameLL;
 
-                name = t->return_name();
+                nameLL = t->return_name();
                 int type = t->return_duty();
+                int ID = t->return_idContainer();
+
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
@@ -692,10 +722,13 @@ void headLinkList::displaySendOrderManager()
                 // cout << "test" << endl;
                 // cin >> a;
 
-                delete_LinkedList(name, "OrderStaffDatabase.csv", 0, "OrderStatusHQDatabase.csv", 1, "OrderStatusManagerDatabase.csv", 0);
+                delete_LinkedList(nameLL, "OrderStaffDatabase.csv", 0, "OrderStatusHQDatabase.csv", 1, "OrderStatusManagerDatabase.csv", 0);
                 load_data_other("OrderManagerDatabase.csv");
                 save_data_LinkList("OrderManagerDatabase.csv");
                 send_order(name, role, id, type);
+
+                for (int i = sizeNodeinLinkList - 1; i > 0; i--)
+                    delete_LinkedList_id(ID);
 
                 // cout << "finish" << endl;
                 // cin >> a;
@@ -780,6 +813,8 @@ void headLinkList::displayOrderStatusManager()
 
                 nameLL = t->return_name();
                 status = t->return_status();
+                int ID = t->return_idContainer();
+
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
@@ -798,12 +833,18 @@ void headLinkList::displayOrderStatusManager()
                     delete_LinkedList(nameLL, "OrderStatusHQDatabase.csv", 3);
                     load_data_other("OrderStatusManagerDatabase.csv");
                     save_data_LinkList("OrderStatusManagerDatabase.csv");
+
+                    for (int i = sizeNodeinLinkList - 1; i > 0; i--)
+                        delete_LinkedList_id(ID);
                 }
                 else
                 {
                     delete_LinkedList(nameLL, "OrderStatusHQDatabase.csv", 2);
                     load_data_other("OrderStatusManagerDatabase.csv");
                     save_data_LinkList("OrderStatusManagerDatabase.csv");
+
+                    for (int i = sizeNodeinLinkList - 1; i > 0; i--)
+                        delete_LinkedList_id(ID);
                 }
                 len -= 1;
             }
@@ -885,6 +926,8 @@ void headLinkList::displayOrderStatusStaff()
                 string nameLL;
 
                 nameLL = t->return_name();
+                int ID = t->return_idContainer();
+
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
@@ -907,6 +950,8 @@ void headLinkList::displayOrderStatusStaff()
                 string nameLL;
 
                 nameLL = t->return_name();
+                int ID = t->return_idContainer();
+
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
@@ -922,6 +967,10 @@ void headLinkList::displayOrderStatusStaff()
                 delete_LinkedList(nameLL, "OrderStatusManagerDatabase.csv", 2);
                 load_data_other("OrderStaffDatabase.csv");
                 save_data_LinkList("OrderStaffDatabase.csv");
+
+                for (int i = sizeNodeinLinkList - 1; i > 0; i--)
+                    delete_LinkedList_id(ID);
+
                 len -= 1;
             }
             else if (choice == 0)
