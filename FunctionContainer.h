@@ -78,15 +78,11 @@ void exportproduct(int role_id)
     cout << "Container ID :" << role_id << endl;
     cout << "Input Customer Name : ";
     cin >> input_customer;
-    cout << "Input Item Name : ";
-    cin >> input_item;
     cout << "Input Item ID : ";
     cin >> input_item_id;
 
-    // container 
+    HQptr->delete_item_HQ(input_container_id,input_customer,input_item_id);
 
-
-    // tum ngai
     save_file(HQptr);
 
     delete(HQptr);

@@ -43,6 +43,7 @@ class HQ{
         int HQ_transfer_item(string="no_input", string="no_input", string="no_input",string ="no_input");
         int HQ_add_item(string="no_input", string="no_input", string="no_input",string ="no_input"); //need container, customer name, item name
         int HQ_delete_item(string="no_input");
+        int delete_item_HQ(string, string, string);
 };
 
 container * HQ::return_container_head(){
@@ -63,6 +64,24 @@ int HQ::HQ_delete_item(string item_id){
 int HQ::return_container_amount(){
     return container_amount;
 }
+
+int HQ::delete_item_HQ(string container_name, string owner_name, string item_id) {
+    if (check_no_input(3, container_name, owner_name, item_id)) {
+        //if wrong input
+        return 0;
+    }
+
+    container *container_ptr = return_container_pointer(container_name);
+    cout << "Got ID to delete" << endl;
+    if (container_ptr) {
+        if (container_ptr->customer_delete_item(owner_name, item_id)) {
+            return 1;
+        }
+    }
+    cout << "can't delete" << endl;
+    return 0;
+}
+
 
 int HQ::HQ_transfer_in_container(string container_name,string owner_name, string receiver_name, string item_id){
     if(check_no_input(4,container_name, owner_name, receiver_name, item_id)){
