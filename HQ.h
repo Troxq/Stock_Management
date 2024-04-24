@@ -71,7 +71,7 @@ int HQ::HQ_transfer_in_container(string container_name,string owner_name, string
     }
 
     container * container_ptr = return_container_pointer(container_name);
-
+    cout<<"get container ptr"<<endl;
     if(container_ptr){
         if(container_ptr->container_transfer_in_container(owner_name, receiver_name, item_id)){
             return 1;
@@ -96,13 +96,13 @@ int HQ::HQ_transfer_over_container(string customer_name, string origin_container
         return 0;
     }
 
-    if((origin_ptr->is_customer_there(customer_name))&&(des_ptr->is_customer_there(customer_name)) ){
-        item * moved_item = (origin_ptr->return_customer_pointer(customer_name))->return_item_pointer(item_id);
-        if(origin_ptr->customer_delete_item(customer_name,item_id)){
-            des_ptr->customer_transfer_item_in(customer_name,item_id,moved_item->return_name());
-            cout<<"transfer "<<item_id<<" complete"<<endl;
-            return 1;
-        }
+
+    item * moved_item = (origin_ptr->return_customer_pointer(customer_name))->return_item_pointer(item_id);
+    string itemname = moved_item->return_name();
+    if(origin_ptr->customer_delete_item(customer_name,item_id)){
+        des_ptr->customer_transfer_item_in(customer_name,item_id,itemname);
+        cout<<"transfer "<<item_id<<" complete"<<endl;
+        return 1;
     }
     return 0;
 }

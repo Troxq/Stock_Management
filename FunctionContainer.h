@@ -99,6 +99,7 @@ void transferproduct(int role_id)
     load_file_into_HQptr(HQptr);
 
     string input_container_id = to_string(role_id);
+    string input_container_id_2;
     string input_customer, input_receiver, input_item, input_item_id;
 
     int input_choice;
@@ -115,7 +116,7 @@ void transferproduct(int role_id)
         cout << "Input Customer Name : ";
         cin >> input_customer;
         cout << "Input Reciever Name : ";
-        cin >> input_item;
+        cin >> input_receiver;
         cout << "Input Item ID : ";
         cin >> input_item_id;
 
@@ -127,10 +128,20 @@ void transferproduct(int role_id)
         cout << "+++++Transfer Outside Container+++++" << endl;
         cout << "Input Customer Name : ";
         cin >> input_customer;
-        cout << "Input Item Name : ";
-        cin >> input_item;
+        cout << "Input Container ID to transfer : ";
+        cin >> input_container_id_2;
         cout << "Input Item ID : ";
         cin >> input_item_id;
+        
+        if(isNameExists(input_container_id_2,input_customer))
+        {
+            HQptr->HQ_transfer_over_container(input_customer,input_container_id,input_container_id_2,input_item_id);
+        }
+        else
+        {
+            HQptr->HQ_add_customer(input_container_id_2,input_customer); // add customer if they didn't exist
+            HQptr->HQ_transfer_over_container(input_customer,input_container_id,input_container_id_2,input_item_id);
+        }
     }
     
     save_file(HQptr);

@@ -79,10 +79,12 @@ int container::container_transfer_in_container(string owner_name, string receive
     customer * owner_ptr = return_customer_pointer(owner_name);
     customer * receiver_ptr = return_customer_pointer(receiver_name);
     item * t = owner_ptr->return_item_pointer(item_id);
+    string tname = t->return_name();
+    cout<<"still okay"<<endl;
     if(owner_ptr == NULL || receiver_ptr == NULL){
         return 0;
     }
-    if((owner_ptr -> delete_item(item_id)) && (receiver_ptr -> transfer_item_in(item_id, t->return_name()))){
+    if((owner_ptr -> delete_item(item_id)) && (receiver_ptr -> transfer_item_in(item_id, tname))){
         return 1;
     }
     

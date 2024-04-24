@@ -318,11 +318,11 @@ public:
             }
             else if (choice == 2)
             {
-                // export();
+                exportproduct(this->id);
             }
             else if (choice == 3)
             {
-                // transfer();
+                transferproduct(this->id);
             }
             else if (choice == 4)
             {
