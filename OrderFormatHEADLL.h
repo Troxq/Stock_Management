@@ -78,8 +78,6 @@ void headLinkList::delete_LinkedList(string nameOwner)
         {
             for (int len = sizeNodeinLinkList - 1; len > 0 && currentPtr->return_name() != nameOwner; len--)
             {
-                // cout << "currentPtr : " << currentPtr->return_name() << "     |    nameOwner : " << nameOwner << endl;
-                // cout << "eiei" << endl;
                 previousPtr = currentPtr;
                 currentPtr = currentPtr->move_next();
             }
@@ -291,19 +289,16 @@ void headLinkList::save_data_LinkList(string nameFile, int status)
         return ;
     if (myfile.is_open()) 
     {
-        // Traverse to the last linked list
         while (t->move_next() != NULL)
         {
             t = t->move_next();
         }
 
-        // Traverse backward through the linked lists
         while (t != NULL)
         {
             myfile << t->return_sendIdContainer() << "," << t->return_duty() << "," << t->return_idContainer() << "," << status << "," << t->return_name() << "," << t->return_size();
-            NODE *y = t->return_node(); // Start from the first node
+            NODE *y = t->return_node(); 
             
-            // Traverse forward through the nodes
             for (int j = 0; j < t->return_size(); j++)
             {
                 myfile << "," << y->return_name() << "," << y->return_amount();
@@ -313,7 +308,7 @@ void headLinkList::save_data_LinkList(string nameFile, int status)
             t = t->move_back();
         }
         // cout << "Data has been appended and saved in reverse order." << endl;
-        myfile.close(); // Close the file inside the loop
+        myfile.close(); 
     }
     else 
     {
@@ -334,14 +329,10 @@ void headLinkList::add_LinkedList(LinkedList *&A){
 
 void headLinkList::load_data(string namefile)
 {
-    // File pointer
     ifstream fin;
 
-    // Open an existing file
     fin.open(namefile);
 
-    // Read the Data from the file
-    // as String Vector
     vector<string> row;
     string line, word;
 
@@ -349,11 +340,8 @@ void headLinkList::load_data(string namefile)
     {
         row.clear();
 
-        // used for breaking words
         stringstream s(line);
 
-        // read every column data of a row and
-        // store it in a string variable, 'word'
         while (getline(s, word, ','))
         {
             row.push_back(word);
@@ -408,14 +396,10 @@ void headLinkList::load_data(string namefile)
 
 void headLinkList::load_data_other(string namefile)
 {
-    // File pointer
     ifstream fin;
 
-    // Open an existing file
     fin.open(namefile);
 
-    // Read the Data from the file
-    // as String Vector
     vector<string> row;
     string line, word;
 
@@ -423,11 +407,8 @@ void headLinkList::load_data_other(string namefile)
     {
         row.clear();
 
-        // used for breaking words
         stringstream s(line);
 
-        // read every column data of a row and
-        // store it in a string variable, 'word'
         while (getline(s, word, ','))
         {
             row.push_back(word);
@@ -482,68 +463,57 @@ void headLinkList::load_data_other(string namefile)
 
 void headLinkList::load_data_HQ(string namefile)
 {
-    // File pointer
+
     ifstream fin;
 
-    // Open an existing file
     fin.open(namefile);
-
-    // Read the Data from the file
-    // as String Vector
-    vector<string> row;
-    string line, word;
-
-    while (getline(fin, line))
+    if (fin.is_open())
     {
-        row.clear();
+        vector<string> row;
+        string line, word;
 
-        // used for breaking words
-        stringstream s(line);
-
-        // read every column data of a row and
-        // store it in a string variable, 'word'
-        while (getline(s, word, ','))
+        while (getline(fin, line))
         {
-            row.push_back(word);
-        }
+            row.clear();
 
-        int sendId = stoi(row[0]);
+            stringstream s(line);
 
-        int idContainer = stoi(row[2]);
-
-        int duty = stoi(row[1]);
-    
-        int status = stoi(row[3]);
-        string nameStatus;
-        switch (status)
-        {
-            case 0 : nameStatus = "Pending"; break;
-            case 1 : nameStatus = "Confirm"; break;
-            case 2 : nameStatus = "Finish"; break;
-            case 3 : nameStatus = "Deny"; break;
-        }
-        string nameLinklist = row[4];
-        int size = stoi(row[5]);
-        // int sizeLinkList = stoi(row[1]) / 2;
-
-        // cout << "size = " << size << endl;
-        // cout << "size \\ 2 = " << size / 2 << endl;
-        // cin >> size;
-        LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus, idContainer, duty, sendId);
-
-        if (size > 0)
-        {
-            for (int i = row.size() - 1; i >= 6; i -= 2)
+            while (getline(s, word, ','))
             {
-                owner->add_NODE(row[i - 1], stoi(row[i]));
+                row.push_back(word);
             }
-        }
-        // owner->displayAll();
-        this->add_LinkedList(owner);
-        // sizeNodeinLinkList += 1;
-    }
 
-    fin.close();
+            int sendId = stoi(row[0]);
+
+            int idContainer = stoi(row[2]);
+
+            int duty = stoi(row[1]);
+        
+            int status = stoi(row[3]);
+            string nameStatus;
+            switch (status)
+            {
+                case 0 : nameStatus = "Pending"; break;
+                case 1 : nameStatus = "Confirm"; break;
+                case 2 : nameStatus = "Finish"; break;
+                case 3 : nameStatus = "Deny"; break;
+            }
+            string nameLinklist = row[4];
+            int size = stoi(row[5]);
+
+            LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus, idContainer, duty, sendId);
+
+            if (size > 0)
+            {
+                for (int i = row.size() - 1; i >= 6; i -= 2)
+                {
+                    owner->add_NODE(row[i - 1], stoi(row[i]));
+                }
+            }
+            this->add_LinkedList(owner);
+        }
+        fin.close();
+    }
 }
 
 void headLinkList::displayOrderStatusHQ()
@@ -574,16 +544,12 @@ void headLinkList::displayOrderStatusHQ()
             if (t->return_status() == 2 || t->return_status() == 3)
                 cout << "3 Finish" << endl;
             cout << "0 Exit" << endl;
-            // cout << "sizeNode : " << sizeNodeinLinkList << endl;
-            // cout << "len : " << len << endl;
-            // cout << "sizeHead : " << sizeHeadLinkList << endl;
             cout << "Input : ";
             cin >> choice;
             if (cin.fail()) 
             {
                 throw 1;
             }
-            // cout << "input 2 for back"
             if (choice == 1)
             {
                 len += 1;
@@ -594,7 +560,6 @@ void headLinkList::displayOrderStatusHQ()
                 else
                     len = (sizeNodeinLinkList - 1);
             }
-            // printf()
             else if (choice == 2)
             {
                 len -= 1;
@@ -611,12 +576,10 @@ void headLinkList::displayOrderStatusHQ()
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
-                    // len += 1;
                 }
                 else if (t->move_back() != NULL)
                 {
                     t = t->move_back();
-                    // len -= 1;
                 }
                 else
                     t = NULL;
@@ -630,12 +593,23 @@ void headLinkList::displayOrderStatusHQ()
             {
                 break;
             }
+            else
+            {
+                if (t->return_status() == 2 || t->return_status() == 3)
+                {
+                    cout << "Error: Invalid input. Please input 0 - 3" << endl; 
+                }
+                else
+                {
+                    cout << "Error: Invalid input. Please input 0 - 2" << endl;
+                }
+            }
         }
         catch(...)
         {
             cout << "Error: Invalid input. Please enter a valid option." << endl;
-            cin.clear(); // Clear the error flag
-            cin.ignore(50, '\n'); // Discard invalid input
+            cin.clear(); 
+            cin.ignore(50, '\n'); 
             sleep(1);
         }
     }
@@ -668,16 +642,12 @@ void headLinkList::displaySendOrderManager()
             cout << "2 Back order" << endl;
             cout << "3 Send to staff" << endl;
             cout << "0 Exit" << endl;
-            // cout << "sizeNode : " << sizeNodeinLinkList << endl;
-            // cout << "len : " << len << endl;
-            // cout << "sizeHead : " << sizeHeadLinkList << endl;
             cout << "Input : ";
             cin >> choice;
             if (cin.fail()) 
             {
                 throw 1;
             }
-            // cout << "input 2 for back"
             if (choice == 1)
             {
                 len += 1;
@@ -688,7 +658,6 @@ void headLinkList::displaySendOrderManager()
                 else
                     len = (sizeNodeinLinkList - 1);
             }
-            // printf()
             else if (choice == 2)
             {
                 len -= 1;
@@ -708,20 +677,13 @@ void headLinkList::displaySendOrderManager()
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
-                    // len += 1;
                 }
                 else if (t->move_back() != NULL)
                 {
                     t = t->move_back();
-                    // len -= 1;
                 }
                 else
                     t = NULL;
-
-                // cout << "test" << endl;
-                // string a;
-                // cout << "test" << endl;
-                // cin >> a;
 
                 delete_LinkedList(nameLL, "OrderStaffDatabase.csv", 0, "OrderStatusHQDatabase.csv", 1, "OrderStatusManagerDatabase.csv", 0);
                 load_data_other("OrderManagerDatabase.csv");
@@ -731,20 +693,21 @@ void headLinkList::displaySendOrderManager()
                 for (int i = sizeNodeinLinkList - 1; i > 0; i--)
                     delete_LinkedList_id(ID);
 
-                // cout << "finish" << endl;
-                // cin >> a;
-                // len -= 1;
             }
             else if (choice == 0)
             {
                 break;
             }
+            else
+            {
+                cout << "Error: Invalid input. Please input 0 - 3" << endl;
+            }
         }
         catch(...)
         {
             cout << "Error: Invalid input. Please enter a valid option." << endl;
-            cin.clear(); // Clear the error flag
-            cin.ignore(50, '\n'); // Discard invalid input
+            cin.clear(); 
+            cin.ignore(50, '\n'); 
             sleep(1);
         }
     }
@@ -778,16 +741,12 @@ void headLinkList::displayOrderStatusManager()
             if (t->return_status() == 2 || t->return_status() == 3)
                 cout << "3 Finish" << endl;
             cout << "0 Exit" << endl;
-            // cout << "sizeNode : " << sizeNodeinLinkList << endl;
-            // cout << "len : " << len << endl;
-            // cout << "sizeHead : " << sizeHeadLinkList << endl;
             cout << "Input : ";
             cin >> choice;
             if (cin.fail()) 
             {
                 throw 1;
             }
-            // cout << "input 2 for back"
             if (choice == 1)
             {
                 len += 1;
@@ -798,7 +757,6 @@ void headLinkList::displayOrderStatusManager()
                 else
                     len = (sizeNodeinLinkList - 1);
             }
-            // printf()
             else if (choice == 2)
             {
                 len -= 1;
@@ -819,12 +777,10 @@ void headLinkList::displayOrderStatusManager()
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
-                    // len += 1;
                 }
                 else if (t->move_back() != NULL)
                 {
                     t = t->move_back();
-                    // len -= 1;
                 }
                 else
                     t = NULL;
@@ -853,12 +809,24 @@ void headLinkList::displayOrderStatusManager()
             {
                 break;
             }
+            else
+            {
+                int status = t->return_status();
+                if (status == 2 || status == 3)
+                {
+                    cout << "Error: Invalid input. Please input 0 - 3" << endl;
+                }
+                else
+                {
+                    cout << "Error: Invalid input. Please input 0 - 2" << endl;
+                }
+            }
         }
         catch(...)
         {
             cout << "Error: Invalid input. Please enter a valid option." << endl;
-            cin.clear(); // Clear the error flag
-            cin.ignore(50, '\n'); // Discard invalid input
+            cin.clear(); 
+            cin.ignore(50, '\n'); 
             sleep(1);
         }
     }
@@ -893,16 +861,12 @@ void headLinkList::displayOrderStatusStaff()
             cout << "3 deny order" << endl;
             cout << "4 Finish" << endl;
             cout << "0 Exit" << endl;
-            // cout << "sizeNode : " << sizeNodeinLinkList << endl;
-            // cout << "len : " << len << endl;
-            // cout << "sizeHead : " << sizeHeadLinkList << endl;
             cout << "Input : ";
             cin >> choice;
             if (cin.fail()) 
             {
                 throw 1;
             }
-            // cout << "input 2 for back"
             if (choice == 1)
             {
                 len += 1;
@@ -913,7 +877,6 @@ void headLinkList::displayOrderStatusStaff()
                 else
                     len = (sizeNodeinLinkList - 1);
             }
-            // printf()
             else if (choice == 2)
             {
                 len -= 1;
@@ -932,12 +895,10 @@ void headLinkList::displayOrderStatusStaff()
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
-                    // len += 1;
                 }
                 else if (t->move_back() != NULL)
                 {
                     t = t->move_back();
-                    // len -= 1;
                 }
                 else
                     t = NULL;
@@ -956,12 +917,10 @@ void headLinkList::displayOrderStatusStaff()
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
-                    // len += 1;
                 }
                 else if (t->move_back() != NULL)
                 {
                     t = t->move_back();
-                    // len -= 1;
                 }
                 else
                     t = NULL;
@@ -978,12 +937,16 @@ void headLinkList::displayOrderStatusStaff()
             {
                 break;
             }
+            else
+            {
+                    cout << "Error: Invalid input. Please input 0 - 4" << endl;
+            }
         }
         catch(...)
         {
             cout << "Error: Invalid input. Please enter a valid option." << endl;
-            cin.clear(); // Clear the error flag
-            cin.ignore(50, '\n'); // Discard invalid input
+            cin.clear(); 
+            cin.ignore(50, '\n');
             sleep(1);
         }
     }
