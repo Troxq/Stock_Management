@@ -8,7 +8,7 @@
 
 #include "UserSystem.h"
 #include "Logmain.cpp"
-// #include "Report.h"
+#include "Report.h"
 // #include "FunctionContainer.h"
 using namespace std;
 
@@ -268,7 +268,7 @@ public:
             }
             else if (choice == 4)
             {
-                // ReportMainMenu();
+                ReportMainMenu();
             }
             else if (choice == 5)
             {
@@ -348,7 +348,7 @@ public:
             }
             else if (choice == 3)
             {
-                // report();
+                ReportMainMenuforManager(this->id);
             }
             else if (choice == 0)
             {
