@@ -6,6 +6,7 @@
 #include <cstring>
 #include <cstdlib>
 #include "Log.h"
+#include "FunctionContainer.h"
 
 using namespace std;
 
@@ -19,8 +20,91 @@ bool roleCheck(string &, string &, string);
 
 int returnID(string &, string &, string &, string);
 
+void initCSV();
+
+void initCSV()
+{
+    string filename = "Database/HQ.csv";
+    ifstream fileCheck(filename);
+    if (fileCheck) 
+    {
+        // cout << "Initailize HQ.csv ........." << endl;
+        // sleep(1);
+        return;
+    }
+
+    ofstream file(filename, ios::out | ios::app);
+    if (file.is_open()) 
+    {
+        file << "id,00000,\n";
+        file.close();
+    } 
+    else 
+    {
+        cerr << "Unable to open file: " << filename << endl;
+    } 
+}
+
+void initOrderCSV() 
+{
+    vector<string> filenames = {"OrderManagerDatabase.csv", 
+                                "OrderStaffDatabase.csv", 
+                                "OrderStatusHQDatabase.csv", 
+                                "OrderStatusManagerDatabase.csv",
+                                "userdatabase.csv"};
+
+    for (const string& filename : filenames) 
+    {
+        ifstream fileCheck(filename);
+        if (fileCheck) 
+        {
+            // cout << "Initialize " << filename << " .........." << endl;
+            // sleep(1);
+            continue;
+        }
+
+        ofstream file(filename, ios::out | ios::app);
+        if (file.is_open()) 
+        {
+            file.close();
+        } 
+        else 
+        {
+            cerr << "Unable to open file: " << filename << endl;
+        }
+    }
+}
+
 //HQ FUNCTION
 void createUser();
+
+bool ManagerCheck(const string &, int);
+
+bool ManagerCheck(const string& filename, int id) 
+{
+    ifstream file(filename);
+
+    string line;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string username, password, role;
+        int currentId;
+
+        if (getline(ss, username, ',') &&
+            getline(ss, password, ',') &&
+            getline(ss, role, ',') &&
+            (ss >> currentId)) {
+
+            if (currentId == id && role == "Manager") {
+                file.close();
+                return true;
+            }
+        }
+    }
+
+    file.close();
+    return false;
+}
 
 void split(string &line, char separate, string &username, string &password, string &role, string &id)
 {
@@ -154,24 +238,50 @@ void createUser()
     do
     {
         cout << "Select Role (1. Staff, 2. Manager): ";
-        cin >> role_choice;
-
-        switch (role_choice)
+        
+        if(cin>>role_choice)
+        {    
+            switch (role_choice)
+            {
+            case 1:
+                role = "Staff";
+                break;
+            case 2:
+                role = "Manager";
+                break;
+            default:
+                cout << "Invalid role choice. Please select again." << endl;
+                break;
+            }
+        }
+        else
         {
-        case 1:
-            role = "Staff";
-            break;
-        case 2:
-            role = "Manager";
-            break;
-        default:
-            cout << "Invalid role choice. Please select again." << endl;
-            break;
+            cin.clear();
+            cin.ignore(10, '\n');
+            cout << "Invalid input. Please enter an integer (1|2).\n";
+            continue;
         }
     } while (role_choice != 1 && role_choice != 2);
 
-    cout << "Enter Container ID : ";
-    cin >> id;
+    while (true) {
+        cout << "Enter Container ID : ";
+        cin >> id;
+        if (!cin.fail()) {
+            break;
+        } else {
+            cin.clear();
+            cin.ignore(10, '\n');
+            cout << "Invalid input. Please enter an integer (ID).\n";
+        }
+    }
+
+
+    if(ManagerCheck("userdatabase.csv",id))
+    {
+        cout << "There is already a Manager with this ID !!!" << endl;
+        sleep(2);
+        return;
+    }
 
     ofstream file("userdatabase.csv", ios::app);
 
@@ -179,7 +289,22 @@ void createUser()
 
     regis(username, role);
 
-    file.close();
+    file.close(); // Ended Create user process
+
+    if(role == "Manager") //Create Container for new Manager
+    {    
+        string create_container_id = to_string(id);
+
+        HQ * HQptr = new HQ("W",0);
+
+        load_file_into_HQptr(HQptr);
+
+        HQptr->add_container(create_container_id,0);
+
+        save_file(HQptr);
+
+        delete(HQptr);
+    }
 
     cout << ">>>>>> Create User Successfully <<<<<<<" << endl;
 }
