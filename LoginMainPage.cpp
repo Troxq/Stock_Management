@@ -12,6 +12,9 @@ using namespace std;
 
 int main()
 {
+    initCSV(); // initialize file if it doesn't exist create new file
+    initOrderCSV();
+
     int MainPage_Choice;
     while(true)
     {

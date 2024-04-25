@@ -20,6 +20,61 @@ bool roleCheck(string &, string &, string);
 
 int returnID(string &, string &, string &, string);
 
+void initCSV();
+
+void initCSV()
+{
+    string filename = "Database/HQ.csv";
+    ifstream fileCheck(filename);
+    if (fileCheck) 
+    {
+        // cout << "Initailize HQ.csv ........." << endl;
+        // sleep(1);
+        return;
+    }
+
+    ofstream file(filename, ios::out | ios::app);
+    if (file.is_open()) 
+    {
+        file << "id,00000,\n";
+        file.close();
+    } 
+    else 
+    {
+        cerr << "Unable to open file: " << filename << endl;
+    } 
+}
+
+void initOrderCSV() 
+{
+    vector<string> filenames = {"OrderManagerDatabase.csv", 
+                                "OrderStaffDatabase.csv", 
+                                "OrderStatusHQDatabase.csv", 
+                                "OrderStatusManagerDatabase.csv",
+                                "userdatabase.csv"};
+
+    for (const string& filename : filenames) 
+    {
+        ifstream fileCheck(filename);
+        if (fileCheck) 
+        {
+            // cout << "Initialize " << filename << " .........." << endl;
+            // sleep(1);
+            continue;
+        }
+
+        ofstream file(filename, ios::out | ios::app);
+        if (file.is_open()) 
+        {
+            file.close();
+        } 
+        else 
+        {
+            cerr << "Unable to open file: " << filename << endl;
+        }
+    }
+}
+
 //HQ FUNCTION
 void createUser();
 
