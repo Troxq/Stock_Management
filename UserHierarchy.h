@@ -341,15 +341,15 @@ public:
             cin >> choice;
             if (choice == 1)
             {
-                inputproduct(this->id);
+                inputproduct(this->id, this->username, this->role);
             }
             else if (choice == 2)
             {
-                exportproduct(this->id);
+                exportproduct(this->id, this->username, this->role);
             }
             else if (choice == 3)
             {
-                transferproduct(this->id);
+                transferproduct(this->id, this->username, this->role);
             }
             else if (choice == 4)
             {
