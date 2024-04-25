@@ -1,19 +1,19 @@
-#include <unistd.h>
-// #include "OrderFormatHEADLL.h"
-using namespace std;
-// class 
+// #include <unistd.h>
+// // #include "OrderFormatHEADLL.h"
+// using namespace std;
+// // class 
 
-class sendOrderFormatManager : public OrderFormatHEADLL
-{
-private:
-    int numberContainer;
+// class sendOrderFormatManager : public OrderFormatHEADLL
+// {
+// private:
+//     int numberContainer;
 
-public:
-    sendOrderFormatManager(int);
-    // display();
-};
+// public:
+//     sendOrderFormatManager(int);
+//     // display();
+// };
 
-sendOrderFormatManager::sendOrderFormatManager(int numC) : OrderFormatHEADLL()
-{
-    numberContainer = numC;   
+// sendOrderFormatManager::sendOrderFormatManager(int numC) : OrderFormatHEADLL()
+// {
+//     numberContainer = numC;   
 }

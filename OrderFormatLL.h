@@ -65,7 +65,9 @@ class LinkedList
         int return_idContainer();
         int return_duty();
         int return_status();
-        int return_sendIdContainer();    /*
+        int return_sendIdContainer();   
+        // void insertSorted(int, const string&);
+         /*
     .add(id);
     .searchid(id) //loop every NODE
     */    
