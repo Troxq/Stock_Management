@@ -86,11 +86,21 @@ public:
                     while (1)
                     {
                         try{
-                            cout << "Number of container : "; 
+                            cout << "Input container ID : "; 
                             cin >> containerNum;
                             if (cin.fail())
                                 throw 1;
+                            if (checkIdManager(containerNum) == 1)
+                            {
+                                throw "Error: ID not found";
+                            }
                             break;
+                        }
+                        catch (const char *str)
+                        {
+                            cout << str << endl;
+                            cin.clear();
+                            cin.ignore(50, '\n');
                         }
                         catch (...){
                             cout << "Error: try again" << endl;
@@ -121,11 +131,21 @@ public:
                     while (1)
                     {
                         try{
-                            cout << "Number of container : "; 
+                            cout << "Input container ID : "; 
                             cin >> containerNum;
                             if (cin.fail())
                                 throw 1;
+                            if (checkIdManager(containerNum) == 1)
+                            {
+                                throw "Error: ID not found";
+                            }
                             break;
+                        }
+                        catch (const char *str)
+                        {
+                            cout << str << endl;
+                            cin.clear();
+                            cin.ignore(50, '\n');
                         }
                         catch (...){
                             cout << "Error: try again" << endl;
@@ -157,17 +177,33 @@ public:
                     while (1)
                     {
                         try{
-                            cout << "Number of container : "; 
+                            cout << "input container ID : "; 
                             cin >> containerNum;
                             if (cin.fail())
                                 throw 1;
-                            
+                            if (checkIdManager(containerNum) == 1)
+                            {
+                                throw "Error: ID not found";
+                            }
                             cout << "Send to container id : ";
                             cin >> sendId;
                             if (cin.fail())
                                 throw 1;
-
+                            if (checkIdManager(sendId) == 1)
+                            {
+                                throw "Error: ID not found";
+                            }
+                            if (sendId == containerNum)
+                            {
+                                throw "Error: Please transfer to other ID";
+                            }
                             break;
+                        }
+                        catch (const char *str)
+                        {
+                            cout << str << endl;
+                            cin.clear();
+                            cin.ignore(50, '\n');
                         }
                         catch (...){
                             cout << "Error: try again" << endl;
