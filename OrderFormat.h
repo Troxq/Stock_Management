@@ -32,7 +32,9 @@ public:
     sendOrderFormatHQ(string, int = 0, int = 0, int = 0);
     void mainMenu();
     void addProduct();
+    void addProductExportTransfer();
     void removeProduct();
+    void removeProductExportTransfer();
     void checkProduct();
     void confirm();
 
@@ -60,8 +62,6 @@ void sendOrderFormatHQ::mainMenu()
     int choice = 0;
     if (load_data_for_check("OrderStatusHQDatabase.csv", this->return_name()) == 1)
     {
-        cout << "Error: Please don't input same customer name" << endl;
-        sleep(1);
         return;
     }
     while (1)
@@ -69,13 +69,13 @@ void sendOrderFormatHQ::mainMenu()
         // displayAll();
         try
         {
-            if (choice != 3)
-                system("clear");
+            system("clear");
+            checkProduct();
             cout << "1 Add product" << endl;
             cout << "2 Remove product" << endl;
-            cout << "3 Check product" << endl;
-            cout << "4 confirm" << endl;
+            cout << "3 confirm" << endl;
             cout << "0 Cancle" << endl;
+            // cout << "3 Check product" << endl;
             cout << "input : ";
             cin >> choice;
             if (cin.fail())
@@ -83,17 +83,24 @@ void sendOrderFormatHQ::mainMenu()
             if (choice == 1)
             {
                 system("clear");
-                addProduct();
+                checkProduct();
+                if (duty == 1)
+                    addProduct();
+                else
+                {
+                    addProductExportTransfer();
+                }
             }
             else if (choice == 2)
             {
                 system("clear");
-                removeProduct();
-            }
-            else if (choice == 3)
-            {
-                system("clear");
                 checkProduct();
+                if (duty == 1)
+                    removeProduct();
+                else
+                {
+                    removeProductExportTransfer();
+                }
             }
             else if (choice == 4)
             {
@@ -114,7 +121,7 @@ void sendOrderFormatHQ::mainMenu()
             }
             else
             {
-                cout << "Error: Invalid input. Please input 0 - 4" << endl; 
+                cout << "Error: Invalid input. Please input 0 - 3" << endl; 
                 sleep(1);
             }
         }
@@ -132,36 +139,31 @@ void sendOrderFormatHQ::addProduct()
 {
     string nameP;
     int containerNum;
-    int amount;
+    int amount = 0;
     while (1)
     {
-        try{
-            cout << "Add product name : ";
-            cin.clear();
-            cin.ignore(50, '\n');
-            cin >> nameP;
-            checkInputStr(nameP);
+        cout << "Add product name : ";
+        cin >> nameP;
+        cin.ignore(50, '\n');
+        if (checkInputStr(nameP) == 1)
+            cout << "Error: Invalid input. Please don't input more than 50 character" << endl;
+        else if (checkInputStr(nameP) == 2)
+            cout << "Error: Invalid input. Please don't use special character" << endl;       
+        else
             break;
-        }
-        catch (const char *str)
-        {
-            cin.clear();
-            cin.ignore(50, '\n');
-            cout << str << endl;
-        }
     }
     while (1)
     {
         try{
             cout << "Add amount : ";
             cin >> amount;
-            if (cin.fail())
+            if (cin.fail() || amount <= 0)
                 throw 1;
             break;
         }
         catch(...)
         {
-            cout << "Error: Invalid input. Please enter a valid option." << endl;
+            cout << "Error: Invalid input. Please input number and more than zero." << endl;
             cin.clear(); // Clear the error flag
             cin.ignore(50, '\n'); // Discard invalid input
             sleep(1);
@@ -172,12 +174,82 @@ void sendOrderFormatHQ::addProduct()
     itemAmount += 1;
 }
 
+void sendOrderFormatHQ::addProductExportTransfer()
+{
+    string idP;
+    int containerNum;
+    int amount = 0;
+    while (1)
+    {
+        cout << "Add product id : ";
+        cin >> idP;
+        cin.ignore(50, '\n');
+        if (checkInputNum(idP) == 1)
+            cout << "Error: Invalid input. Please don't input more than 50 character" << endl;
+        else if (checkInputNum(idP) == 2)
+            cout << "Error: Invalid input. Please input only number" << endl; 
+        else if (check_item_id_exist(idP) == 0)
+            cout << "Error: Don't have this ID in container" << endl; 
+        else
+            break;
+    }
+    // while (1)
+    // {
+    //     try{
+    //         cout << "Add amount : ";
+    //         cin >> amount;
+    //         if (cin.fail())
+    //             throw 1;
+    //         break;
+    //     }
+    //     catch(...)
+    //     {
+    //         cout << "Error: Invalid input. Please enter a valid option." << endl;
+    //         cin.clear(); // Clear the error flag
+    //         cin.ignore(50, '\n'); // Discard invalid input
+    //         sleep(1);
+    //     }
+
+    // }
+    add_NODE(idP, amount);
+    itemAmount += 1;
+}
+
 void sendOrderFormatHQ::removeProduct()
 {
     string nameP;
-    cout << "Remove product name : ";
-    cin >> nameP;
+    while (1)
+    {
+        cout << "Remove product name : ";
+        cin >> nameP;
+        cin.ignore(50, '\n');
+        if (checkInputStr(nameP) == 1)
+            cout << "Error: Invalid input. Please don't input more than 50 character" << endl;
+        else if (checkInputStr(nameP) == 2)
+            cout << "Error: Invalid input. Please don't use special character" << endl;       
+        else
+            break;
+    }
     delete_NODE_Got(nameP);
+    itemAmount -= 1;
+}
+
+void sendOrderFormatHQ::removeProductExportTransfer()
+{
+    string idP;
+    while (1)
+    {
+        cout << "Remove product id : ";
+        cin >> idP;
+        cin.ignore(50, '\n');
+        if (checkInputNum(idP) == 1)
+            cout << "Error: Invalid input. Please don't input more than 50 character" << endl;
+        else if (checkInputNum(idP) == 2)
+            cout << "Error: Invalid input. Please input only number" << endl;       
+        else
+            break;
+    }
+    delete_NODE_Got(idP);
     itemAmount -= 1;
 }
 

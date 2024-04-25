@@ -18,6 +18,7 @@ private:
 
 public:
     headLinkList(int = 0, string="", string="");
+    ~headLinkList();
     void delete_LinkedList(string);
     void delete_LinkedList_id(int);
     void delete_LinkedList(string, string, int = 0);
@@ -48,6 +49,18 @@ headLinkList::headLinkList(int idContainer, string n, string r)
     cout << "--------------" << endl;
     cout << name << " " << role << endl;
     cout << "--------------" << endl;
+}
+
+headLinkList::~headLinkList()
+{
+    LinkedList *t_LL;
+
+    for (int i = 0; i < sizeNodeinLinkList; i++)
+    {
+        t_LL = holLinkedList;
+        holLinkedList = holLinkedList->move_next();
+        delete holLinkedList;
+    }
 }
 
 void headLinkList::delete_LinkedList(string nameOwner)
@@ -511,6 +524,8 @@ void headLinkList::load_data_HQ(string namefile)
                 }
             }
             this->add_LinkedList(owner);
+            // if (owner != NULL)
+                // delete owner;
         }
         fin.close();
     }
@@ -541,7 +556,7 @@ void headLinkList::displayOrderStatusHQ()
         {
             cout << "1 Next order" << endl;
             cout << "2 Back order" << endl;
-            if (t->return_status() == 2 || t->return_status() == 3)
+            if (t->return_status() == 2)
                 cout << "3 Finish" << endl;
             cout << "0 Exit" << endl;
             cout << "Input : ";
@@ -568,7 +583,7 @@ void headLinkList::displayOrderStatusHQ()
                 else
                     len = 0;
             }
-            else if (choice == 3 && (t->return_status() == 2 || t->return_status() == 3))
+            else if (choice == 3 && t->return_status() == 2)
             {
                 string nameLL;
 
@@ -598,9 +613,10 @@ void headLinkList::displayOrderStatusHQ()
             }
             else
             {
-                if (t->return_status() == 2 || t->return_status() == 3)
+                int status = t->return_status();
+                if (status == 2)
                 {
-                    cout << "Error: Invalid input. Please input 0 - 3" << endl; 
+                    cout << "Error: Invalid input. Please input 0 - 3" << endl;
                 }
                 else
                 {
@@ -741,7 +757,7 @@ void headLinkList::displayOrderStatusManager()
         {
             cout << "1 Next order" << endl;
             cout << "2 Back order" << endl;
-            if (t->return_status() == 2 || t->return_status() == 3)
+            if (t->return_status() == 2)
                 cout << "3 Finish" << endl;
             cout << "0 Exit" << endl;
             cout << "Input : ";
@@ -768,7 +784,7 @@ void headLinkList::displayOrderStatusManager()
                 else
                     len = 0;
             }
-            else if (choice == 3 && (t->return_status() == 2 || t->return_status() == 3))
+            else if (choice == 3 && t->return_status() == 2)
             {
                 string nameLL;
                 int status;
@@ -788,24 +804,13 @@ void headLinkList::displayOrderStatusManager()
                 else
                     t = NULL;
 
-                if (status == 3)
-                {
-                    delete_LinkedList(nameLL, "OrderStatusHQDatabase.csv", 3);
-                    load_data_other("OrderStatusManagerDatabase.csv");
-                    save_data_LinkList("OrderStatusManagerDatabase.csv");
+                delete_LinkedList(nameLL, "OrderStatusHQDatabase.csv", 2);
+                load_data_other("OrderStatusManagerDatabase.csv");
+                save_data_LinkList("OrderStatusManagerDatabase.csv");
 
-                    for (int i = sizeNodeinLinkList - 1; i > 0; i--)
-                        delete_LinkedList_id(ID);
-                }
-                else
-                {
-                    delete_LinkedList(nameLL, "OrderStatusHQDatabase.csv", 2);
-                    load_data_other("OrderStatusManagerDatabase.csv");
-                    save_data_LinkList("OrderStatusManagerDatabase.csv");
+                for (int i = sizeNodeinLinkList - 1; i > 0; i--)
+                    delete_LinkedList_id(ID);
 
-                    for (int i = sizeNodeinLinkList - 1; i > 0; i--)
-                        delete_LinkedList_id(ID);
-                }
                 len -= 1;
             }
             else if (choice == 0)
@@ -815,7 +820,7 @@ void headLinkList::displayOrderStatusManager()
             else
             {
                 int status = t->return_status();
-                if (status == 2 || status == 3)
+                if (status == 2)
                 {
                     cout << "Error: Invalid input. Please input 0 - 3" << endl;
                 }
@@ -861,8 +866,8 @@ void headLinkList::displayOrderStatusStaff()
         {
             cout << "1 Next order" << endl;
             cout << "2 Back order" << endl;
-            cout << "3 deny order" << endl;
-            cout << "4 Finish" << endl;
+            cout << "3 Finish" << endl;
+            // cout << "4 deny order" << endl;
             cout << "0 Exit" << endl;
             cout << "Input : ";
             cin >> choice;
@@ -905,28 +910,7 @@ void headLinkList::displayOrderStatusStaff()
                 }
                 else
                     t = NULL;
-                delete_LinkedList(nameLL, "OrderStatusManagerDatabase.csv", 3);
-                load_data_other("OrderStaffDatabase.csv");
-                save_data_LinkList("OrderStaffDatabase.csv");
-                len -= 1;
-            }
-            else if (choice == 4)
-            {
-                string nameLL;
 
-                nameLL = t->return_name();
-                int ID = t->return_idContainer();
-
-                if (t->move_next() != NULL)
-                {
-                    t = t->move_next();
-                }
-                else if (t->move_back() != NULL)
-                {
-                    t = t->move_back();
-                }
-                else
-                    t = NULL;
                 delete_LinkedList(nameLL, "OrderStatusManagerDatabase.csv", 2);
                 load_data_other("OrderStaffDatabase.csv");
                 save_data_LinkList("OrderStaffDatabase.csv");
@@ -942,7 +926,7 @@ void headLinkList::displayOrderStatusStaff()
             }
             else
             {
-                    cout << "Error: Invalid input. Please input 0 - 4" << endl;
+                    cout << "Error: Invalid input. Please input 0 - 3" << endl;
             }
         }
         catch(...)
