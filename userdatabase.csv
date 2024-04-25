@@ -1,10 +1,8 @@
 a,a,Staff,1
-b,b,Manager,1
+a2,a2,Staff,2
+M1,M1,Manager,1
 c,c,Headquarter,0
-manager1,manager1,Manager,1
-Troy,aaa,Manager,1
-Got,aaa,Manager,1
-got,bbb,Manager,1
 aa,aa,Staff,2
-bb,bb,Manager,2
-sasad,1123,Manager,10
+cc,cc,Staff,3
+M2,M2,Manager,2
+M3,M3,Manager,3

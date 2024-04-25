@@ -8,8 +8,8 @@
 
 #include "UserSystem.h"
 #include "Logmain.cpp"
-#include "Report.h"
-#include "FunctionContainer.h"
+// #include "Report.h"
+// #include "FunctionContainer.h"
 using namespace std;
 
 class Role
@@ -32,14 +32,17 @@ public:
     }
     Headquarter(string username, string role, int id)
     {
-        cout << "Constructor for Headquarter!!!" << endl;
+        // cout << "Constructor for Headquarter!!!" << endl;
         this->username = username;
         this->role = role;
         this->id = id;
     }
     void showNameandRole()
     {
-        cout << "HQ NAME : " << this->username << " ROLE : "<< this->role <<endl;
+        cout << "===============================" << endl;
+        cout << "|| NAME : " << this->username 
+             << "\n|| ROLE : "<< this->role <<endl;
+        cout << "===============================" << endl;
     }
     string get_role()
     {
@@ -234,7 +237,7 @@ public:
             }
             else if (choice == 4)
             {
-                ReportCSV();
+                // ReportMainMenu();
             }
             else if (choice == 5)
             {
@@ -265,14 +268,17 @@ public:
     }
     Manager(string username, string role, int id):Headquarter(username,role,id)
     {
-        cout << "Constructor for Manager!!!" << endl;
+        // cout << "Constructor for Manager!!!" << endl;
         this->username = username;
         this->role = role;
         this->id = id;
     }
     void showNameandRole()
     {
-        cout << "MANAGER NAME : " << this->username << " ROLE : "<< this->role << " CONTAINER ID : " << this->id << endl;
+        cout << "===============================" << endl;
+        cout << "|| NAME : " << this->username 
+             << "\n|| ROLE : "<< this->role <<endl;
+        cout << "===============================" << endl;
     }
     void sendOrder()
     {
@@ -338,14 +344,17 @@ public:
     }
     Staff(string username, string role, int id):Manager(username,role,id)
     {
-        cout << "Constructor for Staff!!!" << endl;
+        // cout << "Constructor for Staff!!!" << endl;
         this->username = username;
         this->role = role;
         this->id = id;
     }
     void showNameandRole()
     {
-        cout << "Staff NAME : " << this->username << " ROLE : "<< this->role << " CONTAINER ID : " << this->id << endl;
+        cout << "===============================" << endl;
+        cout << "|| NAME : " << this->username 
+             << "\n|| ROLE : "<< this->role <<endl;
+        cout << "===============================" << endl;
     }
     void orderStatus()
     {

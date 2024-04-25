@@ -12,12 +12,38 @@ using namespace std;
 
 int main()
 {
+    initCSV(); // initialize file if it doesn't exist create new file
+    initOrderCSV();
+
     int MainPage_Choice;
     while(true)
     {
-        cout << "===== Stock Management System =====" << endl;
-        cout << "Choose (1. Login , 2. Exit) : ";
-        cin >> MainPage_Choice;
+        cout << "-------------------------------------------" << endl;
+        cout << "|                                         |" << endl;
+        cout << "|         Stock Management System         |" << endl;
+        cout << "|                                         |" << endl;
+        cout << "-------------------------------------------" << endl << endl;
+
+        cout << " (\\(\\ " << "                              o_(\")(\") \n";
+        cout << " (-.-)  "  << "                              (-.-) \n";
+        cout << " o_(\")(\") " << "                            (\\(\\ \n";
+        
+        cout << "===========================================" << endl;
+        while (true) 
+        {
+            cout << "Choose (1. Login , 2. Exit) : ";
+            cin >> MainPage_Choice;
+            if (!cin.fail()) 
+            {
+                break;
+            } 
+            else 
+            {
+                cin.clear();
+                cin.ignore(10, '\n');
+                cout << "Invalid input. Please enter an integer (1|2).\n";
+            }
+        }
 
         Role *role = nullptr; 
 
@@ -25,7 +51,7 @@ int main()
         {
             case 1 : 
                      login(role); // Login Using Pointer to pass parameter
-                     role->performTask();
+                    //  role->performTask();
                      role->showNameandRole();
                     if (role->get_role() == "Headquarter")
                     {
