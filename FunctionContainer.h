@@ -49,7 +49,7 @@ void inputproduct(int role_id, string username, string role)
         for (int i = 0; i < input_amount; i++)
         {
             HQptr->HQ_add_item(input_container_id,input_customer,NextItemID,input_item);
-            import_prod(username, role, input_container_id, NextItemID);
+            import_prod(username, role, input_container_id, to_string(stoi(NextItemID)-1));
 
         }
     }
@@ -85,8 +85,10 @@ void exportproduct(int role_id, string username, string role)
     cout << "Input Item ID : ";
     cin >> input_item_id;
 
-    HQptr->delete_item_HQ(input_container_id,input_customer,input_item_id);
-    export_prod(username, role, input_container_id, input_item_id);
+    if(HQptr->delete_item_HQ(input_container_id,input_customer,input_item_id) == 1)
+    {
+        export_prod(username, role, input_container_id, input_item_id);
+    }
 
     save_file(HQptr);
 
@@ -268,7 +270,9 @@ int load_file_into_HQptr(HQ *& inHQptr){
     
     string container_filename_prefix = "Database/container_";
     string container_filename_suffix = ".csv";
-
+    if(HQ_data.size()==1){
+        return 1;
+    }
     for(int i = 0; i < HQ_data[1].size();i++){
         string container_name = HQ_data[1][i];
         //cout<<"container_name is "<< container_name<<endl;

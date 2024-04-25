@@ -21,11 +21,10 @@ void Logmenu()
             cout << "[5] transfer" << endl;
             cout << "[6] send_order" << endl;
             cout << "[7] confirm_order" << endl;
-            cout << "[8] transfer_order" << endl << endl;
             cout << "Input your choice : ";
             cin >> choice;
 
-            if(cin.fail() || choice > 8 || choice < 1)
+            if(cin.fail() || choice > 7 || choice < 1)
             {
                 throw 1;
             }

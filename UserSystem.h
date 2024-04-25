@@ -330,7 +330,11 @@ void createUser()
 
         load_file_into_HQptr(HQptr);
 
+        cout << "load complete" << endl;
+
         HQptr->add_container(create_container_id,0);
+
+        cout << "add complete" << endl;
 
         save_file(HQptr);
 

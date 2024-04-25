@@ -588,7 +588,7 @@ void headLinkList::displayOrderStatusHQ()
                 string nameLL;
 
                 nameLL = t->return_name();
-                name = t->return_name();
+                //name = t->return_name();
                 int type = t->return_duty();
                 if (t->move_next() != NULL)
                 {
@@ -605,6 +605,7 @@ void headLinkList::displayOrderStatusHQ()
                 delete_LinkedList(nameLL);
                 save_data_LinkList("OrderStatusHQDatabase.csv");
                 confirm_order(name, role, id, type);
+
                 // len -= 1;
             }
             else if (choice == 0)
@@ -789,6 +790,7 @@ void headLinkList::displayOrderStatusManager()
                 string nameLL;
                 int status;
 
+                int type = t->return_duty();
                 nameLL = t->return_name();
                 status = t->return_status();
                 int ID = t->return_idContainer();
@@ -807,6 +809,7 @@ void headLinkList::displayOrderStatusManager()
                 delete_LinkedList(nameLL, "OrderStatusHQDatabase.csv", 2);
                 load_data_other("OrderStatusManagerDatabase.csv");
                 save_data_LinkList("OrderStatusManagerDatabase.csv");
+                confirm_order(name, role, id, type);
 
                 for (int i = sizeNodeinLinkList - 1; i > 0; i--)
                     delete_LinkedList_id(ID);
@@ -897,6 +900,7 @@ void headLinkList::displayOrderStatusStaff()
             {
                 string nameLL;
 
+                int type = t->return_duty();
                 nameLL = t->return_name();
                 int ID = t->return_idContainer();
 
@@ -914,6 +918,7 @@ void headLinkList::displayOrderStatusStaff()
                 delete_LinkedList(nameLL, "OrderStatusManagerDatabase.csv", 2);
                 load_data_other("OrderStaffDatabase.csv");
                 save_data_LinkList("OrderStaffDatabase.csv");
+                confirm_order(name, role, id, type);
 
                 for (int i = sizeNodeinLinkList - 1; i > 0; i--)
                     delete_LinkedList_id(ID);

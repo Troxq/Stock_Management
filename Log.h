@@ -187,7 +187,7 @@ void import_prod_show()
         {
             row.push_back(word); 
         }
-        cout << "[" << row[0] << "|" << row[1] << "] " << "User : " << row[2] << '(' << row[3] << "|id:" << row[4] << ')' << "transfer product id:" << row[5] << "in to container No." << row[4] << endl;
+        cout << "[" << row[0] << "|" << row[1] << "] " << "User : " << row[2] << '(' << row[3] << "|id:" << row[5] << ')' << "import product id:" << row[4] << "in to container No." << row[5] << endl;
     }
 
     cout << "Put any key to continue";
@@ -211,7 +211,7 @@ void export_prod_show()
         {
             row.push_back(word); 
         }
-        cout << "[" << row[0] << "|" << row[1] << "] " << "User : " << row[2] << '(' << row[3] << "|id:" << row[4] << ')' << "export product id:" << row[5] << "from container No." << row[4] << endl;
+        cout << "[" << row[0] << "|" << row[1] << "] " << "User : " << row[2] << '(' << row[3] << "|id:" << row[5] << ')' << "export product id:" << row[4] << "from container No." << row[5] << endl;
     }
 
     cout << "Put any key to continue";
@@ -270,19 +270,19 @@ void send_order_show()
             row.push_back(word); 
         }
         
-        if(row[4] == "1")
+        if(row[5] == "1")
         {
             cout << "[" << row[0] << "|" << row[1] << "] " << "User : " << row[2] << "(" << row[3] << ")" << " sent import order to " << "Container[id:" << row[4] << "]" << '\n';
         }
 
-        else if(row[4] == "2")
+        else if(row[5] == "2")
         {
             cout << "[" << row[0] << "|" << row[1] << "] " << "User : " << row[2] << "(" << row[3] << ")" << " sent export order to " << "Container[id:" << row[4] << "]" << '\n';
         }
 
-        else if(row[4] == "3")
+        else if(row[5] == "3")
         {
-            cout << "[" << row[0] << "|" << row[1] << "] " << "User : " << row[2] << "(" << row[3] << ")" << " sent transfer order from " << "Container[id:" << row[4] << "]" << "to Container[id:" << row[5] << "]" << '\n';
+            cout << "[" << row[0] << "|" << row[1] << "] " << "User : " << row[2] << "(" << row[3] << ")" << " sent transfer order from " << "Container[id:" << row[4] << "]" << '\n';
         }
     }
 
@@ -308,19 +308,19 @@ void confirm_order_show()
             row.push_back(word); 
         }
         
-        if(row[4] == "1")
+        if(row[5] == "1")
         {
-            cout << "[" << row[0] << "] " << "User : " << row[1] << "(" << row[2] << ")" << " confirm import order from" << "Container[id:" << row[3] << "]" << '\n';
+            cout << "[" << row[0] << "|" << row[1] << "] " << "User : " << row[2] << "(" << row[3] << ")" << " confirm import order from" << " Container[id:" << row[4] << "]" << '\n';
         }
 
-        else if(row[4] == "2")
+        else if(row[5] == "2")
         {
-            cout << "[" << row[0] << "] " << "User : " << row[1] << "(" << row[2] << ")" << " confirm export order from" << "Container[id:" << row[3] << "]" << '\n';
+            cout << "[" << row[0] << "|" << row[1] << "] " << "User : " << row[2] << "(" << row[3] << ")" << " confirm export order from" << " Container[id:" << row[4] << "]" << '\n';
         }
 
-        else if(row[4] == "3")
+        else if(row[5] == "3")
         {
-            cout << "[" << row[0] << "] " << "User : " << row[1] << "(" << row[2] << ")" << " confirm transfer order from " << "Container[id:" << row[3] << "]" << "to Container[id:" << row[4] << "]" << '\n';
+            cout << "[" << row[0] << "|" << row[1] << "] " << "User : " << row[2] << "(" << row[3] << ")" << " confirm transfer order from " << " Container[id:" << row[4] << "]" << '\n';
         }
     }
 

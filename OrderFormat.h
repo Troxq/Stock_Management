@@ -309,10 +309,10 @@ private:
     int numberContainer;
 
 public:
-    orderFormatStaff(int);
+    orderFormatStaff(int, string, string);
 };
 
-orderFormatStaff::orderFormatStaff(int numC) : headLinkList(numC)
+orderFormatStaff::orderFormatStaff(int numC, string name, string role) : headLinkList(numC, name, role)
 {
     numberContainer = numC;
 }

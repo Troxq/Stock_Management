@@ -138,8 +138,10 @@ int container::customer_delete_item(string inCustomername, string inItemid){
         {
             //if found
             found = true;
-            t->delete_item(inItemid);
-            return 1;
+            if(t->delete_item(inItemid)){
+                return 1;
+            }
+            
         }
     }
     if(!found){

@@ -389,7 +389,7 @@ public:
     }
     void orderStatus()
     {
-        orderFormatStaff order(id);
+        orderFormatStaff order(id, username, role);
         order.load_data("OrderStaffDatabase.csv");
         order.displayOrderStatusStaff();
     }
