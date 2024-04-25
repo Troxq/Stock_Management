@@ -13,6 +13,7 @@ class NODE
 
     public:
         NODE(string="default_NODE_name", int = 0);
+        ~NODE();
         void set_next_NODE_ptr(NODE*);
         string return_name();//for check, delete later
         NODE * return_next_NODE();
@@ -25,6 +26,11 @@ NODE::NODE(string inName, int a){ // GOT : add amount for use in orderFormat.h
     NODE_name = inName; 
     amount = a; //GOT : add amount for use in orderFormat.h
     
+}
+
+NODE::~NODE()
+{
+
 }
 
 void NODE::set_next_NODE_ptr(NODE* next_NODE_address){

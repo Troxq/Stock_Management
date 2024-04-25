@@ -36,6 +36,7 @@ class LinkedList
     // add LinkedList later
     public:
         LinkedList(string="default_LinkedList",int=0, string="Pending", int = 1, int = 0, int = 0);
+        ~LinkedList();
         void LinkedList_show_name(); // how many items;
         void add_NODE(string);
         void delete_NODE(string);
@@ -82,6 +83,18 @@ LinkedList::LinkedList(string inName,int inSize, string s, int id, int d, int se
     sendIdContainer = sendId;
 }
 
+LinkedList::~LinkedList()
+{
+    NODE* t_NODE;
+
+    for (int i = 0; i < size; i++)
+    {
+        t_NODE = NODE_head_ptr;
+        NODE_head_ptr = NODE_head_ptr->return_next_NODE();
+        delete t_NODE;
+    }
+}
+
 int LinkedList::return_idContainer()
 {
     return idContainer;
@@ -105,10 +118,6 @@ int LinkedList::return_status()
     else if (status == "Finish")
     {
         return 2;
-    }
-    else if (status == "Deny")
-    {
-        return 3;
     }
     return 0;
 }
@@ -199,7 +208,10 @@ void LinkedList::add_NODE(string NODE_name, int amount)
     {
         if (t->return_name() == NODE_name)
         {
-            cout << "Error: Please don't input same name" << endl;
+            if (duty == 1)
+                cout << "Error: Please don't input same name" << endl;
+            else
+                cout << "Error: Please don't input same ID" << endl;
             sleep(1);
             return ;
         }
@@ -260,9 +272,7 @@ void LinkedList::delete_NODE(string inName){
                     delete(t);
                 }
             }
-            cout<<"\""<<inName<<"\" deleted"<<endl;
             size--;
-            cout<<"remaining NODE Size: "<<size<<endl;
         }
     }
     if(!found){
@@ -304,7 +314,7 @@ void LinkedList::delete_NODE_Got(string nameProduct)
             }
             else
             {
-                cout << "Don't have that porduct" << endl;
+                cout << "Error: Don't have that product" << endl;
                 sleep(1);
             }
             
@@ -313,7 +323,7 @@ void LinkedList::delete_NODE_Got(string nameProduct)
     }
     else
     {
-        cout << "Don't have that porduct" << endl;
+        cout << "Error: Don't have that product" << endl;
         sleep(1);
     }
 }
@@ -334,7 +344,20 @@ void LinkedList::displayAll()
         cout << "-------------------------------------------------------------" << endl;
         for (; t != NULL; t = t->return_next_NODE())
         {
-            cout << "  name : " << t->return_name() << "  " << "amount : " << t->return_amount() << endl;
+            if (duty == 1)
+            {
+                if (t->return_amount() > 0)
+                    cout << "  Name product : " << t->return_name() << "Amount : " << t->return_amount() << endl;
+                else
+                    cout << "  Name product : " << t->return_name() << endl;
+            }
+            else
+            {
+                if (t->return_amount() > 0)
+                    cout << "  ID product : " << t->return_name() << "  " << "Amount : " << t->return_amount() << endl;
+                else
+                    cout << "  ID product : " << t->return_name() << endl;
+            }
         }
         cout << "-------------------------------------------------------------" << endl;
     }
@@ -371,7 +394,20 @@ void LinkedList::displayOrderStatus()
         cout << "-------------------------------------------------------------" << endl;
         for (; t != NULL; t = t->return_next_NODE())
         {
-            cout << "  name : " << t->return_name() << "  " << "amount : " << t->return_amount() << endl;
+            if (duty == 1)
+            {
+                if (t->return_amount() > 0)
+                    cout << "  Name product : " << t->return_name() << "  " << "Amount : " << t->return_amount() << endl;
+                else
+                    cout << "  Name product : " << t->return_name() << endl;
+            }
+            else
+            {
+                if (t->return_amount() > 0)
+                    cout << "  ID product : " << t->return_name() << "  " << "Amount : " << t->return_amount() << endl;
+                else
+                    cout << "  ID product : " << t->return_name() << endl;   
+            }
         }
         cout << "-------------------------------------------------------------" << endl;
     }

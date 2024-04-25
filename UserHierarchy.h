@@ -68,8 +68,18 @@ public:
                 {
                     string name;
                     int containerNum;
-                    cout << "input name of owner product : ";
-                    cin >> name;
+                    while (1)
+                    {
+                        cout << "input name of owner product : ";
+                        cin >> name;
+                        cin.ignore(50, '\n');
+                        if (checkInputStr(name) == 1)
+                            cout << "Error: Invalid input. Please don't input more than 50 character" << endl;
+                        else if (checkInputStr(name) == 2)
+                            cout << "Error: Invalid input. Please don't use special character" << endl;       
+                        else
+                            break;
+                    }
                     while (1)
                     {
                         try{
@@ -80,7 +90,7 @@ public:
                             break;
                         }
                         catch (...){
-                            cout << "Error try again" << endl;
+                            cout << "Error: try again" << endl;
                             cin.clear();
                             cin.ignore(50, '\n');
                         }
@@ -93,8 +103,18 @@ public:
                 {
                     string name;
                     int containerNum;
-                    cout << "input name of owner product : ";
-                    cin >> name;
+                    while (1)
+                    {
+                        cout << "input name of owner product : ";
+                        cin >> name;
+                        cin.ignore(50, '\n');
+                        if (checkInputStr(name) == 1)
+                            cout << "Error: Invalid input. Please don't input more than 50 character" << endl;
+                        else if (checkInputStr(name) == 2)
+                            cout << "Error: Invalid input. Please don't use special character" << endl;       
+                        else
+                            break;
+                    }
                     while (1)
                     {
                         try{
@@ -105,7 +125,7 @@ public:
                             break;
                         }
                         catch (...){
-                            cout << "Error try again" << endl;
+                            cout << "Error: try again" << endl;
                             cin.clear();
                             cin.ignore(50, '\n');
                         }
@@ -119,8 +139,18 @@ public:
                     string name;
                     int containerNum;
                     int sendId;
-                    cout << "input name of owner product : ";
-                    cin >> name;
+                    while (1)
+                    {
+                        cout << "input name of owner product : ";
+                        cin >> name;
+                        cin.ignore(50, '\n');
+                        if (checkInputStr(name) == 1)
+                            cout << "Error: Invalid input. Please don't input more than 50 character" << endl;
+                        else if (checkInputStr(name) == 2)
+                            cout << "Error: Invalid input. Please don't use special character" << endl;       
+                        else
+                            break;
+                    }
                     while (1)
                     {
                         try{
@@ -137,7 +167,7 @@ public:
                             break;
                         }
                         catch (...){
-                            cout << "Error try again" << endl;
+                            cout << "Error: try again" << endl;
                             cin.clear();
                             cin.ignore(50, '\n');
                         }
@@ -152,13 +182,13 @@ public:
                 }
                 else
                 {
-                    cout << "input 0 - 3" << endl;
+                    cout << "Error: Please input 0 - 3" << endl;
                     sleep(1);
                 }
             }
             catch (...)
             {
-                cout << "Error try again" << endl;
+                cout << "Error: try again" << endl;
                 sleep(1);
                 cin.clear();
                 cin.ignore(50, '\n');
@@ -217,7 +247,7 @@ public:
             }
             else
             {
-                cout << "Please input 0 - 5" << endl;
+                cout << "Error: Please input 0 - 5" << endl;
                 sleep(1);
             }
         }
@@ -290,7 +320,7 @@ public:
             }
             else
             {
-                cout << "Please input 0 - 3" << endl;
+                cout << "Error: Please input 0 - 3" << endl;
                 sleep(1);
             }
         }
@@ -362,7 +392,7 @@ public:
             }
             else
             {
-                cout << "Please input 0 - 4" << endl;
+                cout << "Error: Please input 0 - 4" << endl;
                 sleep(1);
             }
         }
