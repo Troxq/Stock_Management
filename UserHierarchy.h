@@ -195,7 +195,7 @@ public:
                             }
                             if (sendId == containerNum)
                             {
-                                throw "Error: Please transfer to other ID";
+                                throw "Error: Please transfer to other";
                             }
                             break;
                         }
