@@ -32,14 +32,14 @@ public:
     }
     Headquarter(string username, string role, int id)
     {
-        cout << "Constructor for Headquarter!!!" << endl;
+        // cout << "Constructor for Headquarter!!!" << endl;
         this->username = username;
         this->role = role;
         this->id = id;
     }
     void showNameandRole()
     {
-        cout << "HQ NAME : " << this->username << " ROLE : "<< this->role <<endl;
+        cout << "HQ NAME : " << this->username << "\nROLE : "<< this->role <<endl;
     }
     string get_role()
     {
@@ -235,14 +235,14 @@ public:
     }
     Manager(string username, string role, int id):Headquarter(username,role,id)
     {
-        cout << "Constructor for Manager!!!" << endl;
+        // cout << "Constructor for Manager!!!" << endl;
         this->username = username;
         this->role = role;
         this->id = id;
     }
     void showNameandRole()
     {
-        cout << "MANAGER NAME : " << this->username << " ROLE : "<< this->role << " CONTAINER ID : " << this->id << endl;
+        cout << "MANAGER NAME : " << this->username << "\nROLE : "<< this->role << "\nCONTAINER ID : " << this->id << endl;
     }
     void sendOrder()
     {
@@ -308,14 +308,14 @@ public:
     }
     Staff(string username, string role, int id):Manager(username,role,id)
     {
-        cout << "Constructor for Staff!!!" << endl;
+        // cout << "Constructor for Staff!!!" << endl;
         this->username = username;
         this->role = role;
         this->id = id;
     }
     void showNameandRole()
     {
-        cout << "Staff NAME : " << this->username << " ROLE : "<< this->role << " CONTAINER ID : " << this->id << endl;
+        cout << "Staff NAME : " << this->username << "\nROLE : "<< this->role << "\nCONTAINER ID : " << this->id << endl;
     }
     void orderStatus()
     {

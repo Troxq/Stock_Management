@@ -40,7 +40,7 @@ int main()
         {
             case 1 : 
                      login(role); // Login Using Pointer to pass parameter
-                     role->performTask();
+                    //  role->performTask();
                      role->showNameandRole();
                     if (role->get_role() == "Headquarter")
                     {
