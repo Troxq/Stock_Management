@@ -286,6 +286,14 @@ public:
             else if (choice == 3)
             {
                 // report();
+                system("clear");
+                showNameandRole();
+                cout << "====================" << endl;
+                string prefix = "Database/container_";
+                string container_id_report = to_string(this->id);
+                string suffix = ".csv";
+                string fullfilename = prefix + container_id_report + suffix;
+                ReportStaff(container_id_report,fullfilename);
             }
             else if (choice == 0)
             {
