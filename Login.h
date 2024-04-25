@@ -7,8 +7,6 @@ void MainPage(string);
 
 void login(Role *&Role)
 {
-    cout << "Login System" << endl;
-
     string username, password, role;
 
     int role_choice;

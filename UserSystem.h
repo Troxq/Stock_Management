@@ -23,6 +23,34 @@ int returnID(string &, string &, string &, string);
 //HQ FUNCTION
 void createUser();
 
+bool ManagerCheck(const string &, int);
+
+bool ManagerCheck(const string& filename, int id) 
+{
+    ifstream file(filename);
+
+    string line;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string username, password, role;
+        int currentId;
+
+        if (getline(ss, username, ',') &&
+            getline(ss, password, ',') &&
+            getline(ss, role, ',') &&
+            (ss >> currentId)) {
+
+            if (currentId == id && role == "Manager") {
+                file.close();
+                return true;
+            }
+        }
+    }
+
+    file.close();
+    return false;
+}
+
 void split(string &line, char separate, string &username, string &password, string &role, string &id)
 {
     int pos1 = line.find(separate); 
@@ -155,24 +183,50 @@ void createUser()
     do
     {
         cout << "Select Role (1. Staff, 2. Manager): ";
-        cin >> role_choice;
-
-        switch (role_choice)
+        
+        if(cin>>role_choice)
+        {    
+            switch (role_choice)
+            {
+            case 1:
+                role = "Staff";
+                break;
+            case 2:
+                role = "Manager";
+                break;
+            default:
+                cout << "Invalid role choice. Please select again." << endl;
+                break;
+            }
+        }
+        else
         {
-        case 1:
-            role = "Staff";
-            break;
-        case 2:
-            role = "Manager";
-            break;
-        default:
-            cout << "Invalid role choice. Please select again." << endl;
-            break;
+            cin.clear();
+            cin.ignore(10, '\n');
+            cout << "Invalid input. Please enter an integer (1|2).\n";
+            continue;
         }
     } while (role_choice != 1 && role_choice != 2);
 
-    cout << "Enter Container ID : ";
-    cin >> id;
+    while (true) {
+        cout << "Enter Container ID : ";
+        cin >> id;
+        if (!cin.fail()) {
+            break;
+        } else {
+            cin.clear();
+            cin.ignore(10, '\n');
+            cout << "Invalid input. Please enter an integer (ID).\n";
+        }
+    }
+
+
+    if(ManagerCheck("userdatabase.csv",id))
+    {
+        cout << "There is already a Manager with this ID !!!" << endl;
+        sleep(2);
+        return;
+    }
 
     ofstream file("userdatabase.csv", ios::app);
 

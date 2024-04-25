@@ -15,9 +15,24 @@ int main()
     int MainPage_Choice;
     while(true)
     {
-        cout << "===== Stock Management System =====" << endl;
-        cout << "Choose (1. Login , 2. Exit) : ";
-        cin >> MainPage_Choice;
+        cout << "==========Stock Management System==========" << endl;
+        cout << "=============== Login System ==============" << endl << endl;
+        
+        while (true) 
+        {
+            cout << "Choose (1. Login , 2. Exit) : ";
+            cin >> MainPage_Choice;
+            if (!cin.fail()) 
+            {
+                break;
+            } 
+            else 
+            {
+                cin.clear();
+                cin.ignore(10, '\n');
+                cout << "Invalid input. Please enter an integer (1|2).\n";
+            }
+        }
 
         Role *role = nullptr; 
 
