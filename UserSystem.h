@@ -22,6 +22,8 @@ int returnID(string &, string &, string &, string);
 
 void initCSV();
 
+void initDatabase();
+
 void initCSV()
 {
     string filename = "Database/HQ.csv";
@@ -50,8 +52,7 @@ void initOrderCSV()
     vector<string> filenames = {"OrderManagerDatabase.csv", 
                                 "OrderStaffDatabase.csv", 
                                 "OrderStatusHQDatabase.csv", 
-                                "OrderStatusManagerDatabase.csv",
-                                "userdatabase.csv"};
+                                "OrderStatusManagerDatabase.csv"};
 
     for (const string& filename : filenames) 
     {
@@ -73,6 +74,30 @@ void initOrderCSV()
             cerr << "Unable to open file: " << filename << endl;
         }
     }
+}
+
+void initDatabase()
+{
+    
+    string filename = "userdatabase.csv";
+    ifstream fileCheck(filename);
+    if (fileCheck) 
+    {
+        cout << "Initailize userdatabase.csv ........." << endl;
+        sleep(1);
+        return;
+    }
+
+    ofstream file(filename, ios::out | ios::app);
+    if (file.is_open()) 
+    {
+        file << "Admin,Admin,Headquarter,0\n";
+        file.close();
+    } 
+    else 
+    {
+        cerr << "Unable to open file: " << filename << endl;
+    } 
 }
 
 //HQ FUNCTION
@@ -275,8 +300,14 @@ void createUser()
         }
     }
 
+    if(role == "Staff" && !ManagerCheck("userdatabase.csv",id))
+    {
+        cout << "There is no Manager with this ID yet !!!" << endl;
+        sleep(2);
+        return;
+    }
 
-    if(ManagerCheck("userdatabase.csv",id))
+    if(role == "Manager" && ManagerCheck("userdatabase.csv",id))
     {
         cout << "There is already a Manager with this ID !!!" << endl;
         sleep(2);
