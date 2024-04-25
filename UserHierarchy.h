@@ -56,8 +56,8 @@ public:
                 cout << "1 Import products" << endl;
                 cout << "2 Export products" << endl;
                 cout << "3 Transfer products" << endl;
-                cout << "0 exit" << endl;
-                cout << "input : ";
+                cout << "0 Exit" << endl;
+                cout << "Input : ";
                 cin >> choice;
                 if (cin.fail())
                 {
@@ -116,7 +116,35 @@ public:
                 }
                 else if (choice == 3)
                 {
-                    
+                    string name;
+                    int containerNum;
+                    int sendId;
+                    cout << "input name of owner product : ";
+                    cin >> name;
+                    while (1)
+                    {
+                        try{
+                            cout << "Number of container : "; 
+                            cin >> containerNum;
+                            if (cin.fail())
+                                throw 1;
+                            
+                            cout << "Send to container id : ";
+                            cin >> sendId;
+                            if (cin.fail())
+                                throw 1;
+
+                            break;
+                        }
+                        catch (...){
+                            cout << "Error try again" << endl;
+                            cin.clear();
+                            cin.ignore(50, '\n');
+                        }
+                    }
+                    sendOrderFormatHQ order(name, containerNum, 3, sendId);
+                    order.mainMenu();
+                    send_order(this->username, this->role, containerNum, 2);
                 }
                 else if (choice == 0)
                 {
@@ -124,7 +152,7 @@ public:
                 }
                 else
                 {
-                    cout << "input 1 - 4" << endl;
+                    cout << "input 0 - 3" << endl;
                     sleep(1);
                 }
             }
@@ -158,7 +186,7 @@ public:
             cout << "3 Order status" << endl;
             cout << "4 Report" << endl;
             cout << "5 Log" << endl;
-            cout << "0 exit" << endl;
+            cout << "0 Exit" << endl;
             cout << "input : ";
             cin >> choice;
             if (choice == 1)
@@ -189,7 +217,7 @@ public:
             }
             else
             {
-                cout << "Please input 1 - 5" << endl;
+                cout << "Please input 0 - 5" << endl;
                 sleep(1);
             }
         }
@@ -240,8 +268,8 @@ public:
             cout << "1 Send order to staff" << endl;
             cout << "2 Order status" << endl;
             cout << "3 Report" << endl;
-            cout << "0 exit" << endl;
-            cout << "input : ";
+            cout << "0 Exit" << endl;
+            cout << "Input : ";
             cin >> choice;
             if (choice == 1)
             {
@@ -262,7 +290,7 @@ public:
             }
             else
             {
-                cout << "Please input 1 - 3" << endl;
+                cout << "Please input 0 - 3" << endl;
                 sleep(1);
             }
         }
@@ -306,10 +334,10 @@ public:
             showNameandRole();
             cout << "1 Input product" << endl;
             cout << "2 Export product" << endl;
-            cout << "3 transfer product" << endl;
-            cout << "4 Order status" << endl;
-            cout << "0 exit" << endl;
-            cout << "input : ";
+            cout << "3 Transfer product" << endl;
+            cout << "4 Send order to manager" << endl;
+            cout << "0 Exit" << endl;
+            cout << "Input : ";
             cin >> choice;
             if (choice == 1)
             {
@@ -334,7 +362,7 @@ public:
             }
             else
             {
-                cout << "Please input 1 - 4" << endl;
+                cout << "Please input 0 - 4" << endl;
                 sleep(1);
             }
         }

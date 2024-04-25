@@ -3,6 +3,7 @@
 #include <vector>
 #include "OrderFormatLL.h"
 #include "Log.h"
+#include "checkerror.h"
 
 using namespace std;
 
@@ -17,16 +18,18 @@ private:
 
 public:
     headLinkList(int = 0, string="", string="");
-    void displaySendOrderManager();
     void delete_LinkedList(string);
+    void delete_LinkedList_id(int);
     void delete_LinkedList(string, string, int = 0);
     void delete_LinkedList(string, string, int, string, int);
     void delete_LinkedList(string, string, int, string, int, string, int);
     void add_LinkedList(LinkedList *&);
     void load_data(string);
+    void load_data_other(string);
     void load_data_HQ(string);
     void return_name();
     void save_data_LinkList(string, int = 0);
+    void displaySendOrderManager();
     void displayOrderStatusHQ();
     void displayOrderStatusManager();
     void displayOrderStatusStaff();
@@ -75,8 +78,6 @@ void headLinkList::delete_LinkedList(string nameOwner)
         {
             for (int len = sizeNodeinLinkList - 1; len > 0 && currentPtr->return_name() != nameOwner; len--)
             {
-                // cout << "currentPtr : " << currentPtr->return_name() << "     |    nameOwner : " << nameOwner << endl;
-                // cout << "eiei" << endl;
                 previousPtr = currentPtr;
                 currentPtr = currentPtr->move_next();
             }
@@ -90,6 +91,33 @@ void headLinkList::delete_LinkedList(string nameOwner)
             }
             cout << t->return_name() << " has been deleted" << endl;
             delete t;
+            sizeNodeinLinkList -= 1;
+        }
+    }
+}
+
+void headLinkList::delete_LinkedList_id(int id)
+{
+
+    LinkedList *currentPtr, *previousPtr;
+    currentPtr = holLinkedList;
+    previousPtr = NULL;
+
+    if (sizeNodeinLinkList > 0)
+    {
+        if (currentPtr->return_idContainer() != id)
+        {
+            if (holLinkedList->move_next() != NULL)
+            {
+                holLinkedList = holLinkedList->move_next();
+                holLinkedList->set_back_LinkList_ptr(NULL);
+                cout << currentPtr->return_name() << " has been deleted" << endl;
+            }
+            else
+            {
+                holLinkedList = NULL;
+            }
+            free(currentPtr);
             sizeNodeinLinkList -= 1;
         }
     }
@@ -137,6 +165,7 @@ void headLinkList::delete_LinkedList(string nameOwner, string nameFile, int stat
             {
                 currentPtr->set_back_LinkList_ptr(previousPtr);
             }
+            t->save_data(nameFile, status);
             cout << t->return_name() << " has been deleted" << endl;
             delete t;
             sizeNodeinLinkList -= 1;
@@ -187,6 +216,9 @@ void headLinkList::delete_LinkedList(string nameOwner, string nameFile1, int sta
             {
                 currentPtr->set_back_LinkList_ptr(previousPtr);
             }
+            
+            t->save_data(nameFile1, status1);
+            t->save_data(nameFile2, status2);
             cout << t->return_name() << " has been deleted" << endl;
             delete t;
             sizeNodeinLinkList -= 1;
@@ -238,6 +270,9 @@ void headLinkList::delete_LinkedList(string nameOwner, string nameFile1, int sta
             {
                 currentPtr->set_back_LinkList_ptr(previousPtr);
             }
+            t->save_data(nameFile2, status2);
+            t->save_data(nameFile3, status3);
+            t->save_data(nameFile1, status1);
             cout << t->return_name() << " has been deleted" << endl;
             delete t;
             sizeNodeinLinkList -= 1;
@@ -254,19 +289,16 @@ void headLinkList::save_data_LinkList(string nameFile, int status)
         return ;
     if (myfile.is_open()) 
     {
-        // Traverse to the last linked list
         while (t->move_next() != NULL)
         {
             t = t->move_next();
         }
 
-        // Traverse backward through the linked lists
         while (t != NULL)
         {
-            myfile << t->return_duty() << "," << t->return_idContainer() << "," << status << "," << t->return_name() << "," << t->return_size();
-            NODE *y = t->return_node(); // Start from the first node
+            myfile << t->return_sendIdContainer() << "," << t->return_duty() << "," << t->return_idContainer() << "," << status << "," << t->return_name() << "," << t->return_size();
+            NODE *y = t->return_node(); 
             
-            // Traverse forward through the nodes
             for (int j = 0; j < t->return_size(); j++)
             {
                 myfile << "," << y->return_name() << "," << y->return_amount();
@@ -276,7 +308,7 @@ void headLinkList::save_data_LinkList(string nameFile, int status)
             t = t->move_back();
         }
         // cout << "Data has been appended and saved in reverse order." << endl;
-        myfile.close(); // Close the file inside the loop
+        myfile.close(); 
     }
     else 
     {
@@ -297,14 +329,10 @@ void headLinkList::add_LinkedList(LinkedList *&A){
 
 void headLinkList::load_data(string namefile)
 {
-    // File pointer
     ifstream fin;
 
-    // Open an existing file
     fin.open(namefile);
 
-    // Read the Data from the file
-    // as String Vector
     vector<string> row;
     string line, word;
 
@@ -312,17 +340,14 @@ void headLinkList::load_data(string namefile)
     {
         row.clear();
 
-        // used for breaking words
         stringstream s(line);
 
-        // read every column data of a row and
-        // store it in a string variable, 'word'
         while (getline(s, word, ','))
         {
             row.push_back(word);
         }
 
-        int idContainer = stoi(row[1]);
+        int idContainer = stoi(row[2]);
 
         
         if (idContainer != this->id)
@@ -330,9 +355,11 @@ void headLinkList::load_data(string namefile)
             continue;
         }
 
-        int duty = stoi(row[0]);
+        int sendId = stoi(row[0]);
 
-        int status = stoi(row[2]);
+        int duty = stoi(row[1]);
+
+        int status = stoi(row[3]);
         string nameStatus;
         switch (status)
         {
@@ -342,18 +369,85 @@ void headLinkList::load_data(string namefile)
             case 3 : nameStatus = "Deny"; break;
         }
 
-        string nameLinklist = row[3];
-        int size = stoi(row[4]);
+        string nameLinklist = row[4];
+        int size = stoi(row[5]);
         // int sizeLinkList = stoi(row[1]) / 2;
 
         // cout << "size = " << size << endl;
         // cout << "size \\ 2 = " << size / 2 << endl;
         // cin >> size;
-        LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus, idContainer, duty);
+        LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus, idContainer, duty, sendId);
 
         if (size > 0)
         {
-            for (int i = row.size() - 1; i >= 5; i -= 2)
+            for (int i = row.size() - 1; i >= 6; i -= 2)
+            {
+                owner->add_NODE(row[i - 1], stoi(row[i]));
+            }
+        }
+        // owner->displayAll();
+        this->add_LinkedList(owner);
+        // delete owner;
+        // sizeNodeinLinkList += 1;
+    }
+
+    fin.close();
+}
+
+void headLinkList::load_data_other(string namefile)
+{
+    ifstream fin;
+
+    fin.open(namefile);
+
+    vector<string> row;
+    string line, word;
+
+    while (getline(fin, line))
+    {
+        row.clear();
+
+        stringstream s(line);
+
+        while (getline(s, word, ','))
+        {
+            row.push_back(word);
+        }
+
+        int idContainer = stoi(row[2]);
+
+        
+        if (idContainer == this->id)
+        {
+            continue;
+        }
+
+        int sendId = stoi(row[0]);
+
+        int duty = stoi(row[1]);
+
+        int status = stoi(row[3]);
+        string nameStatus;
+        switch (status)
+        {
+            case 0 : nameStatus = "Pending"; break;
+            case 1 : nameStatus = "Confirm"; break;
+            case 2 : nameStatus = "Finish"; break;
+            case 3 : nameStatus = "Deny"; break;
+        }
+
+        string nameLinklist = row[4];
+        int size = stoi(row[5]);
+        // int sizeLinkList = stoi(row[1]) / 2;
+
+        // cout << "size = " << size << endl;
+        // cout << "size \\ 2 = " << size / 2 << endl;
+        // cin >> size;
+        LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus, idContainer, duty, sendId);
+
+        if (size > 0)
+        {
+            for (int i = row.size() - 1; i >= 6; i -= 2)
             {
                 owner->add_NODE(row[i - 1], stoi(row[i]));
             }
@@ -369,66 +463,57 @@ void headLinkList::load_data(string namefile)
 
 void headLinkList::load_data_HQ(string namefile)
 {
-    // File pointer
+
     ifstream fin;
 
-    // Open an existing file
     fin.open(namefile);
-
-    // Read the Data from the file
-    // as String Vector
-    vector<string> row;
-    string line, word;
-
-    while (getline(fin, line))
+    if (fin.is_open())
     {
-        row.clear();
+        vector<string> row;
+        string line, word;
 
-        // used for breaking words
-        stringstream s(line);
-
-        // read every column data of a row and
-        // store it in a string variable, 'word'
-        while (getline(s, word, ','))
+        while (getline(fin, line))
         {
-            row.push_back(word);
-        }
+            row.clear();
 
-        int idContainer = stoi(row[1]);
+            stringstream s(line);
 
-        int duty = stoi(row[0]);
-    
-        int status = stoi(row[2]);
-        string nameStatus;
-        switch (status)
-        {
-            case 0 : nameStatus = "Pending"; break;
-            case 1 : nameStatus = "Confirm"; break;
-            case 2 : nameStatus = "Finish"; break;
-            case 3 : nameStatus = "Deny"; break;
-        }
-        string nameLinklist = row[3];
-        int size = stoi(row[4]);
-        // int sizeLinkList = stoi(row[1]) / 2;
-
-        // cout << "size = " << size << endl;
-        // cout << "size \\ 2 = " << size / 2 << endl;
-        // cin >> size;
-        LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus, idContainer, duty);
-
-        if (size > 0)
-        {
-            for (int i = row.size() - 1; i >= 5; i -= 2)
+            while (getline(s, word, ','))
             {
-                owner->add_NODE(row[i - 1], stoi(row[i]));
+                row.push_back(word);
             }
-        }
-        // owner->displayAll();
-        this->add_LinkedList(owner);
-        // sizeNodeinLinkList += 1;
-    }
 
-    fin.close();
+            int sendId = stoi(row[0]);
+
+            int idContainer = stoi(row[2]);
+
+            int duty = stoi(row[1]);
+        
+            int status = stoi(row[3]);
+            string nameStatus;
+            switch (status)
+            {
+                case 0 : nameStatus = "Pending"; break;
+                case 1 : nameStatus = "Confirm"; break;
+                case 2 : nameStatus = "Finish"; break;
+                case 3 : nameStatus = "Deny"; break;
+            }
+            string nameLinklist = row[4];
+            int size = stoi(row[5]);
+
+            LinkedList *owner = new LinkedList(nameLinklist, 0, nameStatus, idContainer, duty, sendId);
+
+            if (size > 0)
+            {
+                for (int i = row.size() - 1; i >= 6; i -= 2)
+                {
+                    owner->add_NODE(row[i - 1], stoi(row[i]));
+                }
+            }
+            this->add_LinkedList(owner);
+        }
+        fin.close();
+    }
 }
 
 void headLinkList::displayOrderStatusHQ()
@@ -459,16 +544,12 @@ void headLinkList::displayOrderStatusHQ()
             if (t->return_status() == 2 || t->return_status() == 3)
                 cout << "3 Finish" << endl;
             cout << "0 Exit" << endl;
-            // cout << "sizeNode : " << sizeNodeinLinkList << endl;
-            // cout << "len : " << len << endl;
-            // cout << "sizeHead : " << sizeHeadLinkList << endl;
             cout << "Input : ";
             cin >> choice;
             if (cin.fail()) 
             {
                 throw 1;
             }
-            // cout << "input 2 for back"
             if (choice == 1)
             {
                 len += 1;
@@ -479,7 +560,6 @@ void headLinkList::displayOrderStatusHQ()
                 else
                     len = (sizeNodeinLinkList - 1);
             }
-            // printf()
             else if (choice == 2)
             {
                 len -= 1;
@@ -490,25 +570,24 @@ void headLinkList::displayOrderStatusHQ()
             }
             else if (choice == 3 && (t->return_status() == 2 || t->return_status() == 3))
             {
-                string name;
+                string nameLL;
 
+                nameLL = t->return_name();
                 name = t->return_name();
                 int type = t->return_duty();
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
-                    // len += 1;
                 }
                 else if (t->move_back() != NULL)
                 {
                     t = t->move_back();
-                    // len -= 1;
                 }
                 else
                     t = NULL;
 
                 // cout << "test" << endl;
-                delete_LinkedList(name);
+                delete_LinkedList(nameLL);
                 save_data_LinkList("OrderStatusHQDatabase.csv");
                 confirm_order(name, role, id, type);
                 // len -= 1;
@@ -517,12 +596,23 @@ void headLinkList::displayOrderStatusHQ()
             {
                 break;
             }
+            else
+            {
+                if (t->return_status() == 2 || t->return_status() == 3)
+                {
+                    cout << "Error: Invalid input. Please input 0 - 3" << endl; 
+                }
+                else
+                {
+                    cout << "Error: Invalid input. Please input 0 - 2" << endl;
+                }
+            }
         }
         catch(...)
         {
             cout << "Error: Invalid input. Please enter a valid option." << endl;
-            cin.clear(); // Clear the error flag
-            cin.ignore(50, '\n'); // Discard invalid input
+            cin.clear(); 
+            cin.ignore(50, '\n'); 
             sleep(1);
         }
     }
@@ -555,16 +645,12 @@ void headLinkList::displaySendOrderManager()
             cout << "2 Back order" << endl;
             cout << "3 Send to staff" << endl;
             cout << "0 Exit" << endl;
-            // cout << "sizeNode : " << sizeNodeinLinkList << endl;
-            // cout << "len : " << len << endl;
-            // cout << "sizeHead : " << sizeHeadLinkList << endl;
             cout << "Input : ";
             cin >> choice;
             if (cin.fail()) 
             {
                 throw 1;
             }
-            // cout << "input 2 for back"
             if (choice == 1)
             {
                 len += 1;
@@ -575,7 +661,6 @@ void headLinkList::displaySendOrderManager()
                 else
                     len = (sizeNodeinLinkList - 1);
             }
-            // printf()
             else if (choice == 2)
             {
                 len -= 1;
@@ -586,39 +671,46 @@ void headLinkList::displaySendOrderManager()
             }
             else if (choice == 3)
             {
-                string name;
+                string nameLL;
 
-                name = t->return_name();
+                nameLL = t->return_name();
                 int type = t->return_duty();
+                int ID = t->return_idContainer();
+
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
-                    // len += 1;
                 }
                 else if (t->move_back() != NULL)
                 {
                     t = t->move_back();
-                    // len -= 1;
                 }
                 else
                     t = NULL;
 
-                // cout << "test" << endl;
-                delete_LinkedList(name, "OrderStaffDatabase.csv", 0, "OrderStatusHQDatabase.csv", 1, "OrderStatusManagerDatabase.csv", 0);
+                delete_LinkedList(nameLL, "OrderStaffDatabase.csv", 0, "OrderStatusHQDatabase.csv", 1, "OrderStatusManagerDatabase.csv", 0);
+                load_data_other("OrderManagerDatabase.csv");
                 save_data_LinkList("OrderManagerDatabase.csv");
                 send_order(name, role, id, type);
-                // len -= 1;
+
+                for (int i = sizeNodeinLinkList - 1; i > 0; i--)
+                    delete_LinkedList_id(ID);
+
             }
             else if (choice == 0)
             {
                 break;
             }
+            else
+            {
+                cout << "Error: Invalid input. Please input 0 - 3" << endl;
+            }
         }
         catch(...)
         {
             cout << "Error: Invalid input. Please enter a valid option." << endl;
-            cin.clear(); // Clear the error flag
-            cin.ignore(50, '\n'); // Discard invalid input
+            cin.clear(); 
+            cin.ignore(50, '\n'); 
             sleep(1);
         }
     }
@@ -652,16 +744,12 @@ void headLinkList::displayOrderStatusManager()
             if (t->return_status() == 2 || t->return_status() == 3)
                 cout << "3 Finish" << endl;
             cout << "0 Exit" << endl;
-            // cout << "sizeNode : " << sizeNodeinLinkList << endl;
-            // cout << "len : " << len << endl;
-            // cout << "sizeHead : " << sizeHeadLinkList << endl;
             cout << "Input : ";
             cin >> choice;
             if (cin.fail()) 
             {
                 throw 1;
             }
-            // cout << "input 2 for back"
             if (choice == 1)
             {
                 len += 1;
@@ -672,7 +760,6 @@ void headLinkList::displayOrderStatusManager()
                 else
                     len = (sizeNodeinLinkList - 1);
             }
-            // printf()
             else if (choice == 2)
             {
                 len -= 1;
@@ -683,33 +770,41 @@ void headLinkList::displayOrderStatusManager()
             }
             else if (choice == 3 && (t->return_status() == 2 || t->return_status() == 3))
             {
-                string name;
+                string nameLL;
                 int status;
 
-                name = t->return_name();
+                nameLL = t->return_name();
                 status = t->return_status();
+                int ID = t->return_idContainer();
+
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
-                    // len += 1;
                 }
                 else if (t->move_back() != NULL)
                 {
                     t = t->move_back();
-                    // len -= 1;
                 }
                 else
                     t = NULL;
 
                 if (status == 3)
                 {
-                    delete_LinkedList(name, "OrderStatusHQDatabase.csv", 3);
+                    delete_LinkedList(nameLL, "OrderStatusHQDatabase.csv", 3);
+                    load_data_other("OrderStatusManagerDatabase.csv");
                     save_data_LinkList("OrderStatusManagerDatabase.csv");
+
+                    for (int i = sizeNodeinLinkList - 1; i > 0; i--)
+                        delete_LinkedList_id(ID);
                 }
                 else
                 {
-                    delete_LinkedList(name, "OrderStatusHQDatabase.csv", 2);
+                    delete_LinkedList(nameLL, "OrderStatusHQDatabase.csv", 2);
+                    load_data_other("OrderStatusManagerDatabase.csv");
                     save_data_LinkList("OrderStatusManagerDatabase.csv");
+
+                    for (int i = sizeNodeinLinkList - 1; i > 0; i--)
+                        delete_LinkedList_id(ID);
                 }
                 len -= 1;
             }
@@ -717,12 +812,24 @@ void headLinkList::displayOrderStatusManager()
             {
                 break;
             }
+            else
+            {
+                int status = t->return_status();
+                if (status == 2 || status == 3)
+                {
+                    cout << "Error: Invalid input. Please input 0 - 3" << endl;
+                }
+                else
+                {
+                    cout << "Error: Invalid input. Please input 0 - 2" << endl;
+                }
+            }
         }
         catch(...)
         {
             cout << "Error: Invalid input. Please enter a valid option." << endl;
-            cin.clear(); // Clear the error flag
-            cin.ignore(50, '\n'); // Discard invalid input
+            cin.clear(); 
+            cin.ignore(50, '\n'); 
             sleep(1);
         }
     }
@@ -757,16 +864,12 @@ void headLinkList::displayOrderStatusStaff()
             cout << "3 deny order" << endl;
             cout << "4 Finish" << endl;
             cout << "0 Exit" << endl;
-            // cout << "sizeNode : " << sizeNodeinLinkList << endl;
-            // cout << "len : " << len << endl;
-            // cout << "sizeHead : " << sizeHeadLinkList << endl;
             cout << "Input : ";
             cin >> choice;
             if (cin.fail()) 
             {
                 throw 1;
             }
-            // cout << "input 2 for back"
             if (choice == 1)
             {
                 len += 1;
@@ -777,7 +880,6 @@ void headLinkList::displayOrderStatusStaff()
                 else
                     len = (sizeNodeinLinkList - 1);
             }
-            // printf()
             else if (choice == 2)
             {
                 len -= 1;
@@ -788,60 +890,67 @@ void headLinkList::displayOrderStatusStaff()
             }
             else if (choice == 3)
             {
-                string name;
+                string nameLL;
 
-                name = t->return_name();
+                nameLL = t->return_name();
+                int ID = t->return_idContainer();
+
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
-                    // len += 1;
                 }
                 else if (t->move_back() != NULL)
                 {
                     t = t->move_back();
-                    // len -= 1;
                 }
                 else
                     t = NULL;
-                delete_LinkedList(name, "OrderStatusManagerDatabase.csv", 3);
+                delete_LinkedList(nameLL, "OrderStatusManagerDatabase.csv", 3);
+                load_data_other("OrderStaffDatabase.csv");
                 save_data_LinkList("OrderStaffDatabase.csv");
                 len -= 1;
             }
             else if (choice == 4)
             {
-                string name;
+                string nameLL;
 
-                name = t->return_name();
+                nameLL = t->return_name();
+                int ID = t->return_idContainer();
+
                 if (t->move_next() != NULL)
                 {
                     t = t->move_next();
-                    // len += 1;
                 }
                 else if (t->move_back() != NULL)
                 {
                     t = t->move_back();
-                    // len -= 1;
                 }
                 else
                     t = NULL;
-                delete_LinkedList(name, "OrderStatusManagerDatabase.csv", 2);
+                delete_LinkedList(nameLL, "OrderStatusManagerDatabase.csv", 2);
+                load_data_other("OrderStaffDatabase.csv");
                 save_data_LinkList("OrderStaffDatabase.csv");
+
+                for (int i = sizeNodeinLinkList - 1; i > 0; i--)
+                    delete_LinkedList_id(ID);
+
                 len -= 1;
             }
             else if (choice == 0)
             {
                 break;
             }
+            else
+            {
+                    cout << "Error: Invalid input. Please input 0 - 4" << endl;
+            }
         }
         catch(...)
         {
             cout << "Error: Invalid input. Please enter a valid option." << endl;
-            cin.clear(); // Clear the error flag
-            cin.ignore(50, '\n'); // Discard invalid input
+            cin.clear(); 
+            cin.ignore(50, '\n');
             sleep(1);
         }
     }
 }
-
-// id : 1000
-// container : 1 ---> container : 2
