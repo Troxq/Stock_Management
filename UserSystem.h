@@ -83,8 +83,8 @@ void initDatabase()
     ifstream fileCheck(filename);
     if (fileCheck) 
     {
-        cout << "Initailize userdatabase.csv ........." << endl;
-        sleep(1);
+        // cout << "Initailize userdatabase.csv ........." << endl;
+        // sleep(1);
         return;
     }
 
