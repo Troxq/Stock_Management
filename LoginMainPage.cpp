@@ -10,8 +10,6 @@
 
 using namespace std;
 
-string NextItemID;
-
 int main()
 {
     int MainPage_Choice;

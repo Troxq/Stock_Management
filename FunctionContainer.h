@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include "HQ.h"
+#include "Log.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ void exportproduct(int);
 void transferproduct(int);
 bool isNameExists(string , string) ;
 
-void inputproduct(int role_id)
+void inputproduct(int role_id, string username, string role)
 {
     HQ * HQptr = new HQ("W",0);
     
@@ -48,6 +49,8 @@ void inputproduct(int role_id)
         for (int i = 0; i < input_amount; i++)
         {
             HQptr->HQ_add_item(input_container_id,input_customer,NextItemID,input_item);
+            import_prod(username, role, input_container_id, NextItemID);
+
         }
     }
     else
@@ -56,6 +59,7 @@ void inputproduct(int role_id)
         for (int i = 0; i < input_amount; i++)
         {
             HQptr->HQ_add_item(input_container_id,input_customer,NextItemID,input_item);
+            import_prod(username, role, input_container_id, NextItemID);
         }
     }
     
@@ -64,7 +68,7 @@ void inputproduct(int role_id)
     delete(HQptr);
 }
 
-void exportproduct(int role_id)
+void exportproduct(int role_id, string username, string role)
 {
     HQ * HQptr = new HQ("W",0);
     
@@ -82,13 +86,14 @@ void exportproduct(int role_id)
     cin >> input_item_id;
 
     HQptr->delete_item_HQ(input_container_id,input_customer,input_item_id);
+    export_prod(username, role, input_container_id, input_item_id);
 
     save_file(HQptr);
 
     delete(HQptr);
 }
 
-void transferproduct(int role_id)
+void transferproduct(int role_id, string username, string role)
 {
     HQ * HQptr = new HQ("W",0);
     
@@ -117,6 +122,7 @@ void transferproduct(int role_id)
         cin >> input_item_id;
 
         HQptr->HQ_transfer_in_container(input_container_id,input_customer,input_receiver,input_item_id);
+        transfer_prod(username, role, input_item_id, input_container_id, input_customer, input_receiver);
 
     }
     else
@@ -132,11 +138,13 @@ void transferproduct(int role_id)
         if(isNameExists(input_container_id_2,input_customer))
         {
             HQptr->HQ_transfer_over_container(input_customer,input_container_id,input_container_id_2,input_item_id);
+            transfer_prod(username, role, input_item_id, input_container_id, input_container_id_2, "None");
         }
         else
         {
             HQptr->HQ_add_customer(input_container_id_2,input_customer); // add customer if they didn't exist
             HQptr->HQ_transfer_over_container(input_customer,input_container_id,input_container_id_2,input_item_id);
+            transfer_prod(username, role, input_item_id, input_container_id, input_container_id_2, "None");
         }
     }
     

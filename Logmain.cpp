@@ -10,8 +10,10 @@ void Logmenu()
     {
         try
         {
-            cout << "We track all of your progress" << endl;
-            cout << "What progress you want to see" << endl;
+            cout << "|-------------------------------|" << endl;
+            cout << "| We track all of your progress |" << endl;
+            cout << "| What progress you want to see |" << endl;
+            cout << "|-------------------------------|" << endl << endl;;
             cout << "[1] Register" << endl;
             cout << "[2] Login" << endl;
             cout << "[3] import" << endl;
@@ -19,8 +21,8 @@ void Logmenu()
             cout << "[5] transfer" << endl;
             cout << "[6] send_order" << endl;
             cout << "[7] confirm_order" << endl;
-            cout << "[8] transfer_order" << endl;
-            cout << "Input your choice : " << endl;
+            cout << "[8] transfer_order" << endl << endl;
+            cout << "Input your choice : ";
             cin >> choice;
 
             if(cin.fail() || choice > 8 || choice < 1)
@@ -49,6 +51,24 @@ void Logmenu()
     {
         system("clear");
         login_show();
+    }
+
+    else if(choice == 3)
+    {
+        system("clear");
+        import_prod_show();
+    }
+
+    else if(choice == 4)
+    {
+        system("clear");
+        export_prod_show();
+    }
+
+    else if(choice == 5)
+    {
+        system("clear");
+        transfer_prod_show();
     }
 
     else if(choice == 6)
