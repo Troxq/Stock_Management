@@ -31,38 +31,6 @@ int checkInputNum(string str)
     return 0;
 }
 
-int checkIdManager(int id)
-{
-    ifstream fin;
-
-    fin.open("userdatabase.csv");
-
-    vector<string> row;
-    string line, word;
-
-    while (getline(fin, line))
-    {
-        row.clear();
-
-        stringstream s(line);
-        
-        while (getline(s, word, ','))
-        {
-            row.push_back(word);
-        }
-
-        if (row[2] == "Manager")
-        {
-            if (stoi(row[3]) == id)
-            {
-                fin.close();
-                return 0;
-            }
-        }
-    }
-    return 1;
-}
-
 vector<vector<string>> read_file_and_return_container_vector1(const string& container_filename) {
     ifstream file(container_filename);
     vector<vector<string>> data;
