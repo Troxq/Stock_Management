@@ -7,8 +7,6 @@
 #include <algorithm>
 #include "HQ.h"
 
-
-
 using namespace std;
 
 string NextItemID; 
@@ -27,8 +25,21 @@ int main()
     HQ * HQptr = new HQ("W",0);
     load_file_into_HQptr(HQptr);
 
+    string con_id, name, item;
+    int amount_item;
+    cout << "Container ID : ";
+    cin >> con_id;
+    cout << "Customer Name : ";
+    cin >> name;
+    cout << "Item name : ";
+    cin >> item;
+    cout << "Amount : ";
+    cin >> amount_item;
     
-    
+    for(int i = 0; i < amount_item; i++)
+    {
+        HQptr->HQ_add_item(con_id,name,NextItemID,item);
+    }
     //HQptr->HQ_delete_item
     //load file()
     HQptr->print_all_container();

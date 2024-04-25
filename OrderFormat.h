@@ -3,16 +3,10 @@
 // #include "NODE.h"
 #include <unistd.h>
 #include "OrderFormatHEADLL.h"
+#include "checkerror.h"
 // #include "OrderFormatLL.h"
 using namespace std;
 // class 
-
-int checkError(string nameP)
-{
-    if (nameP.size() > 30)
-        return 1;
-    return 0;
-}
 
 
 //snedOrderHQ
@@ -24,6 +18,7 @@ private:
     int numberContainer = 0;
     int itemAmount = 0;
     int duty = 0;
+    int sendIdContainer = 0;
 
     // LinkedList allItems("item", 0);
     // struct item
@@ -34,7 +29,7 @@ private:
     // }item[1000];
 
 public:
-    sendOrderFormatHQ(string, int = 0, int = 0);
+    sendOrderFormatHQ(string, int = 0, int = 0, int = 0);
     void mainMenu();
     void addProduct();
     void removeProduct();
@@ -53,49 +48,81 @@ public:
     
 };
 
-sendOrderFormatHQ::sendOrderFormatHQ(string name, int numContainer, int d) : LinkedList(name, 0, "Pending", numContainer, d)
+sendOrderFormatHQ::sendOrderFormatHQ(string name, int numContainer, int d, int sendId) : LinkedList(name, 0, "Pending", numContainer, d, sendId)
 {
     numberContainer = numContainer;
     duty = d;
+    sendIdContainer = sendId;
 }
 
 void sendOrderFormatHQ::mainMenu()
 {
     int choice = 0;
+    if (load_data_for_check("OrderStatusHQDatabase.csv", this->return_name()) == 1)
+    {
+        cout << "Error: Please don't input same customer name" << endl;
+        sleep(1);
+        return;
+    }
     while (1)
     {
         // displayAll();
-        cout << "1 Add product" << endl;
-        cout << "2 Remove product" << endl;
-        cout << "3 Check product" << endl;
-        cout << "4 confirm" << endl;
-        cout << "0 Cancle" << endl;
-        cout << "input : ";
-        cin >> choice;
-        if (choice == 1)
+        try
         {
-            addProduct();
+            if (choice != 3)
+                system("clear");
+            cout << "1 Add product" << endl;
+            cout << "2 Remove product" << endl;
+            cout << "3 Check product" << endl;
+            cout << "4 confirm" << endl;
+            cout << "0 Cancle" << endl;
+            cout << "input : ";
+            cin >> choice;
+            if (cin.fail())
+                throw 1;
+            if (choice == 1)
+            {
+                system("clear");
+                addProduct();
+            }
+            else if (choice == 2)
+            {
+                system("clear");
+                removeProduct();
+            }
+            else if (choice == 3)
+            {
+                system("clear");
+                checkProduct();
+            }
+            else if (choice == 4)
+            {
+                if (itemAmount <= 0)
+                {
+                    cout << "Error: Please add at least one product" << endl;
+                    sleep(1);
+                }
+                else
+                {
+                    confirm();
+                    break;
+                }
+            }
+            else if (choice == 0)
+            {
+                break;
+            }
+            else
+            {
+                cout << "Error: Invalid input. Please input 0 - 4" << endl; 
+                sleep(1);
+            }
         }
-        else if (choice == 2)
+        catch(...)
         {
-            removeProduct();
-        }
-        else if (choice == 3)
-        {
-            checkProduct();
-        }
-        else if (choice == 4)
-        {
-            confirm();
-            break;
-        }
-        else if (choice == 0)
-        {
-            break;
-        }
-        else
-        {
-            cout << "Please input 1 - 4" << endl;
+            cout << "Error: Invalid input. Please enter a valid option." << endl;
+            cin.clear(); // Clear the error flag
+            cin.ignore(50, '\n'); // Discard invalid input
             sleep(1);
         }
     }
@@ -108,19 +135,39 @@ void sendOrderFormatHQ::addProduct()
     int amount;
     while (1)
     {
-        cout << "Add product name : ";
-        cin >> nameP;
-        if (checkError(nameP) == 0)
-        {
+        try{
+            cout << "Add product name : ";
+            cin.clear();
+            cin.ignore(50, '\n');
+            cin >> nameP;
+            checkInputStr(nameP);
             break;
         }
-        else
+        catch (const char *str)
         {
-            cout << "Error try again" << endl;
+            cin.clear();
+            cin.ignore(50, '\n');
+            cout << str << endl;
         }
     }
-    cout << "Add amount : ";
-    cin >> amount;
+    while (1)
+    {
+        try{
+            cout << "Add amount : ";
+            cin >> amount;
+            if (cin.fail())
+                throw 1;
+            break;
+        }
+        catch(...)
+        {
+            cout << "Error: Invalid input. Please enter a valid option." << endl;
+            cin.clear(); // Clear the error flag
+            cin.ignore(50, '\n'); // Discard invalid input
+            sleep(1);
+        }
+
+    }
     add_NODE(nameP, amount);
     itemAmount += 1;
 }
