@@ -39,7 +39,10 @@ public:
     }
     void showNameandRole()
     {
-        cout << "HQ NAME : " << this->username << "\nROLE : "<< this->role <<endl;
+        cout << "===============================" << endl;
+        cout << "|| NAME : " << this->username 
+             << "\n|| ROLE : "<< this->role <<endl;
+        cout << "===============================" << endl;
     }
     string get_role()
     {
@@ -242,7 +245,10 @@ public:
     }
     void showNameandRole()
     {
-        cout << "MANAGER NAME : " << this->username << "\nROLE : "<< this->role << "\nCONTAINER ID : " << this->id << endl;
+        cout << "===============================" << endl;
+        cout << "|| NAME : " << this->username 
+             << "\n|| ROLE : "<< this->role <<endl;
+        cout << "===============================" << endl;
     }
     void sendOrder()
     {
@@ -315,7 +321,10 @@ public:
     }
     void showNameandRole()
     {
-        cout << "Staff NAME : " << this->username << "\nROLE : "<< this->role << "\nCONTAINER ID : " << this->id << endl;
+        cout << "===============================" << endl;
+        cout << "|| NAME : " << this->username 
+             << "\n|| ROLE : "<< this->role <<endl;
+        cout << "===============================" << endl;
     }
     void orderStatus()
     {

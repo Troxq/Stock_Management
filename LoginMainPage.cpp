@@ -18,9 +18,17 @@ int main()
     int MainPage_Choice;
     while(true)
     {
-        cout << "|=========Stock Management System=========|" << endl;
-        cout << "|>>=============== Login ===============<<|" << endl << endl;
+        cout << "-------------------------------------------" << endl;
+        cout << "|                                         |" << endl;
+        cout << "|         Stock Management System         |" << endl;
+        cout << "|                                         |" << endl;
+        cout << "-------------------------------------------" << endl << endl;
+
+        cout << " (\\(\\ " << "                              o_(\")(\") \n";
+        cout << " (-.-)  "  << "                              (-.-) \n";
+        cout << " o_(\")(\") " << "                            (\\(\\ \n";
         
+        cout << "===========================================" << endl;
         while (true) 
         {
             cout << "Choose (1. Login , 2. Exit) : ";
