@@ -102,7 +102,7 @@ void sendOrderFormatHQ::mainMenu()
                     removeProductExportTransfer();
                 }
             }
-            else if (choice == 4)
+            else if (choice == 3)
             {
                 if (itemAmount <= 0)
                 {
