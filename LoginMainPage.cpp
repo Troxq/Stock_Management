@@ -12,7 +12,9 @@ using namespace std;
 
 int main()
 {
-    initCSV(); // initialize file if it doesn't exist create new file
+    /* initialize file if it doesn't exist create new file */
+    initDatabase();
+    initCSV(); 
     initOrderCSV();
 
     int MainPage_Choice;
@@ -24,7 +26,7 @@ int main()
         cout << "|                                         |" << endl;
         cout << "-------------------------------------------" << endl << endl;
 
-        cout << " (\\(\\ " << "                              o_(\")(\") \n";
+        cout << " (\\(\\ " << "                             o_(\")(\") \n";
         cout << " (-.-)  "  << "                              (-.-) \n";
         cout << " o_(\")(\") " << "                            (\\(\\ \n";
         

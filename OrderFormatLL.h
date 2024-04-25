@@ -347,14 +347,14 @@ void LinkedList::displayAll()
             if (duty == 1)
             {
                 if (t->return_amount() > 0)
-                    cout << "  Name product : " << t->return_name() << "Amount : " << t->return_amount() << endl;
+                    cout << "  Name product : " << t->return_name() << "   Amount : " << t->return_amount() << endl;
                 else
                     cout << "  Name product : " << t->return_name() << endl;
             }
             else
             {
                 if (t->return_amount() > 0)
-                    cout << "  ID product : " << t->return_name() << "  " << "Amount : " << t->return_amount() << endl;
+                    cout << "  ID product : " << t->return_name() << "  " << "   Amount : " << t->return_amount() << endl;
                 else
                     cout << "  ID product : " << t->return_name() << endl;
             }

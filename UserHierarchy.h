@@ -8,7 +8,7 @@
 
 #include "UserSystem.h"
 #include "Logmain.cpp"
-// #include "Report.h"
+#include "Report.h"
 // #include "FunctionContainer.h"
 using namespace std;
 
@@ -90,7 +90,17 @@ public:
                             cin >> containerNum;
                             if (cin.fail())
                                 throw 1;
+                            if (checkIdManager(containerNum) == 1)
+                            {
+                                throw "Error: ID not found";
+                            }
                             break;
+                        }
+                        catch (const char* str)
+                        {
+                            cout << str << endl;
+                            cin.clear();
+                            cin.ignore(50, '\n');
                         }
                         catch (...){
                             cout << "Error: try again" << endl;
@@ -121,11 +131,21 @@ public:
                     while (1)
                     {
                         try{
-                            cout << "Number of container : "; 
+                            cout << "input container ID : "; 
                             cin >> containerNum;
                             if (cin.fail())
                                 throw 1;
+                            if (checkIdManager(containerNum) == 1)
+                            {
+                                throw "Error: ID not found";
+                            }
                             break;
+                        }
+                        catch (const char* str)
+                        {
+                            cout << str << endl;
+                            cin.clear();
+                            cin.ignore(50, '\n');
                         }
                         catch (...){
                             cout << "Error: try again" << endl;
@@ -161,7 +181,10 @@ public:
                             cin >> containerNum;
                             if (cin.fail())
                                 throw 1;
-                            
+                            if (checkIdManager(containerNum) == 1)
+                            {
+                                throw "Error: ID not found";
+                            }
                             cout << "Send to container id : ";
                             cin >> sendId;
                             if (cin.fail())
@@ -245,7 +268,7 @@ public:
             }
             else if (choice == 4)
             {
-                // ReportMainMenu();
+                ReportMainMenu();
             }
             else if (choice == 5)
             {
@@ -325,7 +348,7 @@ public:
             }
             else if (choice == 3)
             {
-                // report();
+                ReportMainMenuforManager(this->id);
             }
             else if (choice == 0)
             {
