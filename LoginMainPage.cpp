@@ -18,8 +18,8 @@ int main()
     int MainPage_Choice;
     while(true)
     {
-        cout << "==========Stock Management System==========" << endl;
-        cout << "=============== Login System ==============" << endl << endl;
+        cout << "|=========Stock Management System=========|" << endl;
+        cout << "|>>=============== Login ===============<<|" << endl << endl;
         
         while (true) 
         {
