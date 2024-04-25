@@ -6,6 +6,7 @@
 #include <cstring>
 #include <cstdlib>
 #include "Log.h"
+#include "FunctionContainer.h"
 
 using namespace std;
 
@@ -179,7 +180,22 @@ void createUser()
 
     regis(username, role);
 
-    file.close();
+    file.close(); // Ended Create user process
+
+    if(role == "Manager") //Create Container for new Manager
+    {    
+        string create_container_id = to_string(id);
+
+        HQ * HQptr = new HQ("W",0);
+
+        load_file_into_HQptr(HQptr);
+
+        HQptr->add_container(create_container_id,0);
+
+        save_file(HQptr);
+
+        delete(HQptr);
+    }
 
     cout << ">>>>>> Create User Successfully <<<<<<<" << endl;
 }
