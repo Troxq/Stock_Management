@@ -8,6 +8,7 @@
 
 #include "UserSystem.h"
 #include "Logmain.cpp"
+#include "report.h"
 
 #include "FunctionContainer.h"
 using namespace std;
@@ -174,6 +175,7 @@ public:
         status.load_data_HQ("OrderStatusHQDatabase.csv");
         status.displayOrderStatusHQ();
     }
+    
     void mainMenu()
     {
         int choice = 0;
@@ -204,7 +206,9 @@ public:
             }
             else if (choice == 4)
             {
-                // report();
+                //report();
+                ReportMainMenu();
+                
             }
             else if (choice == 5)
             {

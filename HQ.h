@@ -244,10 +244,10 @@ container * HQ::return_container_pointer(string inName){
 void HQ::print_all_container(){
     container * t;
     t = container_head_ptr;
-    cout<<"--------------------------------------------------"<<endl;
+    cout<<endl<<"--------------------------------------------------"<<endl;
     cout<<"printing all"<<endl;
     for(int i =0; i < container_amount; i ++){
-        cout<<t->return_name()<<endl;
+        cout<<i+1<<".) "<<t->return_name()<<endl;
         t->print_all_customer();
         if(i<container_amount -1 ) cout<<" | "<<endl;
         t = t->return_next_container();
