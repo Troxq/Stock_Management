@@ -14,15 +14,16 @@ void Logmenu()
             cout << "What progress you want to see" << endl;
             cout << "[1] Register" << endl;
             cout << "[2] Login" << endl;
-            //cout << "[3] import" << endl;
-            //cout << "[4] export" << endl;
-            cout << "[3] send_order" << endl;
-            cout << "[4] confirm_order" << endl;
+            cout << "[3] import" << endl;
+            cout << "[4] export" << endl;
             cout << "[5] transfer" << endl;
+            cout << "[6] send_order" << endl;
+            cout << "[7] confirm_order" << endl;
+            cout << "[8] transfer_order" << endl;
             cout << "Input your choice : " << endl;
             cin >> choice;
 
-            if(cin.fail() || choice > 5 || choice < 1)
+            if(cin.fail() || choice > 8 || choice < 1)
             {
                 throw 1;
             }
@@ -50,13 +51,13 @@ void Logmenu()
         login_show();
     }
 
-    else if(choice == 3)
+    else if(choice == 6)
     {
         system("clear");
         send_order_show();
     }
 
-    else if(choice == 4)
+    else if(choice == 7)
     {
         system("clear");
         confirm_order_show();

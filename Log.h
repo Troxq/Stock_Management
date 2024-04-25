@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <fstream>
 #include <ctime>
@@ -8,6 +9,7 @@
 using namespace std;
 
 string getdate();
+string gettime();
 void regis(string, string);
 void login(string, string);
 void send_order(string, string, int, int);
@@ -33,6 +35,21 @@ string getdate()
     return d + '/' + m + '/' + y;
 }
 
+string gettime() {
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+
+    int hours = ltm->tm_hour;
+    int minutes = ltm->tm_min;
+    int seconds = ltm->tm_sec;
+
+    stringstream ss;
+    ss << setfill('0') << setw(2) << hours << ":" 
+       << setfill('0') << setw(2) << minutes << ":" 
+       << setfill('0') << setw(2) << seconds;
+    return ss.str();
+}
+
 void regis(string username, string role)
 {   
     fstream fout;
@@ -48,7 +65,7 @@ void login(string username, string role)
 
     fout.open("./Logfile/loginlog.csv", ios::out | ios::app);
 
-    fout << getdate() << ',' << username << ',' << role << "\n";
+    fout << getdate() << gettime() << ',' << username << ',' << role << "\n";
 }
 
 void send_order(string name, string role, int containerid, int type)
