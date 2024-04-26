@@ -356,6 +356,7 @@ void ReportMainMenuforManager(int id_container)
     string fullfilename = prefix + container_id_report + suffix;
 
     system("clear");
+    cout << "====================" << endl;
     ReportStaff(container_id_report,fullfilename);
 }
 void ReportMainMenu()
