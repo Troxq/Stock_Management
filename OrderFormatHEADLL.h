@@ -102,7 +102,7 @@ void headLinkList::delete_LinkedList(string nameOwner)
             {
                 currentPtr->set_back_LinkList_ptr(previousPtr);
             }
-            cout << t->return_name() << " has been deleted" << endl;
+            // cout << t->return_name() << " has been deleted" << endl;
             delete t;
             sizeNodeinLinkList -= 1;
         }
@@ -286,7 +286,7 @@ void headLinkList::delete_LinkedList(string nameOwner, string nameFile1, int sta
             t->save_data(nameFile2, status2);
             t->save_data(nameFile3, status3);
             t->save_data(nameFile1, status1);
-            cout << t->return_name() << " has been deleted" << endl;
+            // cout << t->return_name() << " has been deleted" << endl;
             delete t;
             sizeNodeinLinkList -= 1;
         }

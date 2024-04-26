@@ -230,8 +230,10 @@ void sendOrderFormatHQ::removeProduct()
         else
             break;
     }
-    delete_NODE_Got(nameP);
-    itemAmount -= 1;
+    if (delete_NODE_Got(nameP) == 0)
+    {
+        itemAmount -= 1;
+    }
 }
 
 void sendOrderFormatHQ::removeProductExportTransfer()
@@ -249,8 +251,10 @@ void sendOrderFormatHQ::removeProductExportTransfer()
         else
             break;
     }
-    delete_NODE_Got(idP);
-    itemAmount -= 1;
+    if (delete_NODE_Got(idP) == 0)
+    {
+        itemAmount -= 1;
+    }
 }
 
 void sendOrderFormatHQ::checkProduct()

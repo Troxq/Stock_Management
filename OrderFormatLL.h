@@ -44,7 +44,7 @@ class LinkedList
 
         void add_NODE(string, int); // GOT : for sendorder
         void displayAll(); // GOT : for display all node in sendorder
-        void delete_NODE_Got(string); // GOT : for sendorder
+        int delete_NODE_Got(string); // GOT : for sendorder
         void displayOrderStatus();
         void save_data(string, int = 0); // GOT : for save data sendorder
         void save_data_HQ(string, int = 0);
@@ -280,7 +280,7 @@ void LinkedList::delete_NODE(string inName){
     }
 }
 
-void LinkedList::delete_NODE_Got(string nameProduct)
+int LinkedList::delete_NODE_Got(string nameProduct)
 {
     NODE *currentPtr, *previousPtr;
     currentPtr = NODE_head_ptr;
@@ -316,6 +316,7 @@ void LinkedList::delete_NODE_Got(string nameProduct)
             {
                 cout << "Error: Don't have that product" << endl;
                 sleep(1);
+                return (1);
             }
             
         }
@@ -325,7 +326,9 @@ void LinkedList::delete_NODE_Got(string nameProduct)
     {
         cout << "Error: Don't have that product" << endl;
         sleep(1);
+        return (1);
     }
+    return (0);
 }
 
 void LinkedList::displayAll()
