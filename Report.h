@@ -370,7 +370,14 @@ void ReportMainMenu()
     string suffix = ".csv";
 
     string fullfilename = prefix + container_id_report + suffix;
-
+    
+    ifstream file(fullfilename);
+    if (!file.is_open()) {
+        cout << endl <<"Error: File " << fullfilename << " not found." << endl;
+        sleep(2);
+        return; // Return from the function if file is not found
+    }
+    file.close();
     system("clear");
     ReportManager(container_id_report,fullfilename);
 }
