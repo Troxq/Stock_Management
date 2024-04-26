@@ -43,6 +43,14 @@ void inputproduct(int role_id, string username, string role)
     cin >> input_item;
     cout << "Input Amount of Item : ";
     cin >> input_amount;
+    if(cin.fail())
+    {
+        cout << "Pls Input Integer !!!" << endl;
+        cin.clear();
+        cin.ignore(10,'\n');
+        sleep(1);
+        return;
+    }
 
     if(isNameExists(input_container_id,input_customer))
     {
