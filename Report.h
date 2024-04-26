@@ -348,7 +348,6 @@ void ContainerList(){
 void ReportMainMenuforManager(int id_container)
 {
     system("clear");
-
     string container_id_report = to_string(id_container);
     string prefix = "Database/container_";
     string suffix = ".csv";
@@ -356,6 +355,7 @@ void ReportMainMenuforManager(int id_container)
     string fullfilename = prefix + container_id_report + suffix;
 
     system("clear");
+    cout << "|| Container ID : " << container_id_report << endl;
     cout << "====================" << endl;
     ReportStaff(container_id_report,fullfilename);
 }
