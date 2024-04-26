@@ -245,6 +245,12 @@ void createUser()
         cout << "Enter Username: ";
         cin >> username;
 
+        if (username.find(',') != string::npos) 
+        {
+            cout << "Comma found in input. Pls " << endl;
+            continue;
+        }
+
         if (usernameCheck(username, "userdatabase.csv")) // Check Username
         {
             cout << "Username already exists !!" << endl;
@@ -255,8 +261,21 @@ void createUser()
         }
     }
 
-    cout << "Enter Password: ";
-    cin >> password;
+    while(true)
+    {
+        cout << "Enter Password: ";
+        cin >> password;
+
+        if (password.find(',') != string::npos) 
+        {
+            cout << "Comma found in input. Pls " << endl;
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
 
     int role_choice;
 
