@@ -3,6 +3,7 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+// #include "OrderFormatLL.h"
 
 using namespace std;
 
@@ -10,23 +11,95 @@ void ReportCSV(const string);
 void ReportStaff(string,const string);
 void ReportManager(string, const string);
 
-bool SortingByOwner(const vector<string>& a, const vector<string>& b) {
-    return a[0] < b[0];
-}
-
-void SortItemsInLine(vector<string>& lineData) 
-{
+class Node {
+public:
+    string owner;
     vector<pair<string, string>> items;
-    for (size_t i = 1; i < lineData.size(); i += 2) {
-        items.push_back({lineData[i], lineData[i+1]});
+    Node* next;
+
+    Node(const string& owner) : owner(owner), next(nullptr) {}
+};
+
+class ReportLinkedList {
+private:
+    Node* head;
+
+public:
+    ReportLinkedList() : head(nullptr) {}
+
+    void insert(const string& owner, const vector<pair<string, string>>& items) {
+        Node* new_node = new Node(owner);
+        new_node->items = items;
+
+        if (!head || head->items.empty() || head->items.front().first > items.front().first) {
+            new_node->next = head;
+            head = new_node;
+            return;
+        }
+
+        Node* current = head;
+        while (current->next && current->next->items.front().first < items.front().first) {
+            current = current->next;
+        }
+
+        new_node->next = current->next;
+        current->next = new_node;
     }
-    sort(items.begin(), items.end());
-    lineData.clear();
-    lineData.push_back(""); // Placeholder for owner
-    for (const auto& item : items) {
-        lineData.push_back(item.second); // Push item name first
-        lineData.push_back(item.first);  // Push item ID after
+
+    void print() {
+        Node* current = head;
+        while (current) {
+            cout << "Owner: " << current->owner << endl;
+            cout << "Items:" << endl;
+            for (const auto& item : current->items) {
+                cout << " - ID: " << item.first << ", Name: " << item.second << endl;
+            }
+            cout << endl;
+            current = current->next;
+        }
     }
+
+    ~ReportLinkedList() {
+        Node* current = head;
+        while (current) {
+            Node* next = current->next;
+            delete current;
+            current = next;
+        }
+    }
+};
+
+void ReportCSV(const string filename) {
+    cout << "Customer List: " << endl << endl;
+
+    ifstream file(filename);
+
+    ReportLinkedList list;
+
+    string line;
+    while (getline(file, line)) {
+        istringstream iss(line);
+        string owner;
+        getline(iss, owner, ',');
+
+        vector<pair<string, string>> items;
+        string id, name;
+        while (getline(iss, id, ',') && getline(iss, name, ',')) {
+            items.push_back({id, name});
+        }
+
+        list.insert(owner, items);
+    }
+
+    list.print();
+
+    cout << "====================" << endl;
+    cout << "Press Any Key and Enter to exit" << endl;
+
+    string exit_choice;
+    cin >> exit_choice;
+
+    file.close();
 }
 
 void ReportManager(string container_id_report,const string fullfilename)
@@ -100,46 +173,4 @@ void ReportMainMenuforManager(int id_container)
 
     system("clear");
     ReportStaff(container_id_report,fullfilename);
-}
-
-void ReportCSV(const string filename) 
-{
-    cout << "Customer List: " << endl << endl;
-
-    ifstream file(filename);
-
-    vector<vector<string>> lines;
-    string line;
-    while (getline(file, line)) 
-    {
-        istringstream iss(line);
-        vector<string> lineData;
-        string token;
-        while (getline(iss, token, ',')) 
-        {
-            lineData.push_back(token);
-        }
-        lines.push_back(lineData);
-    }
-
-    sort(lines.begin(), lines.end(), SortingByOwner); // Sort lines by owner
-
-    for (const auto& lineData : lines) {
-        cout << "Owner: " << lineData[0] << endl; 
-        cout << "ID    | Name" << endl;
-        cout << "--------------------" << endl;
-        vector<string> mutableLineData = lineData; // Make a mutable copy
-        SortItemsInLine(mutableLineData);
-        for (size_t i = 1; i < mutableLineData.size(); i += 2) { 
-            cout << mutableLineData[i+1] << " | " << mutableLineData[i] << endl;
-        }
-        cout << endl;
-    }
-    cout << "====================" << endl;
-    cout << "Press Any Key and Enter to exit" << endl;
-
-    string exit_choice;
-    cin >> exit_choice;
-
-    file.close();
 }
