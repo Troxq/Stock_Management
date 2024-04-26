@@ -34,6 +34,13 @@ void login(Role *&Role)
         cout << "Choose Your Role (1. Headquarter, 2. Manager, 3. Staff) : ";
         cin >> role_choice;
 
+        if(cin.fail())
+        {
+            cin.clear();
+            cin.ignore(10,'\n');
+            continue;
+        }
+
         if(role_choice == 1)
         {
             role = "Headquarter";
@@ -46,6 +53,7 @@ void login(Role *&Role)
         {
             role = "Staff";
         }
+        
 
         if(roleCheck(role, username, "userdatabase.csv"))
         {

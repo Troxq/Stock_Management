@@ -175,7 +175,7 @@ void ReportMainMenu()
     
     ifstream file(fullfilename);
     if (!file.is_open()) {
-        cout << endl <<"Error: File " << fullfilename << " not found." << endl;
+        cout << endl <<"======= Container Not Found! =======" << endl;
         sleep(2);
         return; // Return from the function if file is not found
     }
