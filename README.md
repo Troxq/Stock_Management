@@ -1,2 +1,2 @@
 # Stock_Management
-Final project year 2 (EGCO112)
+Final project year 1
